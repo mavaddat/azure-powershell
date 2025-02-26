@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/update-azkustoscript
 schema: 2.0.0
@@ -15,29 +15,31 @@ Updates a database script.
 ### UpdateExpanded (Default)
 ```
 Update-AzKustoScript -ClusterName <String> -DatabaseName <String> -Name <String> -ResourceGroupName <String>
- [-SubscriptionId <String>] [-ContinueOnError] [-ForceUpdateTag <String>] [-ScriptContent <String>]
- [-ScriptUrl <String>] [-ScriptUrlSasToken <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
- [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] [-ContinueOnError] [-ForceUpdateTag <String>]
+ [-PrincipalPermissionsAction <PrincipalPermissionsAction>] [-ScriptContent <String>]
+ [-ScriptLevel <ScriptLevel>] [-ScriptUrl <String>] [-ScriptUrlSasToken <String>] [-DefaultProfile <PSObject>]
+ [-AsJob] [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Update
 ```
 Update-AzKustoScript -ClusterName <String> -DatabaseName <String> -Name <String> -ResourceGroupName <String>
- -Parameter <IScript> [-SubscriptionId <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm]
- [-WhatIf] [<CommonParameters>]
-```
-
-### UpdateViaIdentity
-```
-Update-AzKustoScript -InputObject <IKustoIdentity> -Parameter <IScript> [-DefaultProfile <PSObject>] [-AsJob]
- [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] -Parameter <IScript> [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### UpdateViaIdentityExpanded
 ```
 Update-AzKustoScript -InputObject <IKustoIdentity> [-ContinueOnError] [-ForceUpdateTag <String>]
- [-ScriptContent <String>] [-ScriptUrl <String>] [-ScriptUrlSasToken <String>] [-DefaultProfile <PSObject>]
- [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-PrincipalPermissionsAction <PrincipalPermissionsAction>] [-ScriptContent <String>]
+ [-ScriptLevel <ScriptLevel>] [-ScriptUrl <String>] [-ScriptUrlSasToken <String>] [-DefaultProfile <PSObject>]
+ [-AsJob] [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### UpdateViaIdentity
+```
+Update-AzKustoScript -InputObject <IKustoIdentity> -Parameter <IScript> [-DefaultProfile <PSObject>] [-AsJob]
+ [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -47,7 +49,7 @@ Updates a database script.
 
 ### Example 1: Update an existing kusto script by name
 ```powershell
-Update-AzKustoScript -DatabaseName mykustodatabase -Name newkustoscript -ClusterName testnewkustocluster -ResourceGroupName testrg -ScriptUrl $BlobSASURL -ScriptUrlSasToken $BlobSASToken
+Update-AzKustoScript -DatabaseName mykustodatabase -Name newkustoscript -ClusterName testnewkustocluster -ResourceGroupName testrg -ScriptUrl $BlobSASURL -ScriptUrlSasToken $BlobSASToken -PrincipalPermissionsAction RemovePermissionOnScriptCompletion -ScriptLevel Database
 ```
 
 ```output
@@ -80,7 +82,7 @@ The name of the Kusto cluster.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: True
@@ -110,7 +112,7 @@ The name of the database in the Kusto cluster.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: True
@@ -158,7 +160,7 @@ To construct, see NOTES section for INPUTOBJECT properties and create a hash tab
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.IKustoIdentity
-Parameter Sets: UpdateViaIdentity, UpdateViaIdentityExpanded
+Parameter Sets: UpdateViaIdentityExpanded, UpdateViaIdentity
 Aliases:
 
 Required: True
@@ -173,7 +175,7 @@ The name of the Kusto database script.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases: ScriptName
 
 Required: True
@@ -203,7 +205,7 @@ Class representing a database script.
 To construct, see NOTES section for PARAMETER properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IScript
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IScript
 Parameter Sets: Update, UpdateViaIdentity
 Aliases:
 
@@ -214,13 +216,28 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -PrincipalPermissionsAction
+Indicates if the permissions for the script caller are kept following completion of the script.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Support.PrincipalPermissionsAction
+Parameter Sets: UpdateExpanded, UpdateViaIdentityExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ResourceGroupName
 The name of the resource group.
 The name is case insensitive.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: True
@@ -237,6 +254,22 @@ Must not be used together with scriptUrl and scriptUrlSasToken properties.
 
 ```yaml
 Type: System.String
+Parameter Sets: UpdateExpanded, UpdateViaIdentityExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptLevel
+Differentiates between the type of script commands included - Database or Cluster.
+The default is Database.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Support.ScriptLevel
 Parameter Sets: UpdateExpanded, UpdateViaIdentityExpanded
 Aliases:
 
@@ -284,7 +317,7 @@ The ID of the target subscription.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: False
@@ -330,15 +363,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IScript
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IScript
 
 ### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.IKustoIdentity
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IScript
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IScript
 
 ## NOTES
 
 ## RELATED LINKS
-

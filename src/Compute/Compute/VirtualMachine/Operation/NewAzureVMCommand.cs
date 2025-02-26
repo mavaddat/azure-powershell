@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+ // ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -221,6 +221,7 @@ namespace Microsoft.Azure.Commands.Compute
             "FlatcarLinuxFreeGen2",
             "Win2022Datacenter",
             "Win2022AzureEditionCore",
+            "Win2022AzureEdition",
             "Win2019Datacenter",
             "Win2016Datacenter",
             "Win2012R2Datacenter",
@@ -440,6 +441,25 @@ namespace Microsoft.Azure.Commands.Compute
            Mandatory = false)]
         public bool? EnableSecureBoot { get; set; } = null;
 
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "used to make a request conditional for the PUT and other non-safe methods. The server will only return the requested resources if the resource matches one of the listed ETag values. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.")]
+        public string IfMatch { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Used to make a request conditional for the GET and HEAD methods. The server will only return the requested resources if none of the listed ETag values match the current entity. Used to make a request conditional for the GET and HEAD methods. The server will only return the requested resources if none of the listed ETag values match the current entity. Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result in error from server as they are not supported.")]
+        public string IfNoneMatch { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ParameterSetName = SimpleParameterSet,
+            HelpMessage = "Specify the type of SSH key to generate. Allowed values are 'Ed25519' and 'RSA'.")]
+        [ValidateSet("Ed25519", "RSA")]
+        public string SshKeyType { get; set; }
+
         public override void ExecuteCmdlet()
         {
             if (this.IsParameterBound(c => c.UserData))
@@ -566,7 +586,9 @@ namespace Microsoft.Azure.Commands.Compute
                     publicIpSku = _cmdlet.PublicIpSku == "Basic" ? PublicIPAddressStrategy.Sku.Basic : PublicIPAddressStrategy.Sku.Standard;
                 }
                 else {
-                    publicIpSku = _cmdlet.Zone == null ? PublicIPAddressStrategy.Sku.Basic : PublicIPAddressStrategy.Sku.Standard;
+                    // since Az 13.0.0 and Az.Compute 9.0.0, if PublicIpSku is not specified, it should be Standard by default.
+                    // https://aka.ms/ipbasictostandard
+                    publicIpSku = PublicIPAddressStrategy.Sku.Standard;
                 }
                 
                 if (_cmdlet.IsParameterBound(c => c.SecurityType))
@@ -699,10 +721,12 @@ namespace Microsoft.Azure.Commands.Compute
                         sharedGalleryImageId: _cmdlet.SharedGalleryImageId,
                         securityType: _cmdlet.SecurityType,
                         enableVtpm: _cmdlet.EnableVtpm,
-                        enableSecureBoot: _cmdlet.EnableSecureBoot
+                        enableSecureBoot: _cmdlet.EnableSecureBoot,
+                        ifMatch: _cmdlet.IfMatch,
+                        ifNoneMatch: _cmdlet.IfNoneMatch
                         );
                 }
-                else
+                else  // does not get used. DiskFile parameter set is not supported.
                 {
                     var disk = resourceGroup.CreateManagedDiskConfig(
                         name: _cmdlet.Name,
@@ -755,6 +779,11 @@ namespace Microsoft.Azure.Commands.Compute
             PublicIpAddressName = PublicIpAddressName;
             SecurityGroupName = SecurityGroupName ?? Name;
 
+            if (this.IsParameterBound(c => c.Image))
+            {
+                WriteInformation(HelpMessages.PSVMImageMessage, new string[] { "PSHOST" });
+            }
+
             // Check TrustedLaunch UEFI values defaulting
             if (this.IsParameterBound(c => c.SecurityType)
                 && this.SecurityType != null)
@@ -765,9 +794,15 @@ namespace Microsoft.Azure.Commands.Compute
                     this.EnableVtpm = this.EnableVtpm ?? true;
                     this.EnableSecureBoot = this.EnableSecureBoot ?? true;
                 }
+                // Default in TL Image to ease later migration. 
                 else if (this.SecurityType?.ToLower() == ConstantValues.StandardSecurityType)
                 {
-                    this.SecurityType = this.SecurityType;
+                    if (!this.IsParameterBound(c => c.Image)
+                    && !this.IsParameterBound(c => c.ImageReferenceId)
+                    && !this.IsParameterBound(c => c.SharedGalleryImageId))
+                    {
+                        this.Image = ConstantValues.TrustedLaunchDefaultImageAlias;
+                    }
                 }
                 
             }
@@ -1017,6 +1052,20 @@ namespace Microsoft.Azure.Commands.Compute
                         }
                     }
                 }
+                else if (this.VM.StorageProfile?.ImageReference?.SharedGalleryImageId != null) {
+                    // do nothing, send message to use TrustedLaunch.
+                    if (this.AsJobPresent() == false) // to avoid a failure when it is a job. Seems to fail when it is a job.
+                    {
+                        WriteInformation(HelpMessages.TrustedLaunchUpgradeMessage, new string[] { "PSHOST" });
+                    }
+                }
+                else if (this.VM.StorageProfile?.ImageReference?.CommunityGalleryImageId != null) {
+                    // do nothing, send message to use TrustedLaunch.
+                    if (this.AsJobPresent() == false) // to avoid a failure when it is a job. Seems to fail when it is a job.
+                    {
+                        WriteInformation(HelpMessages.TrustedLaunchUpgradeMessage, new string[] { "PSHOST" });
+                    }
+                }
                 else
                 {
                     // handle each field in image reference itself to then call it.
@@ -1128,7 +1177,7 @@ namespace Microsoft.Azure.Commands.Compute
                         result = this.VirtualMachineClient.CreateOrUpdateWithHttpMessagesAsync(
                         this.ResourceGroupName,
                         this.VM.Name,
-                        parameters,null,null,
+                        parameters,this.IfMatch,this.IfNoneMatch,
                         auxAuthHeader).GetAwaiter().GetResult();
                     }
                     catch (Exception ex)
@@ -1573,7 +1622,7 @@ namespace Microsoft.Azure.Commands.Compute
                     SshPublicKeyResource sshkey = new SshPublicKeyResource();
                     sshkey.Location = this.Location != null ? this.Location : "eastus";
                     SshPublicKey = this.ComputeClient.ComputeManagementClient.SshPublicKeys.Create(this.ResourceGroupName, this.SshKeyName, sshkey);
-                    SshPublicKeyGenerateKeyPairResult keypair = this.ComputeClient.ComputeManagementClient.SshPublicKeys.GenerateKeyPair(this.ResourceGroupName, this.SshKeyName);
+                    SshPublicKeyGenerateKeyPairResult keypair = this.ComputeClient.ComputeManagementClient.SshPublicKeys.GenerateKeyPair(this.ResourceGroupName, this.SshKeyName, this.SshKeyType);
 
                     string sshFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
                     if (!Directory.Exists(sshFolder))
@@ -1672,6 +1721,22 @@ namespace Microsoft.Azure.Commands.Compute
                 if (this.GenerateSshKey.IsPresent)
                 {
                     throw new Exception("Please provide parameter '-SshKeyName' to be used with '-GenerateSshKey'");
+                }
+            }
+
+            if (this.IsParameterBound(c => c.VM))
+            {
+                if (this.ParameterSetName == "DefaultParameterSet")
+                {
+                    if (VM.SecurityProfile != null && VM.SecurityProfile.EncryptionIdentity != null && 
+                        VM.SecurityProfile.EncryptionIdentity.UserAssignedIdentityResourceId != null)
+                    {
+                        if (VM.Identity == null || VM.Identity.UserAssignedIdentities == null || 
+                            !VM.Identity.UserAssignedIdentities.ContainsKey(VM.SecurityProfile.EncryptionIdentity.UserAssignedIdentityResourceId))
+                        {
+                            throw new Exception("Encryption Identity should be an ARM Resource ID of one of the user assigned identities associated to the resource");
+                        }
+                    }
                 }
             }
         }

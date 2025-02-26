@@ -17,7 +17,6 @@ using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
 using Microsoft.Azure.Commands.Common.Authentication.Factories;
 using Microsoft.Azure.Commands.Common.Authentication.Models;
 using Microsoft.Rest.Azure;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +27,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Commands.TestFx.DelegatingHandlers;
 using Microsoft.Rest.ClientRuntime.Azure.TestFramework;
 using Microsoft.Azure.Test.HttpRecorder;
 using Microsoft.Azure.Commands.Common.MSGraph.Version1_0;
@@ -76,9 +74,7 @@ namespace Microsoft.Azure.Commands.TestFx.Mocks
 
         public TClient CreateArmClient<TClient>(IAzureContext context, string endpoint) where TClient : Microsoft.Rest.ServiceClient<TClient>
         {
-            Debug.Assert(context != null);
-            var credentials = AzureSession.Instance.AuthenticationFactory.GetServiceClientCredentials(context, endpoint);
-            return CreateCustomArmClient<TClient>(context.Environment.GetEndpointAsUri(endpoint), credentials);
+            return CreateCustomArmClient<TClient>();
         }
 
         public TClient CreateCustomArmClient<TClient>(params object[] parameters) where TClient : Microsoft.Rest.ServiceClient<TClient>
@@ -95,16 +91,7 @@ namespace Microsoft.Azure.Commands.TestFx.Mocks
                 }
             }
 
-            if (client == null)
-            {
-                var realClientFactory = new ClientFactory();
-                var newParameters = new object[parameters.Length + 1];
-                Array.Copy(parameters, 0, newParameters, 1, parameters.Length);
-                newParameters[0] = HttpMockServer.CreateInstance();
-                client = realClientFactory.CreateCustomArmClient<TClient>(newParameters);
-            }
-
-            if (TestMockSupport.RunningMocked && HttpMockServer.GetCurrentMode() != HttpRecorderMode.Record)
+            if (HttpMockServer.Mode == HttpRecorderMode.Playback)
             {
                 if (client is IAzureClient azureClient)
                 {

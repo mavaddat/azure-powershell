@@ -39,14 +39,19 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </param>
 
         /// <param name="provisioningState">The provisioning state of the authorization resource.
-        /// Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;</param>
+        /// Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;,
+        /// &#39;Updating&#39;, &#39;Deleting&#39;</param>
 
         /// <param name="authorizationKey">The authorization key.
         /// </param>
 
         /// <param name="authorizationUseStatus">The authorization use status.
         /// Possible values include: &#39;Available&#39;, &#39;InUse&#39;</param>
-        public ExpressRouteCircuitAuthorization(string id = default(string), string name = default(string), string etag = default(string), string type = default(string), string provisioningState = default(string), string authorizationKey = default(string), string authorizationUseStatus = default(string))
+
+        /// <param name="connectionResourceUri">The reference to the ExpressRoute connection resource using the
+        /// authorization.
+        /// </param>
+        public ExpressRouteCircuitAuthorization(string id = default(string), string name = default(string), string etag = default(string), string type = default(string), string provisioningState = default(string), string authorizationKey = default(string), string authorizationUseStatus = default(string), string connectionResourceUri = default(string))
 
         : base(id)
         {
@@ -56,6 +61,7 @@ namespace Microsoft.Azure.Management.Network.Models
             this.ProvisioningState = provisioningState;
             this.AuthorizationKey = authorizationKey;
             this.AuthorizationUseStatus = authorizationUseStatus;
+            this.ConnectionResourceUri = connectionResourceUri;
             CustomInit();
         }
 
@@ -86,7 +92,7 @@ namespace Microsoft.Azure.Management.Network.Models
         public string Type {get; private set; }
 
         /// <summary>
-        /// Gets the provisioning state of the authorization resource. Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;
+        /// Gets the provisioning state of the authorization resource. Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;, &#39;Updating&#39;, &#39;Deleting&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "properties.provisioningState")]
         public string ProvisioningState {get; private set; }
@@ -102,5 +108,12 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "properties.authorizationUseStatus")]
         public string AuthorizationUseStatus {get; set; }
+
+        /// <summary>
+        /// Gets the reference to the ExpressRoute connection resource using the
+        /// authorization.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties.connectionResourceUri")]
+        public string ConnectionResourceUri {get; private set; }
     }
 }

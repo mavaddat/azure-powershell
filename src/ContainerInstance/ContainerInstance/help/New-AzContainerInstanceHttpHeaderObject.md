@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.ContainerInstance-help.xml
 Module Name: Az.ContainerInstance
 online version: https://learn.microsoft.com/powershell/module/az.ContainerInstance/New-AzContainerInstanceHttpHeaderObject
 schema: 2.0.0
@@ -13,7 +13,8 @@ Create a in-memory object for HttpHeader
 ## SYNTAX
 
 ```
-New-AzContainerInstanceHttpHeaderObject -Name <String> [-Value <String>] [<CommonParameters>]
+New-AzContainerInstanceHttpHeaderObject -Name <String> [-Value <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -73,11 +74,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.ContainerInstance.Models.Api20221001Preview.HttpHeader
+### Microsoft.Azure.PowerShell.Cmdlets.ContainerInstance.Models.Api20240501Preview.HttpHeader
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

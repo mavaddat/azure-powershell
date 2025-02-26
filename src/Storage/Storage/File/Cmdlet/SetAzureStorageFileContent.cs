@@ -21,7 +21,6 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
     using Microsoft.Azure.Storage.DataMovement;
     using Microsoft.Azure.Storage.File;
     using Microsoft.WindowsAzure.Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
     using Microsoft.WindowsAzure.Commands.Common.Storage.ResourceModel;
     using Microsoft.WindowsAzure.Commands.Storage.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -53,16 +52,6 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = LocalConstants.ShareParameterSetName,
-            HelpMessage = "CloudFileShare object indicated the share where the file would be uploaded to.")]
-        [ValidateNotNull]
-        [Alias("CloudFileShare")]
-        public CloudFileShare Share { get; set; }
-
-        [Parameter(
-            Mandatory = false,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true,
-            ParameterSetName = LocalConstants.ShareParameterSetName,
             HelpMessage = "ShareClient object indicated the share where the file would be uploaded to.")]
         [ValidateNotNull]
         public ShareClient ShareClient { get; set; }
@@ -73,17 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = LocalConstants.DirectoryParameterSetName,
-            HelpMessage = "CloudFileDirectory object indicated the cloud directory where the file would be uploaded.")]
-        [ValidateNotNull]
-        [Alias("CloudFileDirectory")]
-        public CloudFileDirectory Directory { get; set; }
-
-        [Parameter(
-            Mandatory = false,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true,
-            ParameterSetName = LocalConstants.DirectoryParameterSetName,
-            HelpMessage = "CloudFileDirectory object indicated the cloud directory where the file would be uploaded.")]
+            HelpMessage = "ShareDirectoryClient object indicated the directory where the file would be uploaded.")]
         [ValidateNotNull]
         public ShareDirectoryClient ShareDirectoryClient { get; set; }
 
@@ -96,7 +75,6 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
         [ValidateNotNullOrEmpty]
         public string Source { get; set; }
 
-        [CmdletParameterBreakingChangeWithVersion("Path", "12.0.0", "7.0.0", ChangeDescription = "When uploading using SAS token without Read permission, the destination path will be taken as a file path, instead of a directory path previously.")]
         [Parameter(
             Position = 2,
             HelpMessage = "Path to the cloud file which would be uploaded to.")]
@@ -152,14 +130,15 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             bool isDirectory;
             string[] path = NamingUtil.ValidatePath(this.Path, out isDirectory);
 
+            var cloudFileToBeUploaded =
+                        BuildCloudFileInstanceFromPathAsync(localFile.Name, path, isDirectory).ConfigureAwait(false).GetAwaiter().GetResult();
+            var fileClientToBeUploaded = BuildShareFileClientInstanceFromPathAsync(localFile.Name, path, isDirectory).ConfigureAwait(false).GetAwaiter().GetResult();
+
+
             this.RunTask(async taskId =>
             {
-                if (fileSize <= sizeTB && !WithOauthCredential() && (this.DisAllowTrailingDot.IsPresent || !Util.PathContainsTrailingDot(this.Path)))
-                {
-                    // Step 2: Build the CloudFile object which pointed to the
-                    // destination cloud file.
-                    var cloudFileToBeUploaded =
-                        BuildCloudFileInstanceFromPathAsync(localFile.Name, path, isDirectory).ConfigureAwait(false).GetAwaiter().GetResult();
+                if (fileSize <= sizeTB && !WithOauthCredential() && (this.DisAllowTrailingDot.IsPresent || !Util.PathContainsTrailingDot(fileClientToBeUploaded.Path)))
+                {                    
                     if (ShouldProcess(cloudFileToBeUploaded.Name, "Set file content"))
                     {
                         var progressRecord = new ProgressRecord(
@@ -184,14 +163,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                         if (this.PassThru)
                         {
                             // TODO: is get attributes necessary?
-                            cloudFileToBeUploaded.FetchAttributes();
-                            WriteCloudFileObject(taskId, (AzureStorageContext)this.Context, cloudFileToBeUploaded);
+                            ShareFileProperties fileProperties = fileClientToBeUploaded.GetProperties(this.CmdletCancellationToken).Value;
+                            OutputStream.WriteObject(taskId, new AzureStorageFile(fileClientToBeUploaded, (AzureStorageContext)this.Context, fileProperties, ClientOptions));
                         }
                     }
                 }
                 else // use Track2 SDK
                 {
-                    var fileClientToBeUploaded = BuildShareFileClientInstanceFromPathAsync(localFile.Name, path, isDirectory).ConfigureAwait(false).GetAwaiter().GetResult();
+                   
                     if (ShouldProcess(fileClientToBeUploaded.Path, "Set file content"))
                     {
                         var progressRecord = new ProgressRecord(
@@ -239,28 +218,26 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                         using (FileStream stream = File.OpenRead(localFile.FullName))
                         {
                             byte[] buffer = null;
-                            long lastBlockSize = 0;
-                            for (long offset = 0; offset < fileSize; offset += blockSize)
+                            for (long offset = 0; offset < fileSize;)
                             {
-                                long currentBlockSize = offset + blockSize < fileSize ? blockSize : fileSize - offset;
+                                long targetBlockSize = offset + blockSize < fileSize ? blockSize : fileSize - offset;
 
-                                // Only need to create new buffer when chunk size change
-                                if (currentBlockSize != lastBlockSize)
-                                {
-                                    buffer = new byte[currentBlockSize];
-                                    lastBlockSize = currentBlockSize;
-                                }
-                                await stream.ReadAsync(buffer: buffer, offset: 0, count: (int)currentBlockSize);
+                                // create new buffer, the old buffer will be GC
+                                buffer = new byte[targetBlockSize];
+
+                                int actualBlockSize = await stream.ReadAsync(buffer: buffer, offset: 0, count: (int)targetBlockSize);
                                 if (!fipsEnabled && hash != null)
                                 {
-                                    hash.AppendData(buffer);
+                                    hash.AppendData(buffer, 0, actualBlockSize);
                                 }
 
                                 Task task = UploadFileRangAsync(fileClient,
-                                    new HttpRange(offset, currentBlockSize),
-                                    new MemoryStream(buffer),
+                                    new HttpRange(offset, actualBlockSize),
+                                    new MemoryStream(buffer, 0, actualBlockSize),
                                     progressHandler);
                                 runningTasks.Add(task);
+
+                                offset += actualBlockSize;
 
                                 // Check if any of upload range tasks are still busy
                                 if (runningTasks.Count >= maxWorkers)
@@ -307,7 +284,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                             }
 
                             // set file header and attributes to the file
-                            fileClient.SetHttpHeaders(httpHeaders: header, smbProperties: smbProperties);
+                            ShareFileSetHttpHeadersOptions httpHeadersOptions = new ShareFileSetHttpHeadersOptions
+                            {
+                                HttpHeaders = header,
+                                SmbProperties = smbProperties
+                            };
+                            fileClient.SetHttpHeaders(httpHeadersOptions);
                         }
 
                         if (this.PassThru)
@@ -344,13 +326,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             switch (this.ParameterSetName)
             {
                 case LocalConstants.DirectoryParameterSetName:
-                    baseDirectory = this.Directory;
-                    // Build and set storage context for the output object when
-                    // 1. input track1 object and storage context is missing 2. the current context doesn't match the context of the input object 
-                    if (ShouldSetContext(this.Context, this.Directory.ServiceClient))
-                    {
-                        this.Context = GetStorageContextFromTrack1FileServiceClient(this.Directory.ServiceClient, DefaultContext);
-                    }
+                    CheckContextForObjectInput((AzureStorageContext)this.Context);
+                    baseDirectory = AzureStorageFileDirectory.GetTrack1FileDirClient(this.ShareDirectoryClient, ((AzureStorageContext)this.Context).StorageAccount.Credentials, ClientOptions);
                     break;
 
                 case LocalConstants.ShareNameParameterSetName:
@@ -359,13 +336,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                     break;
 
                 case LocalConstants.ShareParameterSetName:
-                    baseDirectory = this.Share.GetRootDirectoryReference();
-                    // Build and set storage context for the output object when
-                    // 1. input track1 object and storage context is missing 2. the current context doesn't match the context of the input object 
-                    if (ShouldSetContext(this.Context, this.Share.ServiceClient))
-                    {
-                        this.Context = GetStorageContextFromTrack1FileServiceClient(this.Share.ServiceClient, DefaultContext);
-                    }
+                    CheckContextForObjectInput((AzureStorageContext)this.Context);
+                    baseDirectory = AzureStorageFileDirectory.GetTrack1FileDirClient(this.ShareClient.GetRootDirectoryClient(), ((AzureStorageContext)this.Context).StorageAccount.Credentials, ClientOptions);
                     break;
 
                 default:
@@ -395,9 +367,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                     e.RequestInformation.HttpStatusCode == (int)HttpStatusCode.Forbidden)
                 {
                     //Forbidden to check directory existence, might caused by a write only SAS
-                    //Don't report error here since should not block upload with write only SAS
-                    //If the directory not exist, Error will be reported when upload with DMlib later
-                    directoryExists = true;
+                    //Don't report error here since should not block upload with write only SAS,
+                    //Will take as directory not exist here, and take the path as file path (instead of parent dir path), to allow upload file with specific file name and write only sas
+                    //If the dir already exist, will get error later, and customer can set the path to file path to unblock it.
+                    directoryExists = false;
                 }
                 else
                 {
@@ -434,14 +407,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
             switch (this.ParameterSetName)
             {
                 case LocalConstants.DirectoryParameterSetName:
-                    if (this.ShareDirectoryClient != null)
-                    {
-                        baseDirectory = this.ShareDirectoryClient;
-                    }
-                    else
-                    {
-                        baseDirectory = AzureStorageFileDirectory.GetTrack2FileDirClient(this.Directory, ClientOptions);
-                    }
+                    baseDirectory = this.ShareDirectoryClient;
                     break;
 
                 case LocalConstants.ShareNameParameterSetName:
@@ -454,14 +420,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                     break;
 
                 case LocalConstants.ShareParameterSetName:
-                    if (this.ShareClient != null)
-                    {
-                        baseDirectory = this.ShareClient.GetRootDirectoryClient();
-                    }
-                    else
-                    {
-                        baseDirectory = AzureStorageFileDirectory.GetTrack2FileDirClient(this.Share.GetRootDirectoryReference(), ClientOptions);
-                    }
+                    baseDirectory = this.ShareClient.GetRootDirectoryClient();
                     break;
 
                 default:
@@ -490,9 +449,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
                 if (e.Status == 403)
                 {
                     //Forbidden to check directory existence, might caused by a write only SAS
-                    //Don't report error here since should not block upload with write only SAS
-                    //If the directory not exist, Error will be reported when upload with DMlib later
-                    directoryExists = true;
+                    //Don't report error here since should not block upload with write only SAS,
+                    //Will take as directory not exist here, and take the path as file path (instead of parent dir path), to allow upload file with specific file name and write only sas
+                    //If the dir already exist, will get error later, and customer can set the path to file path to unblock it.
+                    directoryExists = false;
                 }
                 else
                 {

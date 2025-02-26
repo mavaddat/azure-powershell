@@ -20,6 +20,7 @@ using Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Properties;
 using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
+using Microsoft.Azure.Management.Monitor.Version2018_09_01.Models;
 using Microsoft.Rest.Azure;
 using ServiceClientModel = Microsoft.Azure.Management.RecoveryServices.Backup.Models;
 
@@ -108,6 +109,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         [Parameter(Mandatory = false, HelpMessage = ParamHelpMsgs.Policy.AzureBackupResourceGroupSuffix)]        
         public string BackupSnapshotResourceGroupSuffix { get; set; }
 
+        /// <summary>
+        /// Snapshot consistency type to be used for backup. If set to OnlyCrashConsistent, all associated items will have crash consistent snapshot. Possible values are OnlyCrashConsistent, Default.
+        /// </summary>
+        [Parameter(Mandatory = false, HelpMessage = ParamHelpMsgs.Policy.SnapshotConsistencyType)]
+        public SnapshotConsistencyType SnapshotConsistencyType { get; set; }
+
         public override void ExecuteCmdlet()
         {
             ExecutionBlock(() =>
@@ -145,7 +152,32 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     throw new ArgumentException(string.Format(Resources.PolicyNotFoundException,
                         Policy.Name));
                 }
+                // Validate the setting of changing of backup tier here is workload is afs
+                if (Policy.WorkloadType == WorkloadType.AzureFiles)
+                {
+                    ServiceClientModel.AzureFileShareProtectionPolicy azureFileSharePolicy =
+                    (ServiceClientModel.AzureFileShareProtectionPolicy)servicePolicy.Properties;
 
+                    // Vaulted -> Snapshot: Unsupported 
+                    // Snapshot->Vaulted: Warning and confirmation as below
+                    if (azureFileSharePolicy.VaultRetentionPolicy != null && RetentionPolicy != null &&  RetentionPolicy.GetType() == typeof(LongTermRetentionPolicy))
+                    {
+                        throw new ArgumentException(string.Format(Resources.AFSPolicyUpdateNotAllowed));
+                    }
+
+                    if (azureFileSharePolicy.RetentionPolicy != null && RetentionPolicy != null && RetentionPolicy.GetType() == typeof(VaultRetentionPolicy))
+                    {
+                        if (!ShouldContinue(string.Format(Resources.AFSPolicyUpdateWarning), string.Format(Resources.AFSPolicyUpdate)))
+                        {
+                            throw new ArgumentException(string.Format(Resources.AFSPolicyUpdateCanceled));
+                        }
+                    }
+                }
+
+                if (SnapshotConsistencyType != 0 &&  Policy.BackupManagementType != BackupManagementType.AzureVM)
+                {
+                    throw new ArgumentException(string.Format(Resources.InvalidParameterSnapshotConsistencyType));
+                }
 
                 // check if smart tiering feature is enabled on this subscription                
                 bool isSmartTieringEnabled = true;                
@@ -198,7 +230,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                         { PolicyParams.TieringPolicy, tieringDetails},
                         { PolicyParams.IsSmartTieringEnabled, isSmartTieringEnabled},
                         { PolicyParams.BackupSnapshotResourceGroup, BackupSnapshotResourceGroup},
-                        { PolicyParams.BackupSnapshotResourceGroupSuffix, BackupSnapshotResourceGroupSuffix}
+                        { PolicyParams.BackupSnapshotResourceGroupSuffix, BackupSnapshotResourceGroupSuffix},
+                        { PolicyParams.SnapshotConsistencyType, SnapshotConsistencyType}
                     }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider = providerManager.GetProviderInstance(

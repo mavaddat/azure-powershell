@@ -19,6 +19,12 @@
 -->
 ## Upcoming Release
 
+## Version 2.1.0
+* Upgraded nuget package to signed package.
+
+## Version 2.0.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 2.0.0
 * Downgraded the api version of referenced network to 2021-03-01.
 

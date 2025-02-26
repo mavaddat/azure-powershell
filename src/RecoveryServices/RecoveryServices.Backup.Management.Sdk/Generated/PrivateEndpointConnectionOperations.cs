@@ -45,7 +45,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
         /// The name of the recovery services vault.
         /// </param>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group where the recovery services vault is present.
+        /// The name of the resource group where the recovery services vault is
+        /// present.
         /// </param>
         /// <param name='privateEndpointConnectionName'>
         /// The name of the private endpoint connection.
@@ -257,13 +258,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
 
         }
         /// <summary>
-        /// Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
+        /// Approve or Reject Private Endpoint requests. This call is made by Backup
+        /// Admin.
         /// </summary>
         /// <param name='vaultName'>
         /// The name of the recovery services vault.
         /// </param>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group where the recovery services vault is present.
+        /// The name of the resource group where the recovery services vault is
+        /// present.
         /// </param>
         /// <param name='privateEndpointConnectionName'>
         /// The name of the private endpoint connection.
@@ -291,7 +294,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
         /// The name of the recovery services vault.
         /// </param>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group where the recovery services vault is present.
+        /// The name of the resource group where the recovery services vault is
+        /// present.
         /// </param>
         /// <param name='privateEndpointConnectionName'>
         /// The name of the private endpoint connection.
@@ -310,13 +314,15 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
         }
 
         /// <summary>
-        /// Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
+        /// Approve or Reject Private Endpoint requests. This call is made by Backup
+        /// Admin.
         /// </summary>
         /// <param name='vaultName'>
         /// The name of the recovery services vault.
         /// </param>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group where the recovery services vault is present.
+        /// The name of the resource group where the recovery services vault is
+        /// present.
         /// </param>
         /// <param name='privateEndpointConnectionName'>
         /// The name of the private endpoint connection.
@@ -572,7 +578,8 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup
         /// The name of the recovery services vault.
         /// </param>
         /// <param name='resourceGroupName'>
-        /// The name of the resource group where the recovery services vault is present.
+        /// The name of the resource group where the recovery services vault is
+        /// present.
         /// </param>
         /// <param name='privateEndpointConnectionName'>
         /// The name of the private endpoint connection.

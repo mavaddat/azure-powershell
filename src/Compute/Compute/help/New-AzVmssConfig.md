@@ -23,7 +23,7 @@ New-AzVmssConfig [[-Overprovision] <Boolean>] [[-Location] <String>] [-EdgeZone 
  [-SinglePlacementGroup <Boolean>] [-ZoneBalance] [-PlatformFaultDomainCount <Int32>] [-Zone <String[]>]
  [-PlanName <String>] [-PlanPublisher <String>] [-PlanProduct <String>] [-PlanPromotionCode <String>]
  [-RollingUpgradePolicy <RollingUpgradePolicy>] [-EnableAutomaticRepair] [-AutomaticRepairGracePeriod <String>]
- [-AutoOSUpgrade] [-DisableAutoRollback <Boolean>] [-EnableUltraSSD] [-HealthProbeId <String>]
+ [-EnableAutomaticOSUpgrade] [-DisableAutoRollback <Boolean>] [-EnableUltraSSD] [-HealthProbeId <String>]
  [-BootDiagnostic <BootDiagnostics>] [-LicenseType <String>] [-Priority <String>] [-EnableSpotRestore]
  [-SpotRestoreTimeout <String>] [-EvictionPolicy <String>] [-MaxPrice <Double>] [-TerminateScheduledEvents]
  [-TerminateScheduledEventNotBeforeTimeoutInMinutes <Int32>] [-ProximityPlacementGroupId <String>]
@@ -32,8 +32,10 @@ New-AzVmssConfig [[-Overprovision] <Boolean>] [[-Location] <String>] [-EdgeZone 
  [-BaseRegularPriorityCount <Int32>] [-RegularPriorityPercentage <Int32>] [-ImageReferenceId <String>]
  [-SharedGalleryImageId <String>] [-OSImageScheduledEventEnabled]
  [-OSImageScheduledEventNotBeforeTimeoutInMinutes <String>] [-SecurityType <String>] [-EnableVtpm <Boolean>]
- [-EnableSecureBoot <Boolean>] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-EnableSecureBoot <Boolean>] [-SecurityPostureId <String>] [-SecurityPostureExcludeExtension <String[]>]
+ [-SkuProfileVmSize <String[]>] [-SkuProfileAllocationStrategy <String>] [-EnableResilientVMCreate]
+ [-EnableResilientVMDelete] [-DefaultProfile <IAzureContextContainer>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ExplicitIdentityParameterSet
@@ -46,17 +48,18 @@ New-AzVmssConfig [[-Overprovision] <Boolean>] [[-Location] <String>] [-EdgeZone 
  [-SinglePlacementGroup <Boolean>] [-ZoneBalance] [-PlatformFaultDomainCount <Int32>] [-Zone <String[]>]
  [-PlanName <String>] [-PlanPublisher <String>] [-PlanProduct <String>] [-PlanPromotionCode <String>]
  [-RollingUpgradePolicy <RollingUpgradePolicy>] [-EnableAutomaticRepair] [-AutomaticRepairGracePeriod <String>]
- [-AutoOSUpgrade] [-DisableAutoRollback <Boolean>] [-EnableUltraSSD] [-HealthProbeId <String>]
+ [-EnableAutomaticOSUpgrade] [-DisableAutoRollback <Boolean>] [-EnableUltraSSD] [-HealthProbeId <String>]
  [-BootDiagnostic <BootDiagnostics>] [-LicenseType <String>] [-Priority <String>] [-EnableSpotRestore]
  [-SpotRestoreTimeout <String>] [-EvictionPolicy <String>] [-MaxPrice <Double>] [-TerminateScheduledEvents]
  [-TerminateScheduledEventNotBeforeTimeoutInMinutes <Int32>] [-ProximityPlacementGroupId <String>]
- [-ScaleInPolicy <String[]>] -IdentityType <ResourceIdentityType> [-IdentityId <String[]>] [-EncryptionAtHost]
+ [-ScaleInPolicy <String[]>] -IdentityType <ResourceIdentityType> [-IdentityId <String[]>] [-EncryptionIdentity <String>] [-EncryptionAtHost]
  [-OrchestrationMode <String>] [-CapacityReservationGroupId <String>] [-UserData <String>]
  [-AutomaticRepairAction <String>] [-BaseRegularPriorityCount <Int32>] [-RegularPriorityPercentage <Int32>]
  [-ImageReferenceId <String>] [-SharedGalleryImageId <String>] [-OSImageScheduledEventEnabled]
  [-OSImageScheduledEventNotBeforeTimeoutInMinutes <String>] [-SecurityType <String>] [-EnableVtpm <Boolean>]
- [-EnableSecureBoot <Boolean>] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-EnableSecureBoot <Boolean>] [-SecurityPostureId <String>] [-SecurityPostureExcludeExtension <String[]>]
+ [-SkuProfileVmSize <String[]>] [-SkuProfileAllocationStrategy <String>] [-EnableResilientVMCreate]
+ [-EnableResilientVMDelete] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -127,8 +130,7 @@ $vmssname = "vmss" + $rgname;
 $domainNameLabel = "d" + $rgname;
 $securityTypeStnd = "Standard";
 $username = <Username>;
-$password = <Password>;
-$securePassword = $password | ConvertTo-SecureString -AsPlainText -Force
+$securePassword = ConvertTo-SecureString -String "****" -AsPlainText -Force;
 
 $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword);
 
@@ -188,7 +190,7 @@ $vmssName1 = 'vmss1' + $rgname;
 $vmssName2 = 'vmss2' + $rgname;
 $vmssType = 'Microsoft.Compute/virtualMachineScaleSets';
 $adminUsername = <Username>;
-$adminPassword = <Password> | ConvertTo-SecureString -AsPlainText -Force;
+$adminPassword = ConvertTo-SecureString -String "****" -AsPlainText -Force;
 $imgRef = New-Object -TypeName 'Microsoft.Azure.Commands.Compute.Models.PSVirtualMachineImage';
 $imgRef.PublisherName = $PublisherName;
 $imgRef.Offer = $Offer;
@@ -244,21 +246,6 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -AutoOSUpgrade
-Sets whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available.
-
-```yaml
-Type: System.Management.Automation.SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -352,6 +339,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -EnableAutomaticOSUpgrade
+Whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: AutoOSUpgrade
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -EnableAutomaticRepair
 Enables automatic repairs on the virtual machine scale set.
 
@@ -364,6 +366,36 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -EnableResilientVMCreate
+Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is false.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnableResilientVMDelete
+Specifies whether resilient VM deletion should be enabled on the virtual machine scale set. The default value is false.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -496,6 +528,20 @@ The user identity references will be ARM resource ids in the form: '/subscriptio
 
 ```yaml
 Type: System.String[]
+Parameter Sets: ExplicitIdentityParameterSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -EncryptionIdentity
+Specifies the user identity associated with the virtual machine.That identity will be used for Azure Disk Encryption.
+```yaml
+Type: System.String
 Parameter Sets: ExplicitIdentityParameterSet
 Aliases:
 
@@ -774,6 +820,7 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+
 ### -ProximityPlacementGroupId
 The resource id of the Proximity Placement Group to use with this scale set.
 
@@ -824,6 +871,36 @@ The rules to be followed when scaling-in a virtual machine scale set.  Possible 
 
 ```yaml
 Type: System.String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SecurityPostureExcludeExtension
+List of virtual machine extensions to exclude when applying the security posture.
+
+```yaml
+Type: System.String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SecurityPostureId
+The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
+
+```yaml
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -920,6 +997,36 @@ Aliases: AccountType
 
 Required: False
 Position: 3
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SkuProfileAllocationStrategy
+Allocation strategy for the SKU profile.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SkuProfileVmSize
+Array of VM sizes for the scale set.
+
+```yaml
+Type: System.String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

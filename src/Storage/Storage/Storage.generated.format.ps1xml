@@ -56,10 +56,6 @@
             <Alignment>Left</Alignment>
             <Label>ApproximateMessageCount</Label>
           </TableColumnHeader>
-          <TableColumnHeader>
-            <Alignment>Left</Alignment>
-            <Label>EncodeMessage</Label>
-          </TableColumnHeader>
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -76,17 +72,13 @@
                 <Alignment>Left</Alignment>
                 <ScriptBlock>$_.ApproximateMessageCount</ScriptBlock>
               </TableColumnItem>
-              <TableColumnItem>
-                <Alignment>Left</Alignment>
-                <ScriptBlock>$_.EncodeMessage</ScriptBlock>
-              </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
         </TableRowEntries>
       </TableControl>
       <GroupBy>
-        <ScriptBlock>$_.CloudQueue.ServiceClient.BaseUri</ScriptBlock>
-        <Label>Queue End Point</Label>
+        <ScriptBlock>$_.QueueClient.AccountName</ScriptBlock>
+        <Label>Storage Account Name</Label>
       </GroupBy>
     </View>
     <View>
@@ -340,8 +332,8 @@
         <TypeName>Microsoft.WindowsAzure.Commands.Common.Storage.ResourceModel.AzureStorageFileDirectory</TypeName>
       </ViewSelectedBy>
       <GroupBy>
-        <ScriptBlock>if ($_.CloudFile -eq $null) {$_.CloudFileDirectory.Parent.SnapshotQualifiedUri} else {$_.CloudFile.Parent.SnapshotQualifiedUri}</ScriptBlock>
-        <Label>Directory</Label>
+        <ScriptBlock>if ($_.ShareDirectoryClient -eq $null) {$_.ShareFileClient.AccountName + ", ShareName: " + $_.ShareFileClient.ShareName} else {$_.ShareDirectoryClient.AccountName + ", ShareName: " + $_.ShareDirectoryClient.ShareName}</ScriptBlock>
+        <Label>AccountName</Label>
       </GroupBy>
       <TableControl>
         <TableHeaders>
@@ -383,8 +375,8 @@
         <TypeName>Microsoft.WindowsAzure.Commands.Common.Storage.ResourceModel.AzureStorageFileShare</TypeName>
       </ViewSelectedBy>      
       <GroupBy>
-        <ScriptBlock>$_.ShareClient.AccountName</ScriptBlock>
-        <Label>Storage Account Name</Label>
+        <ScriptBlock>$_.Context.FileEndPoint</ScriptBlock>
+        <Label>File End Point</Label>
       </GroupBy>
       <TableControl>
         <TableHeaders>
@@ -565,6 +557,10 @@
             <Label>SessionId</Label>
             <Alignment>Left</Alignment>
           </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>ClientName</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -595,6 +591,9 @@
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>SessionId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ClientName</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>

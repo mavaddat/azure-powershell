@@ -1,21 +1,21 @@
 {
   "Entries": [
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault?api-version=2023-02-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQ/YXBpLXZlcnNpb249MjAyMy0wMi0wMQ==",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault?api-version=2024-04-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQ/YXBpLXZlcnNpb249MjAyNC0wNC0wMQ==",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "7abe7df3-dc1c-4b9f-b5c1-9c517b97d677"
+          "56b19992-2fde-4ded-be7f-1931723756d6"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.RecoveryServicesClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.RecoveryServicesClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -27,34 +27,40 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "11999"
+          "1099"
         ],
         "X-Content-Type-Options": [
           "nosniff"
         ],
         "x-ms-request-id": [
-          "fbe16d0e-e10e-4cad-95c2-c14b4cf08aba"
+          "525acfde-69f0-436e-bff9-df44018df26b"
         ],
         "x-ms-client-request-id": [
-          "7abe7df3-dc1c-4b9f-b5c1-9c517b97d677"
+          "56b19992-2fde-4ded-be7f-1931723756d6"
         ],
-        "Server": [
-          "Kestrel"
+        "x-ms-ratelimit-remaining-subscription-global-reads": [
+          "16499"
         ],
         "x-ms-correlation-request-id": [
-          "fbe16d0e-e10e-4cad-95c2-c14b4cf08aba"
+          "525acfde-69f0-436e-bff9-df44018df26b"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015858Z:fbe16d0e-e10e-4cad-95c2-c14b4cf08aba"
+          "WESTINDIA:20250106T024813Z:525acfde-69f0-436e-bff9-df44018df26b"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 94BEBAF004F74BFDB0C7D37616E61DAD Ref B: MAA201060516025 Ref C: 2025-01-06T02:48:12Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:58:57 GMT"
+          "Mon, 06 Jan 2025 02:48:13 GMT"
         ],
         "Content-Length": [
-          "976"
+          "1058"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -63,25 +69,25 @@
           "-1"
         ]
       },
-      "ResponseBody": "{\r\n  \"location\": \"eastus\",\r\n  \"name\": \"hiaga-zrs-vault\",\r\n  \"etag\": \"W/\\\"datetime'2022-12-20T14%3A59%3A47.1354605Z'\\\"\",\r\n  \"tags\": {\r\n    \"MABUsed\": \"yes\",\r\n    \"Purpose\": \"testing\",\r\n    \"Owner\": \"hiaga\",\r\n    \"DeleteBy\": \"01-2099\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"privateEndpointStateForBackup\": \"None\",\r\n    \"privateEndpointStateForSiteRecovery\": \"None\",\r\n    \"backupStorageVersion\": \"V1\",\r\n    \"redundancySettings\": {\r\n      \"standardTierStorageRedundancy\": \"ZoneRedundant\",\r\n      \"crossRegionRestore\": \"Disabled\"\r\n    },\r\n    \"securitySettings\": {\r\n      \"immutabilitySettings\": null,\r\n      \"softDeleteSettings\": {\r\n        \"softDeleteRetentionPeriodInDays\": 14,\r\n        \"softDeleteState\": \"Enabled\"\r\n      },\r\n      \"multiUserAuthorization\": \"Disabled\"\r\n    },\r\n    \"publicNetworkAccess\": \"Enabled\",\r\n    \"restoreSettings\": {\r\n      \"crossSubscriptionRestoreSettings\": {\r\n        \"crossSubscriptionRestoreState\": \"Enabled\"\r\n      }\r\n    }\r\n  },\r\n  \"id\": \"/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault\",\r\n  \"type\": \"Microsoft.RecoveryServices/vaults\",\r\n  \"sku\": {\r\n    \"name\": \"RS0\",\r\n    \"tier\": \"Standard\"\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"location\": \"eastus\",\r\n  \"name\": \"hiaga-zrs-vault\",\r\n  \"etag\": \"W/\\\"datetime'2022-12-20T14%3A59%3A47.1354605Z'\\\"\",\r\n  \"tags\": {\r\n    \"MABUsed\": \"yes\",\r\n    \"Purpose\": \"testing\",\r\n    \"Owner\": \"hiaga\",\r\n    \"DeleteBy\": \"01-2099\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"privateEndpointStateForBackup\": \"None\",\r\n    \"privateEndpointStateForSiteRecovery\": \"None\",\r\n    \"backupStorageVersion\": \"V1\",\r\n    \"securitySettings\": {\r\n      \"immutabilitySettings\": null,\r\n      \"softDeleteSettings\": {\r\n        \"softDeleteRetentionPeriodInDays\": 14,\r\n        \"softDeleteState\": \"Enabled\",\r\n        \"enhancedSecurityState\": \"Enabled\"\r\n      },\r\n      \"multiUserAuthorization\": \"Disabled\"\r\n    },\r\n    \"redundancySettings\": {\r\n      \"standardTierStorageRedundancy\": \"ZoneRedundant\",\r\n      \"crossRegionRestore\": \"Disabled\"\r\n    },\r\n    \"secureScore\": \"None\",\r\n    \"bcdrSecurityLevel\": \"Poor\",\r\n    \"publicNetworkAccess\": \"Enabled\",\r\n    \"restoreSettings\": {\r\n      \"crossSubscriptionRestoreSettings\": {\r\n        \"crossSubscriptionRestoreState\": \"Enabled\"\r\n      }\r\n    }\r\n  },\r\n  \"id\": \"/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault\",\r\n  \"type\": \"Microsoft.RecoveryServices/vaults\",\r\n  \"sku\": {\r\n    \"name\": \"RS0\",\r\n    \"tier\": \"Standard\"\r\n  }\r\n}",
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyMy0wNC0wMQ==",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyNC0xMC0wMQ==",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -93,31 +99,34 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-resource-requests": [
-          "297"
+          "299"
         ],
         "X-Content-Type-Options": [
           "nosniff"
         ],
         "x-ms-request-id": [
-          "7555dca2-7826-4962-a722-9d9a42e3b5f6"
+          "1ab637d1-c322-4396-8ac3-7cd1dc1b2307"
         ],
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
-        ],
-        "Server": [
-          "Kestrel"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "x-ms-correlation-request-id": [
-          "7555dca2-7826-4962-a722-9d9a42e3b5f6"
+          "1ab637d1-c322-4396-8ac3-7cd1dc1b2307"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015900Z:7555dca2-7826-4962-a722-9d9a42e3b5f6"
+          "CENTRALINDIA:20250106T024815Z:1ab637d1-c322-4396-8ac3-7cd1dc1b2307"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: B2C78EA998F74AB98FAD6C0C8834EF0F Ref B: MAA201060513033 Ref C: 2025-01-06T02:48:13Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:58:59 GMT"
+          "Mon, 06 Jan 2025 02:48:14 GMT"
         ],
         "Content-Length": [
           "2"
@@ -133,21 +142,21 @@
       "StatusCode": 404
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyMy0wNC0wMQ==",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyNC0xMC0wMQ==",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -162,28 +171,31 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "0ed42e0c-d26a-4e44-8c4a-1421511b2563"
+          "fca1cef3-b310-4738-9535-75eb9d6ae29d"
         ],
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
-        ],
-        "Server": [
-          "Kestrel"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "x-ms-ratelimit-remaining-subscription-resource-requests": [
-          "296"
+          "299"
         ],
         "x-ms-correlation-request-id": [
-          "0ed42e0c-d26a-4e44-8c4a-1421511b2563"
+          "fca1cef3-b310-4738-9535-75eb9d6ae29d"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015903Z:0ed42e0c-d26a-4e44-8c4a-1421511b2563"
+          "CENTRALINDIA:20250106T024817Z:fca1cef3-b310-4738-9535-75eb9d6ae29d"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: BB3E6D362AD74031991ABDEDBC7C703A Ref B: MAA201060513033 Ref C: 2025-01-06T02:48:16Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:02 GMT"
+          "Mon, 06 Jan 2025 02:48:16 GMT"
         ],
         "Content-Length": [
           "1254"
@@ -199,21 +211,21 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyMy0wNC0wMQ==",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyNC0xMC0wMQ==",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -234,28 +246,34 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "860fec05-00b3-450d-9277-77b7d40ac40f"
+          "5e4e0e3a-5342-4368-a919-f2f82416e3e5"
         ],
         "x-ms-client-request-id": [
-          "4628fe8d-76cc-4b7f-9dbc-dc8e98a82c26"
-        ],
-        "Server": [
-          "Kestrel"
+          "d29cfc7b-14a8-41cd-aa4f-7ba15e129e92"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1199"
+          "799"
+        ],
+        "x-ms-ratelimit-remaining-subscription-global-writes": [
+          "11999"
         ],
         "x-ms-correlation-request-id": [
-          "860fec05-00b3-450d-9277-77b7d40ac40f"
+          "5e4e0e3a-5342-4368-a919-f2f82416e3e5"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015902Z:860fec05-00b3-450d-9277-77b7d40ac40f"
+          "CENTRALINDIA:20250106T024816Z:5e4e0e3a-5342-4368-a919-f2f82416e3e5"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 93112747DA1F4D919EA98D446795E611 Ref B: MAA201060513033 Ref C: 2025-01-06T02:48:15Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:01 GMT"
+          "Mon, 06 Jan 2025 02:48:16 GMT"
         ],
         "Content-Length": [
           "1254"
@@ -271,21 +289,21 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDIzLTA0LTAx",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDI0LTEwLTAx",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -303,25 +321,28 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "1184466c-bb75-4941-b136-a8bb80196885"
+          "6851ee3c-74f3-4213-92bc-93367f238dba"
         ],
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
-        ],
-        "Server": [
-          "Kestrel"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "x-ms-correlation-request-id": [
-          "1184466c-bb75-4941-b136-a8bb80196885"
+          "6851ee3c-74f3-4213-92bc-93367f238dba"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015905Z:1184466c-bb75-4941-b136-a8bb80196885"
+          "CENTRALINDIA:20250106T024818Z:6851ee3c-74f3-4213-92bc-93367f238dba"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 3DB4D2C3D15A4D38BC0FF740972F7831 Ref B: MAA201060514035 Ref C: 2025-01-06T02:48:17Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:05 GMT"
+          "Mon, 06 Jan 2025 02:48:18 GMT"
         ],
         "Content-Length": [
           "2"
@@ -337,21 +358,21 @@
       "StatusCode": 404
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDIzLTA0LTAx",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDI0LTEwLTAx",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -366,28 +387,31 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "31a7287c-4c8d-4134-8860-9919f358e193"
+          "a585b645-1e0c-46d9-a2ee-8909559b61ed"
         ],
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
-        ],
-        "Server": [
-          "Kestrel"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "x-ms-ratelimit-remaining-subscription-resource-requests": [
-          "298"
+          "299"
         ],
         "x-ms-correlation-request-id": [
-          "31a7287c-4c8d-4134-8860-9919f358e193"
+          "a585b645-1e0c-46d9-a2ee-8909559b61ed"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015908Z:31a7287c-4c8d-4134-8860-9919f358e193"
+          "CENTRALINDIA:20250106T024821Z:a585b645-1e0c-46d9-a2ee-8909559b61ed"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 6DA78FDCCE4544A4B30A2E70A431B7D6 Ref B: MAA201060514035 Ref C: 2025-01-06T02:48:20Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:07 GMT"
+          "Mon, 06 Jan 2025 02:48:21 GMT"
         ],
         "Content-Length": [
           "1267"
@@ -403,21 +427,21 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDIzLTA0LTAx",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDI0LTEwLTAx",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -438,28 +462,34 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "7d84e9d3-0cdf-43b6-b281-02ee0cb79503"
+          "c53582ac-cc9b-48e9-a679-ce357b9e1264"
         ],
         "x-ms-client-request-id": [
-          "6b7154f6-d65e-4bc5-8723-ef0525928d5a"
-        ],
-        "Server": [
-          "Kestrel"
+          "94d010b6-f0c5-48af-bfec-25093d5afb0f"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1199"
+          "799"
+        ],
+        "x-ms-ratelimit-remaining-subscription-global-writes": [
+          "11999"
         ],
         "x-ms-correlation-request-id": [
-          "7d84e9d3-0cdf-43b6-b281-02ee0cb79503"
+          "c53582ac-cc9b-48e9-a679-ce357b9e1264"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015907Z:7d84e9d3-0cdf-43b6-b281-02ee0cb79503"
+          "CENTRALINDIA:20250106T024820Z:c53582ac-cc9b-48e9-a679-ce357b9e1264"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 25E24BBC29894F30B4C2BF055CB7B26D Ref B: MAA201060514035 Ref C: 2025-01-06T02:48:18Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:07 GMT"
+          "Mon, 06 Jan 2025 02:48:19 GMT"
         ],
         "Content-Length": [
           "1267"
@@ -475,21 +505,21 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyMy0wNC0wMQ==",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-utc-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LXV0Yy1wb2xpY3k/YXBpLXZlcnNpb249MjAyNC0xMC0wMQ==",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "01279fef-8a7a-419b-bb77-267686b22519"
+          "97a348a5-559a-44da-9653-788b3ce55293"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -504,28 +534,34 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "38c53db9-8bd2-44ff-8251-06d1514dbf49"
+          "d7eb4b11-1027-421d-8a0a-bbc886af3e89"
         ],
         "x-ms-client-request-id": [
-          "01279fef-8a7a-419b-bb77-267686b22519"
-        ],
-        "Server": [
-          "Kestrel"
+          "97a348a5-559a-44da-9653-788b3ce55293"
         ],
         "x-ms-ratelimit-remaining-subscription-deletes": [
-          "14999"
+          "799"
+        ],
+        "x-ms-ratelimit-remaining-subscription-global-deletes": [
+          "11999"
         ],
         "x-ms-correlation-request-id": [
-          "38c53db9-8bd2-44ff-8251-06d1514dbf49"
+          "d7eb4b11-1027-421d-8a0a-bbc886af3e89"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015911Z:38c53db9-8bd2-44ff-8251-06d1514dbf49"
+          "WESTINDIA:20250106T024823Z:d7eb4b11-1027-421d-8a0a-bbc886af3e89"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: BCD8AC5E3B0B4E7BB92CF5A6823717BC Ref B: MAA201060515029 Ref C: 2025-01-06T02:48:22Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:11 GMT"
+          "Mon, 06 Jan 2025 02:48:22 GMT"
         ],
         "Expires": [
           "-1"
@@ -538,21 +574,21 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2023-04-01",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDIzLTA0LTAx",
+      "RequestUri": "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/hiagarg/providers/Microsoft.RecoveryServices/vaults/hiaga-zrs-vault/backupPolicies/vm-pstest-local-policy?api-version=2024-10-01",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvMzgzMDRlMTMtMzU3ZS00MDVlLTllOWEtMjIwMzUxZGNjZThjL3Jlc291cmNlR3JvdXBzL2hpYWdhcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5SZWNvdmVyeVNlcnZpY2VzL3ZhdWx0cy9oaWFnYS16cnMtdmF1bHQvYmFja3VwUG9saWNpZXMvdm0tcHN0ZXN0LWxvY2FsLXBvbGljeT9hcGktdmVyc2lvbj0yMDI0LTEwLTAx",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "1a9d93b4-f02e-498a-a0e4-86c7a89acbe1"
+          "cf66ef7b-e33f-457d-b2b8-ebb9a9286236"
         ],
         "Accept-Language": [
           "en-US"
         ],
         "User-Agent": [
-          "FxVersion/6.0.2423.51814",
+          "FxVersion/6.0.3624.51421",
           "OSName/Windows",
-          "OSVersion/Microsoft.Windows.10.0.22621",
-          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/6.6.0"
+          "OSVersion/Microsoft.Windows.10.0.26100",
+          "Microsoft.Azure.Management.RecoveryServices.Backup.RecoveryServicesBackupClient/7.3.0"
         ]
       },
       "RequestBody": "",
@@ -567,28 +603,34 @@
           "nosniff"
         ],
         "x-ms-request-id": [
-          "7f4ba6c4-f96b-4165-a48b-239e574f8c7e"
+          "f12dce96-372c-4de4-a5f8-6e1da8af87d9"
         ],
         "x-ms-client-request-id": [
-          "1a9d93b4-f02e-498a-a0e4-86c7a89acbe1"
-        ],
-        "Server": [
-          "Kestrel"
+          "cf66ef7b-e33f-457d-b2b8-ebb9a9286236"
         ],
         "x-ms-ratelimit-remaining-subscription-deletes": [
-          "14999"
+          "799"
+        ],
+        "x-ms-ratelimit-remaining-subscription-global-deletes": [
+          "11999"
         ],
         "x-ms-correlation-request-id": [
-          "7f4ba6c4-f96b-4165-a48b-239e574f8c7e"
+          "f12dce96-372c-4de4-a5f8-6e1da8af87d9"
         ],
         "x-ms-routing-request-id": [
-          "WESTINDIA:20231114T015915Z:7f4ba6c4-f96b-4165-a48b-239e574f8c7e"
+          "CENTRALINDIA:20250106T024824Z:f12dce96-372c-4de4-a5f8-6e1da8af87d9"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
         ],
+        "X-Cache": [
+          "CONFIG_NOCACHE"
+        ],
+        "X-MSEdge-Ref": [
+          "Ref A: 1B38979A93CE4FF7965EB4DFDE3DC5B0 Ref B: MAA201060513021 Ref C: 2025-01-06T02:48:23Z"
+        ],
         "Date": [
-          "Tue, 14 Nov 2023 01:59:15 GMT"
+          "Mon, 06 Jan 2025 02:48:23 GMT"
         ],
         "Expires": [
           "-1"

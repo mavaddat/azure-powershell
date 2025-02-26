@@ -18,8 +18,9 @@ New-AzGalleryImageVersion [-ResourceGroupName] <String> [-GalleryName] <String>
  [-GalleryImageDefinitionName] <String> [-Name] <String> [-AsJob] -Location <String>
  [-DataDiskImage <GalleryDataDiskImage[]>] [-OSDiskImage <GalleryOSDiskImage>]
  [-PublishingProfileEndOfLifeDate <DateTime>] [-PublishingProfileExcludeFromLatest] [-ReplicaCount <Int32>]
- [-SourceImageId <String>] [-StorageAccountType <String>] [-Tag <Hashtable>] [-TargetRegion <Hashtable[]>]
- [-TargetExtendedLocation <Hashtable[]>] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
+ [-SourceImageId <String>] [-SourceImageVMId <String>] [-StorageAccountType <String>] [-Tag <Hashtable>]
+ [-TargetRegion <Hashtable[]>] [-TargetExtendedLocation <Hashtable[]>]
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -37,8 +38,8 @@ $galleryName = "myGallery"
 $galleryImageDefinitionName = "myImage"
 $galleryImageVersionName = "1.0.0"
 $location = "eastus"
-$sourceImageId = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myVMRG/providers/Microsoft.Compute/virtualMachines/myVM"
-New-AzGalleryImageVersion -ResourceGroupName $rgName -GalleryName $galleryName -GalleryImageDefinitionName $galleryImageDefinitionName -Name $galleryImageVersionName -Location $location -SourceImageId $sourceImageId
+$sourceImageVMId = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myVMRG/providers/Microsoft.Compute/virtualMachines/myVM"
+New-AzGalleryImageVersion -ResourceGroupName $rgName -GalleryName $galleryName -GalleryImageDefinitionName $galleryImageDefinitionName -Name $galleryImageVersionName -Location $location -SourceImageVMId $sourceImageVMId
 ```
 
 Add a new image version from a virtual machine into the image definition.
@@ -52,7 +53,7 @@ $galleryImageDefinitionName = "myImage"
 $galleryImageVersionName = "1.0.0"
 $location = "eastus"
 $sourceImageId = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myImageRG/providers/Microsoft.Compute/images/myImage"
-$storageAccountType = "StandardSSD_LRS"
+$storageAccountType = "Standard_LRS"
 
 New-AzGalleryImageVersion -ResourceGroupName $rgName -GalleryName $galleryName -GalleryImageDefinitionName $galleryImageDefinitionName -Name $galleryImageVersionName -Location $location -StorageAccountType $storageAccountType -SourceImageId $sourceImageId
 ```
@@ -275,7 +276,7 @@ $sourceImageId = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGr
 
 $replicaCount = 1  
 $extendedLocation = @{Name = 'microsoftlosangeles1';Type='EdgeZone'}
-$edgezone_losangeles = @{Location = "westus";ExtendedLocation=$extendedLocation;ReplicaCount = 3;StorageAccountType = 'StandardSSD_LRS'}  
+$edgezone_losangeles = @{Location = "westus";ExtendedLocation=$extendedLocation;ReplicaCount = 3;StorageAccountType = 'Standard_LRS'}  
 $targetExtendedLocations = @($edgezone_losangeles) 
 
 New-AzGalleryImageVersion -ResourceGroupName $rgName -GalleryName $galleryName -GalleryImageDefinitionName $galleryImageDefinitionName -Name $galleryImageVersionName -Location $location -SourceImageId $sourceImageId -ReplicaCount 1 -StorageAccountType "Standard_LRS" -TargetExtendedLocation $targetExtendedLocations
@@ -480,6 +481,22 @@ Accept wildcard characters: False
 ### -SourceImageId
 
 The ID of the source image from which the Image Version is going to be created.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SourceImageVMId
+
+The resource Id of the source virtual machine.  Only required when capturing a virtual machine to source this Gallery Image Version.
 
 ```yaml
 Type: System.String

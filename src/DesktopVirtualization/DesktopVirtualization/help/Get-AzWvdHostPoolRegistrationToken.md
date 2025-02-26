@@ -8,14 +8,22 @@ schema: 2.0.0
 # Get-AzWvdHostPoolRegistrationToken
 
 ## SYNOPSIS
-Registration token of the host pool.
+Operation to list the RegistrationTokens associated with the HostPool
 
 ## SYNTAX
 
-### Retrieve (Default)
+### List (Default)
 ```
 Get-AzWvdHostPoolRegistrationToken -HostPoolName <String> -ResourceGroupName <String>
- [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### Retrieve
+```
+Get-AzWvdHostPoolRegistrationToken -HostPoolName <String> -ResourceGroupName <String>
+ [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### RetrieveViaIdentity
@@ -25,7 +33,7 @@ Get-AzWvdHostPoolRegistrationToken -InputObject <IDesktopVirtualizationIdentity>
 ```
 
 ## DESCRIPTION
-Registration token of the host pool.
+Operation to list the RegistrationTokens associated with the HostPool
 
 ## EXAMPLES
 
@@ -65,7 +73,7 @@ The name of the host pool within the specified resource group
 
 ```yaml
 Type: System.String
-Parameter Sets: Retrieve
+Parameter Sets: List, Retrieve
 Aliases:
 
 Required: True
@@ -77,7 +85,6 @@ Accept wildcard characters: False
 
 ### -InputObject
 Identity Parameter
-To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
@@ -97,7 +104,7 @@ The name is case insensitive.
 
 ```yaml
 Type: System.String
-Parameter Sets: Retrieve
+Parameter Sets: List, Retrieve
 Aliases:
 
 Required: True
@@ -109,10 +116,11 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
-Parameter Sets: Retrieve
+Parameter Sets: List, Retrieve
 Aliases:
 
 Required: False
@@ -162,7 +170,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20231004Preview.IRegistrationInfo
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IRegistrationInfo
+
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IRegistrationTokenList
 
 ## NOTES
 

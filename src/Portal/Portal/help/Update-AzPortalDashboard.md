@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Portal-help.xml
 Module Name: Az.Portal
 online version: https://learn.microsoft.com/powershell/module/az.portal/update-azportaldashboard
 schema: 2.0.0
@@ -15,14 +15,15 @@ Updates an existing Dashboard.
 ### UpdateExpanded (Default)
 ```
 Update-AzPortalDashboard -Name <String> -ResourceGroupName <String> [-SubscriptionId <String>]
- [-Lens <Hashtable>] [-Metadata <Hashtable>] [-Tag <Hashtable>] [-DefaultProfile <PSObject>] [-Confirm]
- [-WhatIf] [<CommonParameters>]
+ [-Lens <IDashboardLens[]>] [-Metadata <Hashtable>] [-Tag <Hashtable>] [-DefaultProfile <PSObject>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### UpdateViaIdentityExpanded
 ```
-Update-AzPortalDashboard -InputObject <IPortalIdentity> [-Lens <Hashtable>] [-Metadata <Hashtable>]
- [-Tag <Hashtable>] [-DefaultProfile <PSObject>] [-Confirm] [-WhatIf] [<CommonParameters>]
+Update-AzPortalDashboard -InputObject <IPortalIdentity> [-Lens <IDashboardLens[]>] [-Metadata <Hashtable>]
+ [-Tag <Hashtable>] [-DefaultProfile <PSObject>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -61,7 +62,8 @@ This can be used to update the tags over a single dashboard, or multiple dashboa
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -93,9 +95,10 @@ Accept wildcard characters: False
 
 ### -Lens
 The dashboard lenses.
+To construct, see NOTES section for LENS properties and create a hash table.
 
 ```yaml
-Type: System.Collections.Hashtable
+Type: Microsoft.Azure.PowerShell.Cmdlets.Portal.Models.Api20221201Preview.IDashboardLens[]
 Parameter Sets: (All)
 Aliases:
 
@@ -138,6 +141,7 @@ Accept wildcard characters: False
 
 ### -ResourceGroupName
 The name of the resource group.
+The name is case insensitive.
 
 ```yaml
 Type: System.String
@@ -152,9 +156,8 @@ Accept wildcard characters: False
 ```
 
 ### -SubscriptionId
-The Azure subscription ID.
-This is a GUID-formatted string (e.g.
-00000000-0000-0000-0000-000000000000)
+The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String
@@ -223,22 +226,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Portal.Models.Api201901Preview.IDashboard
+### Microsoft.Azure.PowerShell.Cmdlets.Portal.Models.Api20221201Preview.IDashboard
 
 ## NOTES
 
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-INPUTOBJECT `<IPortalIdentity>`: Identity Parameter
-  - `[DashboardName <String>]`: The name of the dashboard.
-  - `[Id <String>]`: Resource identity path
-  - `[ResourceGroupName <String>]`: The name of the resource group.
-  - `[SubscriptionId <String>]`: The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-
 ## RELATED LINKS
-

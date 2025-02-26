@@ -62,12 +62,12 @@ $output.Add("version", "$Version")
 $outputModules = @{}
 
 #Create mappings file
-& "ToolsRootPath/CreateMappings.ps1" -OutputFile $OutputFile/../groupMapping.json -WarningFile $OutputFile/../groupMappingWarnings.json
+& "$ToolsRootPath/CreateMappings.ps1" -OutputFile $OutputFile/../groupMapping.json -WarningFile $OutputFile/../groupMappingWarnings.json
 $labelMapping = Get-Content -Raw $OutputFile/../groupMapping.json | ConvertFrom-Json
 
 $HelpFolders = @()
 
-$ProjectPaths = @( "ToolsRootPath/../src")
+$ProjectPaths = @( "$ToolsRootPath/../src")
 $RMpsd1s = $ProjectPaths | ForEach-Object {
     Get-ChildItem -Path $_ -Filter "*.psd1" -Recurse | Where-Object { 
         $_.FullName -inotlike "*autorest*" -and `
@@ -84,10 +84,10 @@ $HelpFolders += Get-ChildItem -Path "$ToolsRootPath/../src" -Recurse -Directory 
 # Map the name of the cmdlet to the location of the help file
 $HelpFileMapping = @{}
 $HelpFolders | ForEach-Object {
-    $helpFiles = Get-ChildItem -Path $_.FullName
+    $helpFiles = Get-ChildItem -Path $_.FullName | Where-Object {-NOT ($_.Name -cmatch "README.md")}
     $helpFiles | ForEach-Object {
         if ($HelpFileMapping.Contains($_.Name)) {
-            throw "Two files exist with the name $_ in $($_.FullName)"
+            throw "Two files exist with the name $($_.Name) in $($_.FullName) and $($HelpFileMapping[$_.Name])"
         }
         else {
             $HelpFileMapping.Add("$($_.Name)", $_.FullName)

@@ -29,7 +29,8 @@ New-AzStorageAccount [-ResourceGroupName] <String> [-Name] <String> [-SkuName] <
  [-AllowCrossTenantReplication <Boolean>] [-DefaultSharePermission <String>] [-EdgeZone <String>]
  [-PublicNetworkAccess <String>] [-EnableAccountLevelImmutability] [-ImmutabilityPeriod <Int32>]
  [-ImmutabilityPolicyState <String>] [-AllowedCopyScope <String>] [-DnsEndpointType <String>]
- [-DefaultProfile <IAzureContextContainer>] [-RoutingChoice <String>] [<CommonParameters>]
+ [-DefaultProfile <IAzureContextContainer>] [-RoutingChoice <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### AzureActiveDirectoryKerberosForFile
@@ -49,7 +50,7 @@ New-AzStorageAccount [-ResourceGroupName] <String> [-Name] <String> [-SkuName] <
  [-DefaultSharePermission <String>] [-EdgeZone <String>] [-PublicNetworkAccess <String>]
  [-EnableAccountLevelImmutability] [-ImmutabilityPeriod <Int32>] [-ImmutabilityPolicyState <String>]
  [-AllowedCopyScope <String>] [-DnsEndpointType <String>] [-DefaultProfile <IAzureContextContainer>]
- [-RoutingChoice <String>] [<CommonParameters>]
+ [-RoutingChoice <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### ActiveDirectoryDomainServicesForFile
@@ -72,7 +73,7 @@ New-AzStorageAccount [-ResourceGroupName] <String> [-Name] <String> [-SkuName] <
  [-DefaultSharePermission <String>] [-EdgeZone <String>] [-PublicNetworkAccess <String>]
  [-EnableAccountLevelImmutability] [-ImmutabilityPeriod <Int32>] [-ImmutabilityPolicyState <String>]
  [-AllowedCopyScope <String>] [-DnsEndpointType <String>] [-DefaultProfile <IAzureContextContainer>]
- [-RoutingChoice <String>] [<CommonParameters>]
+ [-RoutingChoice <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -82,7 +83,7 @@ The **New-AzStorageAccount** cmdlet creates an Azure Storage account.
 
 ### Example 1: Create a Storage account
 ```powershell
-New-AzStorageAccount -ResourceGroupName MyResourceGroup -Name mystorageaccount -Location westus -SkuName Standard_GRS
+New-AzStorageAccount -ResourceGroupName MyResourceGroup -Name mystorageaccount -Location westus -SkuName Standard_GRS -MinimumTlsVersion TLS1_2
 ```
 
 This command creates a Storage account for the resource group name MyResourceGroup.
@@ -176,10 +177,10 @@ Then get the Storage account properties, and view the encryption keytype of Queu
 
 
 ```
-$account = New-AzStorageAccount -ResourceGroupName "MyResourceGroup" -Name "mystorageaccount" -Location "eastus2euap" -SkuName "Standard_LRS" -Kind StorageV2 -MinimumTlsVersion TLS1_1 -AllowBlobPublicAccess $false -AllowSharedKeyAccess $false
+$account = New-AzStorageAccount -ResourceGroupName "MyResourceGroup" -Name "mystorageaccount" -Location "eastus2euap" -SkuName "Standard_LRS" -Kind StorageV2 -MinimumTlsVersion TLS1_2 -AllowBlobPublicAccess $false -AllowSharedKeyAccess $false
 
 $account.MinimumTlsVersion
-TLS1_1
+TLS1_2
 
 $account.AllowBlobPublicAccess
 False
@@ -318,7 +319,7 @@ Disabled
 
 The command creates account with disable PublicNetworkAccess of the account.
 
-### Example 15: Create account with account level  mmutability policy
+### Example 15: Create account with account level Immutability policy
 <!-- Skip: Output cannot be splitted from code -->
 
 
@@ -394,7 +395,7 @@ the *AccessTier* parameter.
 Type: System.String
 Parameter Sets: (All)
 Aliases:
-Accepted values: Hot, Cool
+Accepted values: Hot, Cool, Cold
 
 Required: False
 Position: Named
@@ -1065,7 +1066,7 @@ The minimum TLS version to be permitted on requests to storage. The default inte
 Type: System.String
 Parameter Sets: (All)
 Aliases:
-Accepted values: TLS1_0, TLS1_1, TLS1_2
+Accepted values: TLS1_0, TLS1_1, TLS1_2, TLS1_3
 
 Required: False
 Position: Named
@@ -1096,6 +1097,21 @@ NetworkRuleSet is used to define a set of configuration rules for firewalls and 
 Type: Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: System.Management.Automation.ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named
@@ -1221,12 +1237,18 @@ The acceptable values for this parameter are:
 - Premium_ZRS. Premium zone-redundant storage.
 - Standard_GZRS - Geo-redundant zone-redundant storage.
 - Standard_RAGZRS - Read access geo-redundant zone-redundant storage.
+- StandardV2_LRS - Locally-redundant storage for File Provision v2.
+- StandardV2_GRS - Geo-redundant storage for File Provision v2.
+- StandardV2_ZRS - Zone-redundant storage for File Provision v2.
+- StandardV2_GZRS - Geo-redundant zone-redundant storage for File Provision v2.
+- PremiumV2_LRS - Premium locally-redundant storage for File Provision v2.
+- PremiumV2_ZRS - Premium zone-redundant storage for File Provision v2.
 
 ```yaml
 Type: System.String
 Parameter Sets: (All)
 Aliases: StorageAccountType, AccountType, Type
-Accepted values: Standard_LRS, Standard_ZRS, Standard_GRS, Standard_RAGRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS
+Accepted values: Standard_LRS, Standard_ZRS, Standard_GRS, Standard_RAGRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS, StandardV2_LRS, StandardV2_ZRS, StandardV2_GZRS, StandardV2_GRS, PremiumV2_LRS, PremiumV2_ZRS
 
 Required: True
 Position: 2

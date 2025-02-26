@@ -38,16 +38,20 @@ In this directory, run AutoRest:
 > see https://aka.ms/autorest
  
 ``` yaml
-commit: 2d044b8a317aff46d45080f5a797ac376955f648
+commit: a9980ec5181a161dd26c5277f7651722b60503ea
 require:
   - $(this-folder)/../../readme.azure.noprofile.md
 input-file:
-  - $(repo)/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/HybridCompute.json
-  - $(repo)/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/privateLinkScopes.json
+  - $(repo)/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/HybridCompute.json
+  - $(repo)/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/privateLinkScopes.json
  
-module-version: 0.5.0
+module-version: 0.1.0
 title: ConnectedMachine
 subject-prefix: 'Connected'
+# becasue autorest.powershell is unable to transform IdentityType as the best practice design if it uses managed identity
+# we hide the original cmdlet and custom it under /custom folder
+disable-transform-identity-type-for-operation:
+  - Machines_Update
 
 directive:
   - from: swagger-document
@@ -81,16 +85,7 @@ directive:
             "description": "The expand expression to apply on the operation.",
           }
         ]
- 
-  - from: swagger-document
-    where: $.definitions.Machine.properties.properties
-    transform: >-
-      return {
-          "x-ms-client-flatten": true,
-          "$ref": "#/definitions/MachineProperties",
-          "description": "Hybrid Compute Machine properties"
-        }
- 
+
   - from: swagger-document
     where: $.definitions.MachineExtensionUpdateProperties.properties
     transform: >-
@@ -130,6 +125,7 @@ directive:
           "description": "The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all."
         }
       }
+
   - from: swagger-document
     where: $.definitions.MachineExtensionProperties.properties
     transform: >-
@@ -178,7 +174,8 @@ directive:
           "description": "The machine extension instance view."
         }
       }
-  # add 200 response to run-command delete 
+
+  # add 200 response to run-command delete - comment out for stable release
   - from: swagger-document
     where: $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}"].delete.responses
     transform: >-
@@ -210,7 +207,7 @@ directive:
         "default": {
           "description": "Error response describing why the operation failed.",
           "schema": {
-            "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/2d044b8a317aff46d45080f5a797ac376955f648/specification/common-types/resource-management/v3/types.json#/definitions/ErrorResponse"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/definitions/ErrorResponse"
           }
         }
       }
@@ -262,6 +259,11 @@ directive:
       parameter-name: AgentUpgradeEnableAutomaticUpgrade
     set:
       parameter-name: AgentUpgradeEnableAutomatic
+  - where:
+      subject: MachineRunCommand
+      parameter-name: SubscriptionId
+    set:
+      alias: Subscription
     
   # Rename Tag to Tags
   - where:
@@ -327,27 +329,51 @@ directive:
       subject: MachineRunCommand
       verb: Set
     remove: true
+  - where:
+      subject: Extension
+      variant: Upgrade
+    remove: true
 
-  # add back when swagger change is checked in
+  # we will release gateway and setting commands in a seperate module
+  - where:
+      subject: Gateway
+    remove: true
+  - where:
+      subject: Setting
+    remove: true
+
+  # We don't want user to send PATCH to the ESU license API
   - where:
       subject: License
+      verb: Update
     remove: true
   - where:
-      subject: LicenseProfile
+      subject: License
+      verb: Validate
     remove: true
+  - where:
+      subject: License
+      verb: Test
+    remove: true
+
+  # hide Set-AzConnectedLicenseProfile (PUT) from user and keep Update-AzConnectedLicenseProfile (PATCH)
+  - where:
+      subject: LicenseProfile
+      verb: Set
+    remove: true
+
+  # We don't want user to talk directly to the network configuration API
   - where:
       subject: NetworkConfiguration
     remove: true
+
+  # becasue autorest.powershell is unable to transform IdentityType as the best practice design if it uses managed identity
+  # we hide the original cmdlet and custom it under /custom folder
   - where:
-      subject: NetworkSecurityPerimeterConfiguration$
-    remove: true
- 
-  # Removing non-expand commands
-  - where:
-      subject: MachinePatch
-      variant: ^(Install)(?!.*?Expanded|JsonFilePath|JsonString)
-    remove: true
- 
+      subject: Machine
+      verb: Update
+    hide: true
+
   # Completers
   - where:
       parameter-name: Location
@@ -364,7 +390,22 @@ directive:
         description: Gets the list of ResourceGroupName's available for this subscription.
         script: Get-AzResourceGroup | Select-Object -ExpandProperty ResourceGroupName
  
-  # These APIs are used by the agent so they do not need to be in the cmdlets.
+  # These APIs are used by the agent so they do not need to be in the cmdlets
   - remove-operation: Machines_CreateOrUpdate
   - remove-operation: MachineRunCommands_Update
+
+  # Create model cmdlet for complex object
+  - model-cmdlet:
+    - model-name: LicenseDetails
+      cmdlet-name: New-AzConnectedLicenseDetail
+  
+  # Generate complex object for Update-AzConnectedLicenseProfile
+  - model-cmdlet:
+    - model-name: ProductFeatureUpdate
+      cmdlet-name: Update-AzConnectedLicenseProfileFeature
+  # Generate complex object for New-AzConnectedLicenseProfile, change prefix to New- will cause CI styling issue
+  - model-cmdlet:
+    - model-name: ProductFeature
+      cmdlet-name: New-AzConnectedLicenseProfileFeature
+
 ```

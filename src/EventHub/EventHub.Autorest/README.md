@@ -3,7 +3,6 @@
 This directory contains the PowerShell module for the EventHub service.
 
 ---
-
 ## Info
 - Modifiable: yes
 - Generated: all
@@ -29,24 +28,24 @@ For information on how to develop for `Az.EventHub`, see [how-to.md](how-to.md).
 
 ``` yaml
 # Please specify the commit id that includes your features to make sure generated codes stable.
-branch: 49946abc47b5ea9402d7763ae61b183ca4741855
+commit: bb87821da87100719c7dc8a3ef6b89781813ed0a
 require:
 # readme.azure.noprofile.md is the common configuration file
   - $(this-folder)/../../readme.azure.noprofile.md
 input-file:
 # You need to specify your swagger files here.
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/AvailableClusterRegions-preview.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/Clusters-preview.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/namespaces-preview.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/networkrulessets-preview.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/AuthorizationRules.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/CheckNameAvailability.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/consumergroups.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/disasterRecoveryConfigs.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/operations.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/SchemaRegistry.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/eventhubs.json
-  - https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/ApplicationGroups.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/AvailableClusterRegions-preview.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/Clusters-preview.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/namespaces-preview.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/networkrulessets-preview.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/AuthorizationRules.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/CheckNameAvailability.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/consumergroups.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/disasterRecoveryConfigs.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/operations.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/SchemaRegistry.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/eventhubs.json
+  - $(repo)/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2023-01-01-preview/ApplicationGroups.json
 # If the swagger has not been put in the repo, you may uncomment the following line and refer to it locally
 # - (this-folder)/relative-path-to-your-swagger
 
@@ -60,10 +59,13 @@ subject-prefix: $(service-name)
 # uncomment following line to support viaIdentity for these post APIs
 resourcegroup-append: true
 nested-object-to-string: true
+keep-pec-and-plr: true
+disable-transform-identity-type: true
+flatten-userassignedidentity : false
 
 directive:
   - where:
-      variant: ^Create$|^CreateViaIdentityExpanded$|^Update$|^UpdateViaIdentity$
+      variant: ^Create$|^CreateViaIdentityExpanded$|^Update$|^UpdateViaIdentity$|^CreateViaJsonFilePath$|^CreateViaJsonString$
     remove: true
   - where:
       variant: ^CreateViaIdentity$
@@ -389,6 +391,30 @@ directive:
       property-name: RetentionDescriptionTombstoneRetentionTimeInHour
     set:
       property-name: TombstoneRetentionTimeInHour
+      
+  - where:
+      verb: New
+      subject: EventHub
+      parameter-name: MessageTimestampDescriptionTimestampType
+    set:
+      parameter-name: TimestampType
+  - where:
+      model-name: EventHub
+      property-name: MessageTimestampDescriptionTimestampType
+    set:
+      property-name: TimestampType
+
+  - where:
+      verb: New
+      subject: EventHub
+      parameter-name: RetentionDescriptionMinCompactionLagInMin
+    set:
+      parameter-name: MinCompactionLagInMin
+  - where:
+      model-name: EventHub
+      property-name: RetentionDescriptionMinCompactionLagInMin
+    set:
+      property-name: MinCompactionLagInMin
 
 # Cluster
   - where:
@@ -453,4 +479,6 @@ directive:
       suppress-format: true
 
   - model-cmdlet:
-    - KeyVaultProperties
+    - model-name: KeyVaultProperties
+      cmdlet-name: New-AzEventHubKeyVaultPropertiesObject
+```

@@ -102,7 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -ObjectId
-The unique identifier in Microsoft Entra ID.
+The unique identifier in Azure AD.
 
 ```yaml
 Type: System.Guid
@@ -187,7 +187,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Boolean
 
 ## NOTES
-
-ALIASES
 
 ## RELATED LINKS

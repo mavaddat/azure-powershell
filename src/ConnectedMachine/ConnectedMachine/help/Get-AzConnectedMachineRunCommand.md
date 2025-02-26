@@ -15,13 +15,13 @@ The operation to get a run command.
 ### List (Default)
 ```
 Get-AzConnectedMachineRunCommand -MachineName <String> -ResourceGroupName <String> [-SubscriptionId <String[]>]
- [-Expand <String>] [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Expand <String>] [-DefaultProfile <PSObject>] [<CommonParameters>]
 ```
 
 ### Get
 ```
 Get-AzConnectedMachineRunCommand -MachineName <String> -ResourceGroupName <String> -RunCommandName <String>
- [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>]
+ [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>]
  [<CommonParameters>]
 ```
 
@@ -30,15 +30,56 @@ The operation to get a run command.
 
 ## EXAMPLES
 
-### EXAMPLE 1
-```
-Get-AzConnectedMachineRunCommand -ResourceGroupName "az-sdk-test" -MachineName "testmachine"
+### Example 1: Get run command of a machine
+```powershell
+Get-AzConnectedMachineRunCommand -ResourceGroupName "ytongtest" -MachineName "testmachine" -RunCommandName "myRunCommand2"
 ```
 
-### EXAMPLE 2
+```output
+AsyncExecution                    : False
+ErrorBlobManagedIdentityClientId  :
+ErrorBlobManagedIdentityObjectId  :
+ErrorBlobUri                      :
+Id                                : /subscriptions/********-****-****-****-**********/resourceGroups/ytong
+                                    test/providers/Microsoft.HybridCompute/machines/testmachine/runcommands/
+                                    myRunCommand2
+InstanceViewEndTime               : 11/8/2024 7:43:31 PM
+InstanceViewError                 :
+InstanceViewExecutionMessage      : RunCommand script execution completed
+InstanceViewExecutionState        : Succeeded
+InstanceViewExitCode              : 0
+InstanceViewOutput                : Hello World!
+InstanceViewStartTime             : 11/8/2024 7:43:31 PM
+InstanceViewStatuses              :
+Location                          : eastus
+Name                              : myRunCommand2
+OutputBlobManagedIdentityClientId :
+OutputBlobManagedIdentityObjectId :
+OutputBlobUri                     :
+Parameter                         :
+ProtectedParameter                :
+ProvisioningState                 : Succeeded
+ResourceGroupName                 : ytongtest
+RunAsPassword                     :
+RunAsUser                         :
+ScriptUriManagedIdentityClientId  :
+ScriptUriManagedIdentityObjectId  :
+SourceCommandId                   :
+SourceScript                      : Write-Host Hello World!
+SourceScriptUri                   :
+SystemDataCreatedAt               :
+SystemDataCreatedBy               :
+SystemDataCreatedByType           :
+SystemDataLastModifiedAt          :
+SystemDataLastModifiedBy          :
+SystemDataLastModifiedByType      :
+Tags                              : {
+                                    }
+TimeoutInSecond                   : 0
+Type                              : Microsoft.HybridCompute/machines/runcommands
 ```
-Get-AzConnectedMachineRunCommand -ResourceGroupName "az-sdk-test" -RunCommandName "myRunCommand2" -MachineName "testmachine"
-```
+
+Get run command of a machine
 
 ## PARAMETERS
 
@@ -88,21 +129,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: System.Management.Automation.ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ResourceGroupName
 The name of the resource group.
 The name is case insensitive.
@@ -140,11 +166,11 @@ The ID of the target subscription.
 ```yaml
 Type: System.String[]
 Parameter Sets: (All)
-Aliases:
+Aliases: Subscription
 
 Required: False
 Position: Named
-Default value: None
+Default value: (Get-AzContext).Subscription.Id
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -157,9 +183,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### Microsoft.Azure.PowerShell.Cmdlets.ConnectedMachine.Models.IMachineRunCommand
+
 ## NOTES
 
 ## RELATED LINKS
-
-[https://learn.microsoft.com/powershell/module/az.connectedmachine/get-azconnectedmachineruncommand](https://learn.microsoft.com/powershell/module/az.connectedmachine/get-azconnectedmachineruncommand)
-

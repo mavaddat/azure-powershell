@@ -37,7 +37,7 @@ Set-AzSqlDatabaseAudit [-AuditActionGroup <AuditActionGroups[]>] [-AuditAction <
 ## DESCRIPTION
 The **Set-AzSqlDatabaseAudit** cmdlet changes the auditing settings of an Azure SQL Database.
 To use the cmdlet, use the *ResourceGroupName*, *ServerName*, and *DatabaseName* parameters to identify the database.
-When blob storage is a destination for audit logs, specify the *StorageAccountResourceId* parameter to determine the storage account for the audit logs and the *StorageKeyType* parameter to define the storage keys. You can also define retention for the audit logs by setting the value of the *RetentionInDays* parameter to define the period for the audit logs.
+When blob storage is a destination for audit logs, specify the *StorageAccountResourceId* parameter to determine the storage account for the audit logs and the *StorageKeyType* parameter to define the storage keys. If using blob storage as destination, you can also define retention for the audit logs by setting the value of the *RetentionInDays* parameter to define the period for the audit logs.
 
 ## EXAMPLES
 
@@ -110,12 +110,12 @@ RECEIVE
 REFERENCES  
 The general form for defining an action to be audited is:
 [action] ON [object] BY [principal]
-Note that [object] in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::[dbname] and SCHEMA::[schemaname] are used, respectively.
+Note that [object] in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema.if the reference object is dropped and recreated ,audit configuration should be resaved. For the latter cases, the forms DATABASE::[dbname] and SCHEMA::[schemaname] are used, respectively.
 For example:  
 SELECT on dbo.myTable by public  
 SELECT on DATABASE::myDatabase by public  
 SELECT on SCHEMA::mySchema by public  
-For more information, see https://learn.microsoft.com/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions.
+For more information, see https://learn.microsoft.com/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions. 
 
 ```yaml
 Type: System.String[]
@@ -320,7 +320,7 @@ Accept wildcard characters: False
 ```
 
 ### -RetentionInDays
-The number of retention days for the audit logs.
+The number of retention days for the audit logs. Only applies to Storage account as destination.
 
 ```yaml
 Type: System.Nullable`1[System.UInt32]

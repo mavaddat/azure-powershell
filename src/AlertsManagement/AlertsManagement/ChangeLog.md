@@ -19,6 +19,12 @@
 -->
 ## Upcoming Release
 
+## Version 0.6.3
+* Upgraded nuget package to signed package.
+
+## Version 0.6.2
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 0.6.1
 * Fixed null reference bug when 'ScheduleEndDateTime' was not provided
 

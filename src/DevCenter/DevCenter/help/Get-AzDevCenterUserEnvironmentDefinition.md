@@ -12,7 +12,7 @@ Get an environment definition from a catalog.
 
 ## SYNTAX
 
-### List (Default)
+### List1 (Default)
 ```
 Get-AzDevCenterUserEnvironmentDefinition -Endpoint <String> -ProjectName <String> [-DefaultProfile <PSObject>]
  [<CommonParameters>]
@@ -21,7 +21,8 @@ Get-AzDevCenterUserEnvironmentDefinition -Endpoint <String> -ProjectName <String
 ### Get
 ```
 Get-AzDevCenterUserEnvironmentDefinition -Endpoint <String> -ProjectName <String> -CatalogName <String>
- -DefinitionName <String> [-DefaultProfile <PSObject>] [<CommonParameters>]
+ -DefinitionName <String> [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### GetViaIdentity
@@ -30,7 +31,7 @@ Get-AzDevCenterUserEnvironmentDefinition -Endpoint <String> -InputObject <IDevCe
  [-DefaultProfile <PSObject>] [<CommonParameters>]
 ```
 
-### List1
+### List
 ```
 Get-AzDevCenterUserEnvironmentDefinition -Endpoint <String> -ProjectName <String> -CatalogName <String>
  [-DefaultProfile <PSObject>] [<CommonParameters>]
@@ -44,20 +45,21 @@ Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -InputObject <I
 
 ### List1ByDevCenter
 ```
-Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -ProjectName <String> -CatalogName <String>
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -ProjectName <String>
  [-DefaultProfile <PSObject>] [<CommonParameters>]
 ```
 
 ### ListByDevCenter
 ```
-Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -ProjectName <String>
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -ProjectName <String> -CatalogName <String>
  [-DefaultProfile <PSObject>] [<CommonParameters>]
 ```
 
 ### GetByDevCenter
 ```
 Get-AzDevCenterUserEnvironmentDefinition -DevCenterName <String> -ProjectName <String> -CatalogName <String>
- -DefinitionName <String> [-DefaultProfile <PSObject>] [<CommonParameters>]
+ -DefinitionName <String> [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,7 +80,7 @@ This command lists environment definitions under the project "DevProject".
 
 ### Example 2: List environment definitions by dev center and project
 ```powershell
-Get-AzDevCenterUserEnvironmentDefinition -DevCenter Contoso -ProjectName DevProject
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName Contoso -ProjectName DevProject
 ```
 
 This command lists environment definitions under the project "DevProject".
@@ -92,7 +94,7 @@ This command lists environment definitions under the project "DevProject" and th
 
 ### Example 4: List environment definitions by dev center, catalog, and project
 ```powershell
-Get-AzDevCenterUserEnvironmentDefinition -DevCenter Contoso -ProjectName DevProject -CatalogName CentralCatalog
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName Contoso -ProjectName DevProject -CatalogName CentralCatalog
 ```
 
 This command lists environment definitions under the project "DevProject" and the catalog "CentralCatalog".
@@ -106,7 +108,7 @@ This command gets the environment definition "Sandbox" under the project "DevPro
 
 ### Example 6: Get an environment definition by dev center
 ```powershell
-Get-AzDevCenterUserEnvironmentDefinition -DevCenter Contoso -ProjectName DevProject -CatalogName CentralCatalog -DefinitionName Sandbox
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName Contoso -ProjectName DevProject -CatalogName CentralCatalog -DefinitionName Sandbox
 ```
 
 This command gets the environment definition "Sandbox" under the project "DevProject" and the catalog "CentralCatalog".
@@ -122,7 +124,7 @@ This command gets the environment definition "Sandbox" under the project "DevPro
 ### Example 8: Get an environment definition by dev center and InputObject
 ```powershell
 $envInput = @{"CatalogName" = "CentralCatalog"; "ProjectName" = "DevProject"; "DefinitionName" = "Sandbox" }
-Get-AzDevCenterUserEnvironmentDefinition -DevCenter Contoso -InputObject $envInput
+Get-AzDevCenterUserEnvironmentDefinition -DevCenterName Contoso -InputObject $envInput
 ```
 
 This command gets the environment definition "Sandbox" under the project "DevProject" and the catalog "CentralCatalog".
@@ -130,11 +132,11 @@ This command gets the environment definition "Sandbox" under the project "DevPro
 ## PARAMETERS
 
 ### -CatalogName
-The name of the catalog
+Name of the catalog.
 
 ```yaml
 Type: System.String
-Parameter Sets: Get, List1, List1ByDevCenter, GetByDevCenter
+Parameter Sets: Get, List, ListByDevCenter, GetByDevCenter
 Aliases:
 
 Required: True
@@ -161,7 +163,7 @@ Accept wildcard characters: False
 ```
 
 ### -DefinitionName
-The name of the environment definition
+Name of the environment definition.
 
 ```yaml
 Type: System.String
@@ -195,7 +197,7 @@ The DevCenter-specific URI to operate on.
 
 ```yaml
 Type: System.String
-Parameter Sets: List, Get, GetViaIdentity, List1
+Parameter Sets: List1, Get, GetViaIdentity, List
 Aliases:
 
 Required: True
@@ -222,11 +224,11 @@ Accept wildcard characters: False
 ```
 
 ### -ProjectName
-The DevCenter Project upon which to execute operations.
+Name of the project.
 
 ```yaml
 Type: System.String
-Parameter Sets: List, Get, List1, List1ByDevCenter, ListByDevCenter, GetByDevCenter
+Parameter Sets: List1, Get, List, List1ByDevCenter, ListByDevCenter, GetByDevCenter
 Aliases:
 
 Required: True
@@ -245,27 +247,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DevCenterdata.Models.Api20230401.IEnvironmentDefinition
+### Microsoft.Azure.PowerShell.Cmdlets.DevCenterdata.Models.Api20240501Preview.IEnvironmentDefinition
 
 ## NOTES
-
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`INPUTOBJECT <IDevCenterdataIdentity>`: Identity Parameter
-  - `[ActionName <String>]`: The name of an action that will take place on a Dev Box.
-  - `[CatalogName <String>]`: The name of the catalog
-  - `[DefinitionName <String>]`: The name of the environment definition
-  - `[DevBoxName <String>]`: The name of a Dev Box.
-  - `[EnvironmentName <String>]`: The name of the environment.
-  - `[Id <String>]`: Resource identity path
-  - `[PoolName <String>]`: The name of a pool of Dev Boxes.
-  - `[ProjectName <String>]`: The DevCenter Project upon which to execute operations.
-  - `[ScheduleName <String>]`: The name of a schedule.
-  - `[UserId <String>]`: The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
 
 ## RELATED LINKS

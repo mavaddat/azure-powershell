@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/Az.NetworkCloud/new-AzNetworkCloudBgpAdvertisementObject
 schema: 2.0.0
@@ -24,7 +24,7 @@ Create an in-memory object for BgpAdvertisement.
 
 ### Example 1: Create an in-memory object for BgpAdvertisement.
 ```powershell
-New-AzNetworkCloudBgpAdvertisementObject -IPAddressPool  @("pool1","pool2") -AdvertiseToFabric "True" -Community  @("communityString") -Peer @("peer1") 
+New-AzNetworkCloudBgpAdvertisementObject -IPAddressPool  @("pool1","pool2") -AdvertiseToFabric "True" -Community  @("communityString") -Peer @("peer1")
 ```
 
 ```output
@@ -106,11 +106,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.BgpAdvertisement
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.BgpAdvertisement
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

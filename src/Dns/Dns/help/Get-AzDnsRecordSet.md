@@ -116,6 +116,7 @@ Valid values are:
 - AAAA
 - CNAME
 - MX
+- NAPTR
 - NS
 - PTR
 - SOA
@@ -211,5 +212,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [Remove-AzDnsRecordSet](./Remove-AzDnsRecordSet.md)
 
 [Set-AzDnsRecordSet](./Set-AzDnsRecordSet.md)
-
-

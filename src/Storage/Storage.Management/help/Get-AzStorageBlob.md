@@ -18,7 +18,8 @@ Lists blobs in a container.
 Get-AzStorageBlob [[-Blob] <String>] [-Container] <String> [-IncludeDeleted] [-IncludeTag] [-MaxCount <Int32>]
  [-ContinuationToken <BlobContinuationToken>] [-TagCondition <String>] [-Context <IStorageContext>]
  [-ServerTimeoutPerRequest <Int32>] [-ClientTimeoutPerRequest <Int32>]
- [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [<CommonParameters>]
+ [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### SingleBlobSnapshotTime
@@ -27,7 +28,7 @@ Get-AzStorageBlob [-Blob] <String> [-Container] <String> [-IncludeDeleted] [-Inc
  -SnapshotTime <DateTimeOffset> [-MaxCount <Int32>] [-ContinuationToken <BlobContinuationToken>]
  [-TagCondition <String>] [-Context <IStorageContext>] [-ServerTimeoutPerRequest <Int32>]
  [-ClientTimeoutPerRequest <Int32>] [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### SingleBlobVersionID
@@ -35,7 +36,8 @@ Get-AzStorageBlob [-Blob] <String> [-Container] <String> [-IncludeDeleted] [-Inc
 Get-AzStorageBlob [-Blob] <String> [-Container] <String> [-IncludeDeleted] [-IncludeTag] -VersionId <String>
  [-MaxCount <Int32>] [-ContinuationToken <BlobContinuationToken>] [-TagCondition <String>]
  [-Context <IStorageContext>] [-ServerTimeoutPerRequest <Int32>] [-ClientTimeoutPerRequest <Int32>]
- [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [<CommonParameters>]
+ [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### BlobPrefix
@@ -43,7 +45,8 @@ Get-AzStorageBlob [-Blob] <String> [-Container] <String> [-IncludeDeleted] [-Inc
 Get-AzStorageBlob [-Prefix <String>] [-Container] <String> [-IncludeDeleted] [-IncludeVersion] [-IncludeTag]
  [-MaxCount <Int32>] [-ContinuationToken <BlobContinuationToken>] [-Context <IStorageContext>]
  [-ServerTimeoutPerRequest <Int32>] [-ClientTimeoutPerRequest <Int32>]
- [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [<CommonParameters>]
+ [-DefaultProfile <IAzureContextContainer>] [-ConcurrentTaskCount <Int32>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -197,6 +200,21 @@ testblob             BlockBlob 2097152         application/octet-stream       20
 
 This command gets a single blob with blob tag condition. 
 The cmdlet will only success when the blob contains a tag with name "tag1" and value "value1", else the cmdlet will fail with error code 412.
+
+### Example 10: Get blob properties (example: ImmutabilityPolicy) of a single blob
+```powershell
+$blobProperties = (Get-AzStorageBlob -Container "ContainerName" -Blob "blob" -Context $ctx).BlobProperties
+$blobProperties.ImmutabilityPolicy
+```
+
+```output
+ExpiresOn                   PolicyMode
+---------                   ----------
+9/17/2024 2:49:32 AM +00:00   Unlocked
+```
+
+This example command gets the immutability property of a single blob. You can get a detailed list of blob prTooperties from the **BlobProperties** property, including but not limited to: LastModified, ContentLength, ContentHash, BlobType, LeaseState, AccessTier, ETag, ImmutabilityPolicy, etc...
+To list multiple blobs (execute the cmdlet without blob name), use **ListBlobProperties.Properties** instead of **BlobProperties** for better performance.
 
 ## PARAMETERS
 
@@ -405,6 +423,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: System.Management.Automation.ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ServerTimeoutPerRequest
 Specifies the service side time-out interval, in seconds, for a request.
 If the specified interval elapses before the service processes the request, the storage service returns an error.
@@ -490,5 +523,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [Remove-AzStorageBlob](./Remove-AzStorageBlob.md)
 
 [Set-AzStorageBlobContent](./Set-AzStorageBlobContent.md)
-
-

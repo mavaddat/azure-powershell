@@ -16,13 +16,58 @@ Send a message to a user.
 ```
 Send-AzWvdUserSessionMessage -HostPoolName <String> -ResourceGroupName <String> -SessionHostName <String>
  [-SubscriptionId <String>] -UserSessionId <String> [-MessageBody <String>] [-MessageTitle <String>]
- [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+### SendViaJsonString
+```
+Send-AzWvdUserSessionMessage -HostPoolName <String> -ResourceGroupName <String> -SessionHostName <String>
+ [-SubscriptionId <String>] -UserSessionId <String> -JsonString <String> [-DefaultProfile <PSObject>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SendViaJsonFilePath
+```
+Send-AzWvdUserSessionMessage -HostPoolName <String> -ResourceGroupName <String> -SessionHostName <String>
+ [-SubscriptionId <String>] -UserSessionId <String> -JsonFilePath <String> [-DefaultProfile <PSObject>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SendViaIdentityHostPoolExpanded
+```
+Send-AzWvdUserSessionMessage -SessionHostName <String> -UserSessionId <String>
+ -HostPoolInputObject <IDesktopVirtualizationIdentity> [-MessageBody <String>] [-MessageTitle <String>]
+ [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+### SendViaIdentityHostPool
+```
+Send-AzWvdUserSessionMessage -SessionHostName <String> -UserSessionId <String>
+ -HostPoolInputObject <IDesktopVirtualizationIdentity> -SendMessage <ISendMessage> [-DefaultProfile <PSObject>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SendViaIdentitySessionHostExpanded
+```
+Send-AzWvdUserSessionMessage -UserSessionId <String> -SessionHostInputObject <IDesktopVirtualizationIdentity>
+ [-MessageBody <String>] [-MessageTitle <String>] [-DefaultProfile <PSObject>] [-PassThru]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SendViaIdentitySessionHost
+```
+Send-AzWvdUserSessionMessage -UserSessionId <String> -SessionHostInputObject <IDesktopVirtualizationIdentity>
+ -SendMessage <ISendMessage> [-DefaultProfile <PSObject>] [-PassThru]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### SendViaIdentityExpanded
 ```
 Send-AzWvdUserSessionMessage -InputObject <IDesktopVirtualizationIdentity> [-MessageBody <String>]
- [-MessageTitle <String>] [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-MessageTitle <String>] [-DefaultProfile <PSObject>] [-PassThru]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -60,12 +105,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -HostPoolInputObject
+Identity Parameter
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
+Parameter Sets: SendViaIdentityHostPoolExpanded, SendViaIdentityHostPool
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -HostPoolName
 The name of the host pool within the specified resource group
 
 ```yaml
 Type: System.String
-Parameter Sets: SendExpanded
+Parameter Sets: SendExpanded, SendViaJsonString, SendViaJsonFilePath
 Aliases:
 
 Required: True
@@ -77,7 +137,6 @@ Accept wildcard characters: False
 
 ### -InputObject
 Identity Parameter
-To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
@@ -91,12 +150,42 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -JsonFilePath
+Path of Json file supplied to the Send operation
+
+```yaml
+Type: System.String
+Parameter Sets: SendViaJsonFilePath
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -JsonString
+Json string supplied to the Send operation
+
+```yaml
+Type: System.String
+Parameter Sets: SendViaJsonString
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -MessageBody
 Body of message.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: SendExpanded, SendViaIdentityHostPoolExpanded, SendViaIdentitySessionHostExpanded, SendViaIdentityExpanded
 Aliases:
 
 Required: False
@@ -111,7 +200,7 @@ Title of message.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: SendExpanded, SendViaIdentityHostPoolExpanded, SendViaIdentitySessionHostExpanded, SendViaIdentityExpanded
 Aliases:
 
 Required: False
@@ -142,7 +231,7 @@ The name is case insensitive.
 
 ```yaml
 Type: System.String
-Parameter Sets: SendExpanded
+Parameter Sets: SendExpanded, SendViaJsonString, SendViaJsonFilePath
 Aliases:
 
 Required: True
@@ -152,12 +241,42 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -SendMessage
+Represents message sent to a UserSession.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.ISendMessage
+Parameter Sets: SendViaIdentityHostPool, SendViaIdentitySessionHost
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -SessionHostInputObject
+Identity Parameter
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
+Parameter Sets: SendViaIdentitySessionHostExpanded, SendViaIdentitySessionHost
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -SessionHostName
 The name of the session host within the specified host pool
 
 ```yaml
 Type: System.String
-Parameter Sets: SendExpanded
+Parameter Sets: SendExpanded, SendViaJsonString, SendViaJsonFilePath, SendViaIdentityHostPoolExpanded, SendViaIdentityHostPool
 Aliases:
 
 Required: True
@@ -169,10 +288,11 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String
-Parameter Sets: SendExpanded
+Parameter Sets: SendExpanded, SendViaJsonString, SendViaJsonFilePath
 Aliases:
 
 Required: False
@@ -187,7 +307,7 @@ The name of the user session within the specified session host
 
 ```yaml
 Type: System.String
-Parameter Sets: SendExpanded
+Parameter Sets: SendExpanded, SendViaJsonString, SendViaJsonFilePath, SendViaIdentityHostPoolExpanded, SendViaIdentityHostPool, SendViaIdentitySessionHostExpanded, SendViaIdentitySessionHost
 Aliases:
 
 Required: True
@@ -234,6 +354,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
+
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.ISendMessage
 
 ## OUTPUTS
 

@@ -61,7 +61,8 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </param>
 
         /// <param name="provisioningState">The provisioning state of the express route circuit resource.
-        /// Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;</param>
+        /// Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;,
+        /// &#39;Updating&#39;, &#39;Deleting&#39;</param>
 
         /// <param name="gatewayManagerEtag">The GatewayManager Etag.
         /// </param>
@@ -74,7 +75,10 @@ namespace Microsoft.Azure.Management.Network.Models
 
         /// <param name="authorizationStatus">The authorization status of the Circuit.
         /// </param>
-        public ExpressRouteCircuitPropertiesFormat(bool? allowClassicOperations = default(bool?), string circuitProvisioningState = default(string), string serviceProviderProvisioningState = default(string), System.Collections.Generic.IList<ExpressRouteCircuitAuthorization> authorizations = default(System.Collections.Generic.IList<ExpressRouteCircuitAuthorization>), System.Collections.Generic.IList<ExpressRouteCircuitPeering> peerings = default(System.Collections.Generic.IList<ExpressRouteCircuitPeering>), string serviceKey = default(string), string serviceProviderNotes = default(string), ExpressRouteCircuitServiceProviderProperties serviceProviderProperties = default(ExpressRouteCircuitServiceProviderProperties), SubResource expressRoutePort = default(SubResource), double? bandwidthInGbps = default(double?), int? stag = default(int?), string provisioningState = default(string), string gatewayManagerEtag = default(string), bool? globalReachEnabled = default(bool?), string authorizationKey = default(string), string authorizationStatus = default(string))
+
+        /// <param name="enableDirectPortRateLimit">Flag denoting rate-limiting status of the ExpressRoute direct-port circuit.
+        /// </param>
+        public ExpressRouteCircuitPropertiesFormat(bool? allowClassicOperations = default(bool?), string circuitProvisioningState = default(string), string serviceProviderProvisioningState = default(string), System.Collections.Generic.IList<ExpressRouteCircuitAuthorization> authorizations = default(System.Collections.Generic.IList<ExpressRouteCircuitAuthorization>), System.Collections.Generic.IList<ExpressRouteCircuitPeering> peerings = default(System.Collections.Generic.IList<ExpressRouteCircuitPeering>), string serviceKey = default(string), string serviceProviderNotes = default(string), ExpressRouteCircuitServiceProviderProperties serviceProviderProperties = default(ExpressRouteCircuitServiceProviderProperties), SubResource expressRoutePort = default(SubResource), double? bandwidthInGbps = default(double?), int? stag = default(int?), string provisioningState = default(string), string gatewayManagerEtag = default(string), bool? globalReachEnabled = default(bool?), string authorizationKey = default(string), string authorizationStatus = default(string), bool? enableDirectPortRateLimit = default(bool?))
 
         {
             this.AllowClassicOperations = allowClassicOperations;
@@ -93,6 +97,7 @@ namespace Microsoft.Azure.Management.Network.Models
             this.GlobalReachEnabled = globalReachEnabled;
             this.AuthorizationKey = authorizationKey;
             this.AuthorizationStatus = authorizationStatus;
+            this.EnableDirectPortRateLimit = enableDirectPortRateLimit;
             CustomInit();
         }
 
@@ -172,7 +177,7 @@ namespace Microsoft.Azure.Management.Network.Models
         public int? Stag {get; private set; }
 
         /// <summary>
-        /// Gets the provisioning state of the express route circuit resource. Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;
+        /// Gets the provisioning state of the express route circuit resource. Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;, &#39;Updating&#39;, &#39;Deleting&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "provisioningState")]
         public string ProvisioningState {get; private set; }
@@ -200,5 +205,12 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "authorizationStatus")]
         public string AuthorizationStatus {get; private set; }
+
+        /// <summary>
+        /// Gets or sets flag denoting rate-limiting status of the ExpressRoute
+        /// direct-port circuit.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "enableDirectPortRateLimit")]
+        public bool? EnableDirectPortRateLimit {get; set; }
     }
 }

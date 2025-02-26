@@ -60,7 +60,7 @@ Enables AzureRm prefix aliases for Az modules.
 Exports all the configs into a file so that it can be imported on another machine.
 
 ### [Get-AzAccessToken](Get-AzAccessToken.md)
-Get raw access token. When using -ResourceUrl, please make sure the value does match current Azure environment. You may refer to the value of `(Get-AzContext).Environment`.
+Get secure access token. When using -ResourceUrl, please make sure the value does match current Azure environment. You may refer to the value of `(Get-AzContext).Environment`.
 
 ### [Get-AzConfig](Get-AzConfig.md)
 Gets the configs of Azure PowerShell.
@@ -77,6 +77,7 @@ Get the defaults set by the user in the current context.
 
 ### [Get-AzEnvironment](Get-AzEnvironment.md)
 Get endpoints and metadata for an instance of Azure services.
+`GalleryUrl` will be removed from ArmMetadata and so Azure PowerShell will no longer provide for its value in `PSAzureEnvironment`. Currently `GalleryUrl` is not used in Azure PowerShell products. Please do not reply on `GalleryUrl` anymore. 
 
 ### [Get-AzSubscription](Get-AzSubscription.md)
 Get subscriptions that the current account can access.

@@ -24,6 +24,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
     using System.IO;
     using System.Text.RegularExpressions;
     using Microsoft.Azure.Commands.Common.Authentication;
+    using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Extensions;
 
     public class BicepBuildParamsStdout
     {
@@ -60,6 +61,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
         private const string MinimalVersionRequirementForBicepparamFileBuild = "0.16.1";
 
         private const string MinimalVersionRequirementForBicepparamFileBuildWithInlineOverrides = "0.22.6";
+
+        private const string MinimalVersionRequirementForBicepPublishWithNewDocumentationUriParameter = "0.24.24";
 
         public delegate void OutputCallback(string msg);
 
@@ -127,7 +130,8 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
             {
                 CheckMinimalVersionRequirement(MinimalVersionRequirementForBicepparamFileBuildWithInlineOverrides);
                 writeVerbose?.Invoke($"Overriding the following parameters: {string.Join(", ", overrideParams.Keys)}");
-                envVars["BICEP_PARAMETERS_OVERRIDES"] = PSJsonSerializer.Serialize(overrideParams);
+                // As per https://github.com/Azure/bicep/issues/12481, secure string parameters must be serialized.
+                envVars["BICEP_PARAMETERS_OVERRIDES"] = PSJsonSerializer.Serialize(overrideParams, serializeSecureString: true);
             }
 
             var stdout = RunBicepCommand(
@@ -137,7 +141,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
                 writeVerbose: writeVerbose,
                 writeWarning: writeWarning);
 
-            return JsonConvert.DeserializeObject<BicepBuildParamsStdout>(stdout);
+            return stdout.FromJson<BicepBuildParamsStdout>();
         }
 
         public void PublishFile(string bicepFilePath, string target, string documentationUri = null, bool withSource = false, bool force = false, OutputCallback writeVerbose = null, OutputCallback writeWarning = null)
@@ -151,7 +155,12 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
             if (!string.IsNullOrWhiteSpace(documentationUri))
             {
                 CheckMinimalVersionRequirement(MinimalVersionRequirementForBicepPublishWithOptionalDocumentationUriParameter);
-                bicepPublishCommand += $" --documentationUri {GetQuotedFilePath(documentationUri)}";
+
+                if (IsBicepMinimalVersion(MinimalVersionRequirementForBicepPublishWithNewDocumentationUriParameter)) {
+                    bicepPublishCommand += $" --documentation-uri {GetQuotedFilePath(documentationUri)}";
+                } else {
+                    bicepPublishCommand += $" --documentationUri {GetQuotedFilePath(documentationUri)}";
+                }
             }
 
             if (withSource)
@@ -193,6 +202,9 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Utilities
 
             return BicepVersion;
         }
+
+        private bool IsBicepMinimalVersion(string minimalVersionRequirement) =>
+            Version.Parse(minimalVersionRequirement).CompareTo(Version.Parse(BicepVersion)) > 0;
 
         /// <summary>
         /// Runs a bicep command, and returns stdout as a string.

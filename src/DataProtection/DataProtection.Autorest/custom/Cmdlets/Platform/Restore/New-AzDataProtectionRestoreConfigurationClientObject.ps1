@@ -40,7 +40,7 @@ function New-AzDataProtectionRestoreConfigurationClientObject{
         ${ConflictPolicy},
 
         [Parameter(Mandatory=$false, HelpMessage='Namespaces mapping from source namespaces to target namespaces to resolve namespace naming conflicts in the target cluster.')]
-        [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.KubernetesClusterRestoreCriteriaNamespaceMappings]
+        [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.KubernetesClusterRestoreCriteriaNamespaceMappings]
         ${NamespaceMapping},
 
         [Parameter(Mandatory=$false, HelpMessage='Restore mode for persistent volumes. Allowed values are RestoreWithVolumeData, RestoreWithoutVolumeData. Default value is RestoreWithVolumeData')]
@@ -49,13 +49,44 @@ function New-AzDataProtectionRestoreConfigurationClientObject{
         ${PersistentVolumeRestoreMode},
         
         [Parameter(Mandatory=$false, HelpMessage='Hook reference to be executed during restore.')]
-        [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.NamespacedNameResource[]]
-        ${RestoreHookReference}        
+        [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.NamespacedNameResource[]]
+        ${RestoreHookReference},
+
+        [Parameter(Mandatory=$false, HelpMessage='Resource modifier reference to be executed during restore.')]
+        [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.NamespacedNameResource]
+        ${ResourceModifierReference},
+
+        [Parameter(Mandatory=$false, HelpMessage='Staging resource group Id for restore.')]
+        [System.String]
+        [ValidatePattern("/subscriptions/([A-z0-9\-]+)/resourceGroups/(?<rg>.+)")]
+        ${StagingResourceGroupId},
+
+        [Parameter(Mandatory=$false, HelpMessage='Staging storage account Id for restore.')]
+        [System.String]
+        [ValidatePattern("/subscriptions/([A-z0-9\-]+)/resourceGroups/([A-z0-9\-]+)/providers/Microsoft.Storage/storageAccounts/([A-z0-9\-]+)")]
+        ${StagingStorageAccountId}
     )
 
     process {
-        $restoreCriteria =  [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.KubernetesClusterRestoreCriteria]::new()
-        $restoreCriteria.ObjectType = "KubernetesClusterRestoreCriteria"
+
+        $hasStagingResourceGroupId = $PSBoundParameters.Remove("StagingResourceGroupId")
+        $hasStagingStorageAccountId = $PSBoundParameters.Remove("StagingStorageAccountId")
+
+        $restoreCriteria = $null
+        if($hasStagingResourceGroupId -and $hasStagingStorageAccountId){
+            $restoreCriteria =  [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.KubernetesClusterVaultTierRestoreCriteria]::new()
+            $restoreCriteria.ObjectType = "KubernetesClusterVaultTierRestoreCriteria"
+
+            $restoreCriteria.StagingResourceGroupId = $StagingResourceGroupId
+            $restoreCriteria.StagingStorageAccountId = $StagingStorageAccountId        
+        }
+        elseif($hasStagingResourceGroupId -or $hasStagingStorageAccountId) {
+            throw "Both StagingResourceGroupId and StagingStorageAccountId are manadatory for vaulted tier restore for AzureKubernetesService. Please either provide or remove both of them."
+        }
+        else {
+            $restoreCriteria =  [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.KubernetesClusterRestoreCriteria]::new()
+            $restoreCriteria.ObjectType = "KubernetesClusterRestoreCriteria"
+        }        
 
         $restoreCriteria.ExcludedResourceType = $ExcludedResourceType
         $restoreCriteria.IncludedResourceType = $IncludedResourceType
@@ -64,6 +95,9 @@ function New-AzDataProtectionRestoreConfigurationClientObject{
         $restoreCriteria.LabelSelector = $LabelSelector
         $restoreCriteria.NamespaceMapping = $NamespaceMapping
         $restoreCriteria.RestoreHookReference = $RestoreHookReference
+        $restoreCriteria.ResourceModifierReference = $ResourceModifierReference        
+
+        
                 
         if($IncludeClusterScopeResource -ne $null) {
             $restoreCriteria.IncludeClusterScopeResource =  $IncludeClusterScopeResource

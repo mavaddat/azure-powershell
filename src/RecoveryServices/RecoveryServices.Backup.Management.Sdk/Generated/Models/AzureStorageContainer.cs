@@ -29,9 +29,9 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </param>
 
         /// <param name="backupManagementType">Type of backup management for the container.
-        /// Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM',
-        /// 'AzureBackupServer', 'AzureSql', 'AzureStorage', 'AzureWorkload',
-        /// 'DefaultBackup'</param>
+        /// Possible values include: &#39;Invalid&#39;, &#39;AzureIaasVM&#39;, &#39;MAB&#39;, &#39;DPM&#39;,
+        /// &#39;AzureBackupServer&#39;, &#39;AzureSql&#39;, &#39;AzureStorage&#39;, &#39;AzureWorkload&#39;,
+        /// &#39;DefaultBackup&#39;</param>
 
         /// <param name="registrationStatus">Status of registration of the container with the Recovery Services Vault.
         /// </param>
@@ -55,8 +55,11 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </param>
 
         /// <param name="acquireStorageAccountLock">Whether storage account lock is to be acquired for this container or not.
-        /// Possible values include: 'Acquire', 'NotAcquire'</param>
-        public AzureStorageContainer(string friendlyName = default(string), string backupManagementType = default(string), string registrationStatus = default(string), string healthStatus = default(string), string protectableObjectType = default(string), string sourceResourceId = default(string), string storageAccountVersion = default(string), string resourceGroup = default(string), long? protectedItemCount = default(long?), string acquireStorageAccountLock = default(string))
+        /// Possible values include: &#39;Acquire&#39;, &#39;NotAcquire&#39;</param>
+
+        /// <param name="operationType">Re-Do Operation
+        /// Possible values include: &#39;Invalid&#39;, &#39;Register&#39;, &#39;Reregister&#39;, &#39;Rehydrate&#39;</param>
+        public AzureStorageContainer(string friendlyName = default(string), string backupManagementType = default(string), string registrationStatus = default(string), string healthStatus = default(string), string protectableObjectType = default(string), string sourceResourceId = default(string), string storageAccountVersion = default(string), string resourceGroup = default(string), long? protectedItemCount = default(long?), string acquireStorageAccountLock = default(string), string operationType = default(string))
 
         : base(friendlyName, backupManagementType, registrationStatus, healthStatus, protectableObjectType)
         {
@@ -65,6 +68,7 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
             this.ResourceGroup = resourceGroup;
             this.ProtectedItemCount = protectedItemCount;
             this.AcquireStorageAccountLock = acquireStorageAccountLock;
+            this.OperationType = operationType;
             CustomInit();
         }
 
@@ -104,5 +108,11 @@ namespace Microsoft.Azure.Management.RecoveryServices.Backup.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "acquireStorageAccountLock")]
         public string AcquireStorageAccountLock {get; set; }
+
+        /// <summary>
+        /// Gets or sets re-Do Operation Possible values include: &#39;Invalid&#39;, &#39;Register&#39;, &#39;Reregister&#39;, &#39;Rehydrate&#39;
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
+        public string OperationType {get; set; }
     }
 }

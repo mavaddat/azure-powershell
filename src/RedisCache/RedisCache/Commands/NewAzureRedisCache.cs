@@ -69,6 +69,9 @@ namespace Microsoft.Azure.Commands.RedisCache
         [PSArgumentCompleter(TlsStrings.One0, TlsStrings.One1, TlsStrings.One2)]
         public string MinimumTlsVersion { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "Authentication to Redis through access keys is disabled when set as true")]
+        public bool? DisableAccessKeyAuthentication { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "The full resource ID of a subnet in a virtual network to deploy the Azure Cache for Redis in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/{vnetName}/subnets/{subnetName}")]
         public string SubnetId { get; set; }
 
@@ -93,6 +96,9 @@ namespace Microsoft.Azure.Commands.RedisCache
 
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "Specifies one or more comma seperated user identities to be associated with the Azure Cache for Redis. The user identity references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/identities/{identityName}'")]
         public string[] UserAssignedIdentity { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "Optional: Specifies how availability zones are allocated to the Redis cache. 'Automatic' enables zone redundancy and Azure will automatically select zones based on regional availability and capacity. 'UserDefined' will select availability zones passed in by you using the 'zones' parameter. 'NoZones' will produce a non-zonal cache. If 'zonalAllocationPolicy' is not passed, it will be set to 'UserDefined' when zones are passed in, otherwise, it will be set to 'Automatic' in regions where zones are supported and 'NoZones' in regions where zones are not supported.")]
+        public string ZonalAllocationPolicy { get; set; }
 
         public override void ExecuteCmdlet()
         {
@@ -173,7 +179,7 @@ namespace Microsoft.Azure.Commands.RedisCache
               () =>
               {
                   var redisResource = CacheClient.CreateCache(ResourceGroupName, Name, Location, skuFamily, skuCapacity, Sku,
-                      RedisConfiguration, EnableNonSslPort, TenantSettings, ShardCount, MinimumTlsVersion, SubnetId, StaticIP, Tag, Zone, RedisVersion, IdentityType, UserAssignedIdentity, UpdateChannel);
+                      RedisConfiguration, EnableNonSslPort, TenantSettings, ShardCount, MinimumTlsVersion, DisableAccessKeyAuthentication, SubnetId, StaticIP, Tag, Zone, RedisVersion, IdentityType, UserAssignedIdentity, UpdateChannel, ZonalAllocationPolicy);
                   var redisAccessKeys = CacheClient.GetAccessKeys(ResourceGroupName, Name);
                   WriteObject(new RedisCacheAttributesWithAccessKeys(redisResource, redisAccessKeys, ResourceGroupName));
               });

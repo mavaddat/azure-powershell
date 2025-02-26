@@ -2,76 +2,108 @@
 
 ## Az.Accounts
 
-### `Clear-AzConfig`
+### `Get-AzAccessToken`
 
 - Cmdlet breaking-change will happen to all parameter sets
-  - Parameter `DisableErrorRecordsPersistence` will be deprecated, a new parameter `EnableErrorRecordsPersistence` will be added instead. Writing error records to file system will become opt-in instead of opt-out. This change will happen around May 2024
-  - This change is expected to take effect from Az.Accounts version: 2.X and Az version: 12.0.0
+  - The Token property of the output type will be changed from String to SecureString. Add the [-AsSecureString] switch to avoid the impact of this upcoming breaking change.
+  - This change is expected to take effect from Az.Accounts version: 5.0.0 and Az version: 14.0.0
 
-### `Get-AzConfig`
+## Az.Blueprint
 
-- Cmdlet breaking-change will happen to all parameter sets
-  - Parameter `DisableErrorRecordsPersistence` will be deprecated, a new parameter `EnableErrorRecordsPersistence` will be added instead. Writing error records to file system will become opt-in instead of opt-out. This change will happen around May 2024
-  - This change is expected to take effect from Az.Accounts version: 2.X and Az version: 12.0.0
-
-### `Update-AzConfig`
+### `Export-AzBlueprintWithArtifact`
 
 - Cmdlet breaking-change will happen to all parameter sets
-  - Parameter `DisableErrorRecordsPersistence` will be deprecated, a new parameter `EnableErrorRecordsPersistence` will be added instead. Writing error records to file system will become opt-in instead of opt-out. This change will happen around May 2024
-  - This change is expected to take effect from Az.Accounts version: 2.X and Az version: 12.0.0
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
 
-## Az.KeyVault
-
-### `Invoke-AzKeyVaultKeyOperation`
+### `Get-AzBlueprint`
 
 - Cmdlet breaking-change will happen to all parameter sets
-  - The output type 'Microsoft.Azure.Commands.KeyVault.Models.PSKeyOperationResult' is changing
-  - The following properties in the output type are being deprecated : 'Result'
-  - The following properties are being added to the output type : 'RawResult'
-  - This change is expected to take effect from Az.KeyVault version: 6.0.0 and Az version: 12.0.0
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Get-AzBlueprintArtifact`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Get-AzBlueprintAssignment`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Import-AzBlueprintWithArtifact`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `New-AzBlueprint`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `New-AzBlueprintArtifact`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `New-AzBlueprintAssignment`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Publish-AzBlueprint`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Remove-AzBlueprintAssignment`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Set-AzBlueprint`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Set-AzBlueprintArtifact`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+### `Set-AzBlueprintAssignment`
+
+- Cmdlet breaking-change will happen to all parameter sets
+  - Blueprints and associated cmdlets will be deprecated as early as July 2026. Customers are encouraged to transition to Template Specs and Deployments Stacks to support their scenarios beyond that date. Migration documentation is available at https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/migrate-blueprint.
+  - This change is expected to take effect from Az.Blueprint version: - and Az version: 16.0.0
+
+## Az.ContainerInstance
+
+### `New-AzContainerGroup`
 
 - Parameter breaking-change will happen to all parameter sets
-  - `-Value`
-    - The parameter : 'Value' is being replaced by parameter : 'ByteArrayValue'.
-    - This change is expected to take effect from Az.KeyVault version: 6.0.0 and Az version: 12.0.0
+  - `-OSType`
+    - The parameter : 'OSType' is changing.
+    - This change will take effect on '5/21/2025'- The change is expected to take effect from Az version : '14.0.0'
+    - The change is expected to take effect from version : '5.0.0'
 
-## Az.RecoveryServices
+### `New-AzContainerInstanceContainerGroupProfile`
 
-### `Get-AzRecoveryServicesAsrVaultContext`
-
-- Cmdlet breaking-change will happen to all parameter sets
-  - The output type 'Microsoft.Azure.Commands.RecoveryServices.SiteRecovery.ASRVaultSettings' is changing
-  - The following properties in the output type are being deprecated : 'ResouceType'
-  - The following properties are being added to the output type : 'ResourceType'
-  - This change is expected to take effect from Az.RecoveryServices version: 7.0.0 and Az version: 12.0.0
-
-### `Import-AzRecoveryServicesAsrVaultSettingsFile`
-
-- Cmdlet breaking-change will happen to all parameter sets
-  - The output type 'Microsoft.Azure.Commands.RecoveryServices.SiteRecovery.ASRVaultSettings' is changing
-  - The following properties in the output type are being deprecated : 'ResouceType'
-  - The following properties are being added to the output type : 'ResourceType'
-  - This change is expected to take effect from Az.RecoveryServices version: 7.0.0 and Az version: 12.0.0
-
-### `Set-AzRecoveryServicesAsrVaultContext`
-
-- Cmdlet breaking-change will happen to all parameter sets
-  - The output type 'Microsoft.Azure.Commands.RecoveryServices.SiteRecovery.ASRVaultSettings' is changing
-  - The following properties in the output type are being deprecated : 'ResouceType'
-  - The following properties are being added to the output type : 'ResourceType'
-  - This change is expected to take effect from Az.RecoveryServices version: 7.0.0 and Az version: 12.0.0
-
-## Az.Sql
-
-### `New-AzSqlDatabaseFailoverGroup`
-
-- Cmdlet breaking-change will happen to all parameter sets
-  - The default value of FailoverPolicy will change from Automatic to Manual
-  - This change is expected to take effect from Az.Sql version: 5.0.0 and Az version: 12.0.0
-
-### `Set-AzSqlDatabaseFailoverGroup`
-
-- Cmdlet breaking-change will happen to all parameter sets
-  - The default value of FailoverPolicy will change from Automatic to Manual
-  - This change is expected to take effect from Az.Sql version: 5.0.0 and Az version: 12.0.0
+- Parameter breaking-change will happen to all parameter sets
+  - `-OSType`
+    - The parameter : 'OSType' is changing.
+    - Change description : Removing the default value of OSType parameter. 
+    - This change will take effect on '5/21/2025'- The change is expected to take effect from Az version : '14.0.0'
+    - The change is expected to take effect from version : '5.0.0'
 

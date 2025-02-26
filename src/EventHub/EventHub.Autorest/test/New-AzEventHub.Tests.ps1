@@ -17,7 +17,7 @@ if(($null -eq $TestName) -or ($TestName -contains 'New-AzEventHub'))
 Describe 'New-AzEventHub' {
     It 'CreateExpanded' {
         #create Premium Namespace
-        $eventHubNamespace = New-AzEventHubNamespaceV2 -ResourceGroupName $env.resourceGroup -Name $env.namespaceV1 -SkuName Premium -Location eastus -IdentityType UserAssigned -UserAssignedIdentityId $env.msi2
+        $eventHubNamespace = New-AzEventHubNamespaceV2 -ResourceGroupName $env.resourceGroup -Name $env.namespaceV1 -SkuName Premium -Location $env.location -IdentityType UserAssigned -UserAssignedIdentityId $env.msi2
         #create EventHub with Compact CleanUpPolicy
         $eventhub = New-AzEventHub -Name $env.eventHub2 -ResourceGroupName $env.resourceGroup -NamespaceName $eventHubNamespace.Name -PartitionCount 2 -CleanupPolicy Compact
         $eventhub.Name | Should -Be $env.eventHub2
@@ -31,6 +31,18 @@ Describe 'New-AzEventHub' {
         $eventhub.ResourceGroupName | Should -Be $env.resourceGroup
         $eventhub.PartitionCount | Should -Be 2
         $eventhub.CleanupPolicy | Should -Be "Delete"
+
+        #create EventHub with DeleteOrCompact CleanUpPolicy
+        $eventhub = New-AzEventHub -Name $env.eventHub10 -ResourceGroupName $env.resourceGroup -NamespaceName $eventHubNamespace.Name -CleanupPolicy DeleteOrCompact
+        $eventhub.Name | Should -Be $env.eventHub10
+        $eventhub.ResourceGroupName | Should -Be $env.resourceGroup
+        $eventhub.CleanupPolicy | Should -Be "DeleteOrCompact"
+
+        #create EventHub with Create Timestamp
+        $eventhub = New-AzEventHub -Name $env.eventHub11 -ResourceGroupName $env.resourceGroup -NamespaceName $eventHubNamespace.Name -TimestampType Create
+        $eventhub.Name | Should -Be $env.eventHub11
+        $eventhub.ResourceGroupName | Should -Be $env.resourceGroup
+        $eventhub.TimestampType | Should -Be "Create"
 
         # Create EventHub without capture
         $eventhub = New-AzEventHub -Name $env.eventHub2 -ResourceGroupName $env.resourceGroup -NamespaceName $env.namespace -PartitionCount 5

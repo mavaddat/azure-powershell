@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.RedisEnterpriseCache-help.xml
 Module Name: Az.RedisEnterpriseCache
 online version: https://learn.microsoft.com/powershell/module/az.redisenterprisecache/get-azredisenterprisecachekey
 schema: 2.0.0
@@ -14,7 +14,7 @@ Retrieves all access keys for a Redis Enterprise database.
 
 ```
 Get-AzRedisEnterpriseCacheKey -ClusterName <String> -ResourceGroupName <String> [-SubscriptionId <String[]>]
- [-DefaultProfile <PSObject>] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,7 +31,6 @@ Get-AzRedisEnterpriseCacheKey -Name "MyCache" -ResourceGroupName "MyGroup"
 PrimaryKey                                   SecondaryKey
 ----------                                   ------------
 primary-key                                  secondary-key
-
 ```
 
 This command gets the secret access keys used for authenticating connections to the database of the Redis Enterprise cache named MyCache.
@@ -137,7 +136,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20230301Preview.IAccessKeys
+### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20240901Preview.IAccessKeys
 
 ## NOTES
 
@@ -148,4 +147,3 @@ Get-AzRedisEnterpriseCacheDatabaseKey
 Get-AzRedisEnterpriseCacheAccessKey
 
 ## RELATED LINKS
-

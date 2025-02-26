@@ -21,7 +21,7 @@ Updates an EventHub Entity
 
 function Set-AzEventHub{
 
-    [OutputType([Microsoft.Azure.PowerShell.Cmdlets.EventHub.Models.Api202301Preview.IEventHub])]
+    [OutputType([Microsoft.Azure.PowerShell.Cmdlets.EventHub.Models.IEventHub])]
     [CmdletBinding(DefaultParameterSetName = 'SetExpanded', PositionalBinding = $false, SupportsShouldProcess, ConfirmImpact = 'Medium')]
 	param(
         [Parameter(ParameterSetName = 'SetExpanded', Mandatory, HelpMessage = "The name of EventHub Entity.")]
@@ -66,7 +66,7 @@ function Set-AzEventHub{
 
         [Parameter(HelpMessage = "Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in New API Version")]
         [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
-        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.EncodingCaptureDescription]
+        [System.String]
         #Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated in New API Version
         ${Encoding},
 
@@ -101,9 +101,24 @@ function Set-AzEventHub{
 
         [Parameter(HelpMessage = "Enumerates the possible values for the status of the Event Hub.")]
         [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
-        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.EntityStatus]
+        [System.String]
         # Enumerates the possible values for the status of the Event Hub.
         ${Status},
+
+        [Parameter(HelpMessage = "Gets and Sets Metadata of User.")]
+        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
+        [System.String]
+        ${UserMetadata},
+
+        [Parameter(HelpMessage = "The minimum time a message will remain ineligible for compaction in the log.")]
+        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
+		[System.Int64]
+        ${MinCompactionLagInMin},
+
+        [Parameter(HelpMessage = "Denotes the type of timestamp the message will hold.")]
+        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
+        [System.String]
+        ${TimestampType},
 
         [Parameter(HelpMessage = "Name for capture destination")]
         [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
@@ -112,7 +127,7 @@ function Set-AzEventHub{
 
         [Parameter(HelpMessage = "Type of managed service identity.")]
         [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Category('Body')]
-        [Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.ManagedServiceIdentityType]
+        [System.String]
         ${IdentityType},
 
         [Parameter(HelpMessage = "Properties for User Assigned Identities")]
@@ -221,6 +236,9 @@ function Set-AzEventHub{
             $hasBlobContainer = $PSBoundParameters.Remove('BlobContainer')
             $hasAsJob = $PSBoundParameters.Remove('AsJob')
             $hasPartitionCount = $PSBoundParameters.Remove('PartitionCount')
+            $hasUserMetadata = $PSBoundParameters.Remove('UserMetadata')
+            $hasMinCompactionLagInMin = $PSBoundParameters.Remove('MinCompactionLagInMin')
+            $hasTimestampType = $PSBoundParameters.Remove('TimestampType')
             $null = $PSBoundParameters.Remove('WhatIf')
             $null = $PSBoundParameters.Remove('Confirm')
 
@@ -291,6 +309,21 @@ function Set-AzEventHub{
 
             if ($hasUserAssignedIdentityId) {
                 $eventHub.UserAssignedIdentityId = $UserAssignedIdentityId
+            }
+
+            if($hasUserMetadata) {
+                $eventHub.UserMetadata = $UserMetadata
+                $hasProperty = $true
+            }
+
+            if($hasMinCompactionLagInMin) {
+                $eventHub.MinCompactionLagInMin = $MinCompactionLagInMin
+                $hasProperty = $true
+            }
+
+            if($hasTimestampType) {
+                $eventHub.TimestampType = $TimestampType
+                $hasProperty = $true
             }
 
             if ($hasStorageAccountResourceId) {

@@ -37,8 +37,7 @@ namespace Microsoft.Azure.Management.Compute.Models
         /// </summary>
         /// <param name="osType">This property allows you to specify the type
         /// of the OS that is included in the disk when creating a VM from a
-        /// managed image. &lt;br&gt;&lt;br&gt; Possible values are:
-        /// &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**.
+        /// managed image. Possible values are: **Windows,** **Linux.**.
         /// Possible values include: 'Windows', 'Linux'</param>
         /// <param name="osState">This property allows the user to specify
         /// whether the virtual machines created under this image are
@@ -67,7 +66,9 @@ namespace Microsoft.Azure.Management.Compute.Models
         /// <param name="features">A list of gallery image features.</param>
         /// <param name="architecture">Possible values include: 'x64',
         /// 'Arm64'</param>
-        public GalleryImageUpdate(OperatingSystemTypes osType, OperatingSystemStateTypes osState, GalleryImageIdentifier identifier, string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string description = default(string), string eula = default(string), string privacyStatementUri = default(string), string releaseNoteUri = default(string), string hyperVGeneration = default(string), System.DateTime? endOfLifeDate = default(System.DateTime?), RecommendedMachineConfiguration recommended = default(RecommendedMachineConfiguration), Disallowed disallowed = default(Disallowed), ImagePurchasePlan purchasePlan = default(ImagePurchasePlan), string provisioningState = default(string), IList<GalleryImageFeature> features = default(IList<GalleryImageFeature>), string architecture = default(string))
+        /// <param name="allowUpdateImage">Optional. Must be set to true if the
+        /// gallery image features are being updated.</param>
+        public GalleryImageUpdate(OperatingSystemTypes osType, OperatingSystemStateTypes osState, GalleryImageIdentifier identifier, string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string description = default(string), string eula = default(string), string privacyStatementUri = default(string), string releaseNoteUri = default(string), string hyperVGeneration = default(string), System.DateTime? endOfLifeDate = default(System.DateTime?), RecommendedMachineConfiguration recommended = default(RecommendedMachineConfiguration), Disallowed disallowed = default(Disallowed), ImagePurchasePlan purchasePlan = default(ImagePurchasePlan), string provisioningState = default(string), IList<GalleryImageFeature> features = default(IList<GalleryImageFeature>), string architecture = default(string), bool? allowUpdateImage = default(bool?))
             : base(id, name, type, tags)
         {
             Description = description;
@@ -85,6 +86,7 @@ namespace Microsoft.Azure.Management.Compute.Models
             ProvisioningState = provisioningState;
             Features = features;
             Architecture = architecture;
+            AllowUpdateImage = allowUpdateImage;
             CustomInit();
         }
 
@@ -121,10 +123,8 @@ namespace Microsoft.Azure.Management.Compute.Models
         /// <summary>
         /// Gets or sets this property allows you to specify the type of the OS
         /// that is included in the disk when creating a VM from a managed
-        /// image. &amp;lt;br&amp;gt;&amp;lt;br&amp;gt; Possible values are:
-        /// &amp;lt;br&amp;gt;&amp;lt;br&amp;gt; **Windows**
-        /// &amp;lt;br&amp;gt;&amp;lt;br&amp;gt; **Linux**. Possible values
-        /// include: 'Windows', 'Linux'
+        /// image. Possible values are: **Windows,** **Linux.**. Possible
+        /// values include: 'Windows', 'Linux'
         /// </summary>
         [JsonProperty(PropertyName = "properties.osType")]
         public OperatingSystemTypes OsType { get; set; }
@@ -191,6 +191,13 @@ namespace Microsoft.Azure.Management.Compute.Models
         /// </summary>
         [JsonProperty(PropertyName = "properties.architecture")]
         public string Architecture { get; set; }
+
+        /// <summary>
+        /// Gets or sets optional. Must be set to true if the gallery image
+        /// features are being updated.
+        /// </summary>
+        [JsonProperty(PropertyName = "properties.allowUpdateImage")]
+        public bool? AllowUpdateImage { get; set; }
 
         /// <summary>
         /// Validate the object.

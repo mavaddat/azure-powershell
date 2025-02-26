@@ -15,13 +15,15 @@ List the private link resources available for this workspace.
 ### List (Default)
 ```
 Get-AzWvdPrivateLinkResource -ResourceGroupName <String> [-SubscriptionId <String[]>] -WorkspaceName <String>
- [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### List1
 ```
 Get-AzWvdPrivateLinkResource -ResourceGroupName <String> [-SubscriptionId <String[]>] -HostPoolName <String>
- [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -152,6 +154,7 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
@@ -187,7 +190,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20231004Preview.IPrivateLinkResource
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IPrivateLinkResource
 
 ## NOTES
 

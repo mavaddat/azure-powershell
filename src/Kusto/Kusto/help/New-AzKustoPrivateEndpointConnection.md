@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/new-azkustoprivateendpointconnection
 schema: 2.0.0
@@ -17,14 +17,14 @@ Approve or reject a private endpoint connection with a given name.
 New-AzKustoPrivateEndpointConnection -ClusterName <String> -Name <String> -ResourceGroupName <String>
  [-SubscriptionId <String>] [-PrivateLinkServiceConnectionStateDescription <String>]
  [-PrivateLinkServiceConnectionStateStatus <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
- [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Create
 ```
 New-AzKustoPrivateEndpointConnection -ClusterName <String> -Name <String> -ResourceGroupName <String>
- -Parameter <IPrivateEndpointConnection> [-SubscriptionId <String>] [-DefaultProfile <PSObject>] [-AsJob]
- [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] -Parameter <IPrivateEndpointConnection> [-DefaultProfile <PSObject>] [-AsJob]
+ [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -128,7 +128,7 @@ A private endpoint connection
 To construct, see NOTES section for PARAMETER properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IPrivateEndpointConnection
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IPrivateEndpointConnection
 Parameter Sets: Create
 Aliases:
 
@@ -236,13 +236,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IPrivateEndpointConnection
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IPrivateEndpointConnection
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IPrivateEndpointConnection
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IPrivateEndpointConnection
 
 ## NOTES
 
 ## RELATED LINKS
-

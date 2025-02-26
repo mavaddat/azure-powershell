@@ -19,6 +19,17 @@
 -->
 ## Upcoming Release
 
+## Version 2.4.0
+* Upgraded nuget package to signed package.
+* Added new cmdlets
+    - `Add-AzKustoClusterCalloutPolicy`
+    - `Get-AzKustoClusterCalloutPolicy`
+    - `Remove-AzKustoClusterCalloutPolicy`
+    - `Get-AzKustoClusterFollowerDatabaseGet`
+
+## Version 2.3.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 2.3.0
 * Supported sandbox custom image
 * Supported database CMK

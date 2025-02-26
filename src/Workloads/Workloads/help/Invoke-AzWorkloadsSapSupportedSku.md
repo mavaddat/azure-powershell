@@ -12,20 +12,33 @@ Get a list of SAP supported SKUs for ASCS, Application and Database tier.
 
 ## SYNTAX
 
-### SapExpanded (Default)
+### InvokeExpanded (Default)
 ```
 Invoke-AzWorkloadsSapSupportedSku -Location <String> [-SubscriptionId <String>] -AppLocation <String>
  -DatabaseType <SapDatabaseType> -DeploymentType <SapDeploymentType> -Environment <SapEnvironmentType>
  -SapProduct <SapProductType> [-HighAvailabilityType <SapHighAvailabilityType>] [-DefaultProfile <PSObject>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### SapViaIdentityExpanded
+### Invoke
 ```
-Invoke-AzWorkloadsSapSupportedSku -InputObject <IWorkloadsIdentity> -AppLocation <String>
+Invoke-AzWorkloadsSapSupportedSku -Location <String> [-SubscriptionId <String>]
+ -Body <ISapSupportedSkusRequest> [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### InvokeViaIdentityExpanded
+```
+Invoke-AzWorkloadsSapSupportedSku -InputObject <ISapVirtualInstanceIdentity> -AppLocation <String>
  -DatabaseType <SapDatabaseType> -DeploymentType <SapDeploymentType> -Environment <SapEnvironmentType>
  -SapProduct <SapProductType> [-HighAvailabilityType <SapHighAvailabilityType>] [-DefaultProfile <PSObject>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### InvokeViaIdentity
+```
+Invoke-AzWorkloadsSapSupportedSku -InputObject <ISapVirtualInstanceIdentity> -Body <ISapSupportedSkusRequest>
+ [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -58,7 +71,7 @@ The geo-location where the resource is to be created.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: True
@@ -68,13 +81,29 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Body
+The SAP request to get list of supported SKUs.
+To construct, see NOTES section for BODY properties and create a hash table.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Models.Api20240901.ISapSupportedSkusRequest
+Parameter Sets: Invoke, InvokeViaIdentity
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -DatabaseType
 The database type.
 Eg: HANA, DB2, etc
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Support.SapDatabaseType
-Parameter Sets: (All)
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Support.SapDatabaseType
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: True
@@ -105,8 +134,8 @@ The deployment type.
 Eg: SingleServer/ThreeTier
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Support.SapDeploymentType
-Parameter Sets: (All)
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Support.SapDeploymentType
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: True
@@ -120,8 +149,8 @@ Accept wildcard characters: False
 Defines the environment type - Production/Non Production.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Support.SapEnvironmentType
-Parameter Sets: (All)
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Support.SapEnvironmentType
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: True
@@ -135,8 +164,8 @@ Accept wildcard characters: False
 The high availability type.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Support.SapHighAvailabilityType
-Parameter Sets: (All)
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Support.SapHighAvailabilityType
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: False
@@ -151,8 +180,8 @@ Identity Parameter
 To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Models.IWorkloadsIdentity
-Parameter Sets: SapViaIdentityExpanded
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Models.ISapVirtualInstanceIdentity
+Parameter Sets: InvokeViaIdentityExpanded, InvokeViaIdentity
 Aliases:
 
 Required: True
@@ -163,14 +192,29 @@ Accept wildcard characters: False
 ```
 
 ### -Location
-The name of Azure region.
+The name of the Azure region.
 
 ```yaml
 Type: System.String
-Parameter Sets: SapExpanded
+Parameter Sets: InvokeExpanded, Invoke
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: System.Management.Automation.ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -181,8 +225,8 @@ Accept wildcard characters: False
 Defines the SAP Product type.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.Support.SapProductType
-Parameter Sets: (All)
+Type: Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Support.SapProductType
+Parameter Sets: InvokeExpanded, InvokeViaIdentityExpanded
 Aliases:
 
 Required: True
@@ -194,10 +238,11 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String
-Parameter Sets: SapExpanded
+Parameter Sets: InvokeExpanded, Invoke
 Aliases:
 
 Required: False
@@ -243,31 +288,18 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Workloads.Models.IWorkloadsIdentity
+### Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Models.Api20240901.ISapSupportedSkusRequest
+
+### Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Models.ISapVirtualInstanceIdentity
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Workloads.Models.Api20230401.ISapSupportedSku
+### Microsoft.Azure.PowerShell.Cmdlets.Workloads.SapVirtualInstance.Models.Api20240901.ISapSupportedSku
 
 ## NOTES
 
 ALIASES
 
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`INPUTOBJECT <IWorkloadsIdentity>`: Identity Parameter
-  - `[ApplicationInstanceName <String>]`: The name of SAP Application Server instance resource.
-  - `[CentralInstanceName <String>]`: Central Services Instance resource name string modeled as parameter for auto generation to work correctly.
-  - `[DatabaseInstanceName <String>]`: Database resource name string modeled as parameter for auto generation to work correctly.
-  - `[Id <String>]`: Resource identity path
-  - `[Location <String>]`: The name of Azure region.
-  - `[MonitorName <String>]`: Name of the SAP monitor resource.
-  - `[ProviderInstanceName <String>]`: Name of the provider instance.
-  - `[ResourceGroupName <String>]`: The name of the resource group. The name is case insensitive.
-  - `[SapVirtualInstanceName <String>]`: The name of the Virtual Instances for SAP solutions resource
-  - `[SubscriptionId <String>]`: The ID of the target subscription.
+Invoke-AzVISSupportedSku
 
 ## RELATED LINKS

@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/new-azkustodatabase
 schema: 2.0.0
@@ -13,11 +13,11 @@ Creates or updates a database.
 ## SYNTAX
 
 ```
-New-AzKustoDatabase -ClusterName <String> -Name <String> -ResourceGroupName <String> -Kind <Kind>
- [-SubscriptionId <String>] [-CallerRole <CallerRole>] [-HotCachePeriod <TimeSpan>]
+New-AzKustoDatabase -ClusterName <String> -Name <String> -ResourceGroupName <String> [-SubscriptionId <String>]
+ [-CallerRole <CallerRole>] -Kind <Kind> [-HotCachePeriod <TimeSpan>] [-SoftDeletePeriod <TimeSpan>]
  [-KeyVaultPropertyKeyName <String>] [-KeyVaultPropertyKeyVaultUri <String>]
  [-KeyVaultPropertyKeyVersion <String>] [-KeyVaultPropertyUserIdentity <String>] [-Location <String>]
- [-SoftDeletePeriod <TimeSpan>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
+ [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -321,9 +321,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IDatabase
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IDatabase
 
 ## NOTES
 
 ## RELATED LINKS
-

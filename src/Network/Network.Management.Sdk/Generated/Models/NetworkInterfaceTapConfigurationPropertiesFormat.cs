@@ -28,7 +28,8 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </param>
 
         /// <param name="provisioningState">The provisioning state of the network interface tap configuration resource.
-        /// Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;</param>
+        /// Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;,
+        /// &#39;Updating&#39;, &#39;Deleting&#39;</param>
         public NetworkInterfaceTapConfigurationPropertiesFormat(VirtualNetworkTap virtualNetworkTap = default(VirtualNetworkTap), string provisioningState = default(string))
 
         {
@@ -51,9 +52,23 @@ namespace Microsoft.Azure.Management.Network.Models
 
         /// <summary>
         /// Gets the provisioning state of the network interface tap configuration
-        /// resource. Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;
+        /// resource. Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;, &#39;Updating&#39;, &#39;Deleting&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "provisioningState")]
         public string ProvisioningState {get; private set; }
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (this.VirtualNetworkTap != null)
+            {
+                this.VirtualNetworkTap.Validate();
+            }
+
+        }
     }
 }

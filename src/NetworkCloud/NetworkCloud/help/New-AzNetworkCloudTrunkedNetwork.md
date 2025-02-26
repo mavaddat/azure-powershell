@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/az.networkcloud/new-aznetworkcloudtrunkednetwork
 schema: 2.0.0
@@ -13,10 +13,11 @@ Create a new trunked network or update the properties of the existing trunked ne
 ## SYNTAX
 
 ```
-New-AzNetworkCloudTrunkedNetwork -Name <String> -ResourceGroupName <String> -ExtendedLocationName <String>
- -ExtendedLocationType <String> -IsolationDomainId <String[]> -Location <String> -Vlan <Int64[]>
- [-SubscriptionId <String>] [-HybridAksPluginType <HybridAksPluginType>] [-InterfaceName <String>]
- [-Tag <Hashtable>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+New-AzNetworkCloudTrunkedNetwork -Name <String> -ResourceGroupName <String> [-SubscriptionId <String>]
+ -ExtendedLocationName <String> -ExtendedLocationType <String> -IsolationDomainId <String[]> -Location <String>
+ -Vlan <Int64[]> [-HybridAksPluginType <HybridAksPluginType>] [-InterfaceName <String>] [-Tag <Hashtable>]
+ [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -294,11 +295,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.ITrunkedNetwork
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.ITrunkedNetwork
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

@@ -19,6 +19,12 @@
 -->
 ## Upcoming Release
 
+## Version 0.3.2
+* Upgraded nuget package to signed package.
+
+## Version 0.3.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 0.3.0
 * Updated API version to 2021-11-03
     - Added `Get-AzDedicatedHsmOutboundNetworkDependencyEndpoint`

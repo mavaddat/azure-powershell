@@ -15,13 +15,13 @@ Restarts the replication for specified server.
 ### ByIDVMwareCbt (Default)
 ```
 Restart-AzMigrateServerReplication -TargetObjectID <String> [-SubscriptionId <String>]
- [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### ByInputObjectVMwareCbt
 ```
 Restart-AzMigrateServerReplication [-SubscriptionId <String>] -InputObject <IMigrationItem>
- [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -112,11 +112,26 @@ Specifies the machine object of the replicating server.
 To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api202301.IMigrationItem
+Type: Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api202401.IMigrationItem
 Parameter Sets: ByInputObjectVMwareCbt
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: System.Management.Automation.ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -161,20 +176,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api202301.IJob
+### Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api202401.IJob
 
 ## NOTES
-
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`INPUTOBJECT <IMigrationItem>`: Specifies the machine object of the replicating server.
-  - `[Location <String>]`: Resource Location
-  - `[ProviderSpecificDetail <IMigrationProviderSpecificSettings>]`: The migration provider custom settings.
-    - `InstanceType <String>`: Gets the instance type.
 
 ## RELATED LINKS

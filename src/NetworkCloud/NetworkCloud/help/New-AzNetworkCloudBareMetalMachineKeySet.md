@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/az.networkcloud/new-aznetworkcloudbaremetalmachinekeyset
 schema: 2.0.0
@@ -14,10 +14,11 @@ Create a new bare metal machine key set or update the existing one for the provi
 
 ```
 New-AzNetworkCloudBareMetalMachineKeySet -ClusterName <String> -Name <String> -ResourceGroupName <String>
- -AzureGroupId <String> -Expiration <DateTime> -ExtendedLocationName <String> -ExtendedLocationType <String>
- -JumpHostsAllowed <String[]> -Location <String> -PrivilegeLevel <BareMetalMachineKeySetPrivilegeLevel>
- -UserList <IKeySetUser[]> [-SubscriptionId <String>] [-OSGroupName <String>] [-Tag <Hashtable>]
- [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] -AzureGroupId <String> -Expiration <DateTime> -ExtendedLocationName <String>
+ -ExtendedLocationType <String> -JumpHostsAllowed <String[]> -Location <String>
+ -PrivilegeLevel <BareMetalMachineKeySetPrivilegeLevel> -UserList <IKeySetUser[]> [-OSGroupName <String>]
+ [-Tag <Hashtable>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -300,7 +301,7 @@ The unique list of permitted users.
 To construct, see NOTES section for USERLIST properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.IKeySetUser[]
+Type: Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.IKeySetUser[]
 Parameter Sets: (All)
 Aliases:
 
@@ -349,21 +350,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.IBareMetalMachineKeySet
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.IBareMetalMachineKeySet
 
 ## NOTES
 
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`USERLIST <IKeySetUser[]>`: The unique list of permitted users.
-  - `AzureUserName <String>`: The user name that will be used for access.
-  - `SshPublicKeyData <String>`: The SSH public key data.
-  - `[Description <String>]`: The free-form description for this user.
-
 ## RELATED LINKS
-

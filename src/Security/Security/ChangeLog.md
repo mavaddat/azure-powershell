@@ -20,6 +20,22 @@
 
 ## Upcoming Release
 
+## Version 1.8.0
+* Upgraded nuget package to signed package.
+
+## Version 1.7.0
+* Added new cmdlets for defender for storage
+
+## Version 1.6.2
+* Introduced secrets detection feature to safeguard sensitive data.
+
+## Version 1.6.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
+## Version 1.6.0
+* Added new cmdlets for Security Connectors
+* Added new cmdlets for ApiCollections Security
+
 ## Version 1.5.1
 * Fixed bug for `Set-AzSecurityPricing`
 

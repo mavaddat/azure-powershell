@@ -14,17 +14,18 @@ Creates a new Azure NetApp Files (ANF) backup.
 
 ### ByFieldsParameterSet (Default)
 ```
-New-AzNetAppFilesBackup -ResourceGroupName <String> -Location <String> -AccountName <String> -PoolName <String>
- -VolumeName <String> -Name <String> -Label <String> [-UseExistingSnapshot]
+New-AzNetAppFilesBackup -ResourceGroupName <String> -AccountName <String> -BackupVaultName <String>
+ -Name <String> -VolumeResourceId <String> [-Label <String>] [-UseExistingSnapshot] [-SnapshotName <String>]
  [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### ByParentObjectParameterSet
 ```
-New-AzNetAppFilesBackup -Name <String> -Label <String> [-UseExistingSnapshot]
- -VolumeObject <PSNetAppFilesVolume> [-DefaultProfile <IAzureContextContainer>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+New-AzNetAppFilesBackup -Name <String> -VolumeResourceId <String> [-Label <String>] [-UseExistingSnapshot]
+ [-SnapshotName <String>] -BackupVaultObject <PSNetAppFilesBackupVault>
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,10 +35,12 @@ The **New-AzNetAppFilesBackup** cmdlet creates a backup for an ANF volume.
 
 ### Example 1
 ```powershell
-New-AzNetAppFilesBackup -ResourceGroupName "MyRG" -Location "westus2" -AccountName "MyAccount" -PoolName "MyPool" -VolumeName "MyVolume" -Name "MyVolumeBackup" -Label "ALabel"
+$volumeResourceId = "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/MyAccount/capacityPools/MyPool/volumes/MyVolume"
+New-AzNetAppFilesBackup -ResourceGroupName "MyRG" -AccountName "MyAccount" -BackupVaultName "MyVault" -Name "MyVolumeBackup" -Label "ALabel" -VolumeResourceId $volumeResourceId 
 ```
 
-This command creates the new ANF backup for volume named  account "MyVolume".
+This command creates the new ANF backup in vault MyVault for volume with resource Id $volumeResourceId.
+
 
 ## PARAMETERS
 
@@ -53,6 +56,36 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackupVaultName
+The name of the ANF BackupVault
+
+```yaml
+Type: System.String
+Parameter Sets: ByFieldsParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackupVaultObject
+The BackupVault object containing the backup to return
+
+```yaml
+Type: Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesBackupVault
+Parameter Sets: ByParentObjectParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -79,22 +112,7 @@ Type: System.String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Location
-The location of the resource
-
-```yaml
-Type: System.String
-Parameter Sets: ByFieldsParameterSet
-Aliases:
-
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -108,21 +126,6 @@ The name of the ANF backup
 Type: System.String
 Parameter Sets: (All)
 Aliases: BackupName
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PoolName
-The name of the ANF pool
-
-```yaml
-Type: System.String
-Parameter Sets: ByFieldsParameterSet
-Aliases:
 
 Required: True
 Position: Named
@@ -146,6 +149,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -SnapshotName
+The name of the snapshot, use with UseExistingSnapshot
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -UseExistingSnapshot
 Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for manual backups
 
@@ -161,33 +179,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -VolumeName
-The name of the ANF volume
+### -VolumeResourceId
+ResourceId used to identify the Volume
 
 ```yaml
 Type: System.String
-Parameter Sets: ByFieldsParameterSet
+Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -VolumeObject
-The volume for the new backup object
-
-```yaml
-Type: Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesVolume
-Parameter Sets: ByParentObjectParameterSet
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -227,7 +230,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesVolume
+### Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesBackupVault
 
 ## OUTPUTS
 

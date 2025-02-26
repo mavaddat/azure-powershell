@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/get-azkustoclusterfollowerdatabase
 schema: 2.0.0
@@ -14,7 +14,8 @@ Returns a list of databases that are owned by this cluster and were followed by 
 
 ```
 Get-AzKustoClusterFollowerDatabase -ClusterName <String> -ResourceGroupName <String>
- [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,7 +34,7 @@ AttachedDatabaseConfigurationName ClusterResourceId                             
 myfollowerconfiguration             /subscriptions/xxxxxxxx-xxxxx-xxxx-xxxx-xxxxxxxxx/resourceGroups/testrg/providers/Microsoft.Kusto/Clusters/testnewkustoclusterf mykustodatabase
 ```
 
-The above command lists all the databases that are owned by this cluster and were followed by another cluster.
+The above command lists all the databases that are owned by this cluster and are followed by another cluster.
 
 ## PARAMETERS
 
@@ -137,9 +138,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IFollowerDatabaseDefinition
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IFollowerDatabaseDefinition
 
 ## NOTES
 
 ## RELATED LINKS
-

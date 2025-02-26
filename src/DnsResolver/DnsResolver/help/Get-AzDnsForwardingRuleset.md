@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.DnsResolver-help.xml
 Module Name: Az.DnsResolver
 online version: https://learn.microsoft.com/powershell/module/az.dnsresolver/get-azdnsforwardingruleset
 schema: 2.0.0
@@ -15,32 +15,32 @@ Gets a DNS forwarding ruleset properties.
 ### List1 (Default)
 ```
 Get-AzDnsForwardingRuleset [-SubscriptionId <String[]>] [-Top <Int32>] [-DefaultProfile <PSObject>]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Get
 ```
 Get-AzDnsForwardingRuleset -Name <String> -ResourceGroupName <String> [-SubscriptionId <String[]>]
- [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### GetViaIdentity
+### List2
 ```
-Get-AzDnsForwardingRuleset -InputObject <IDnsResolverIdentity> [-DefaultProfile <PSObject>]
- [<CommonParameters>]
+Get-AzDnsForwardingRuleset -ResourceGroupName <String> [-SubscriptionId <String[]>]
+ -VirtualNetworkName <String> [-Top <Int32>] [-DefaultProfile <PSObject>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### List
 ```
 Get-AzDnsForwardingRuleset -ResourceGroupName <String> [-SubscriptionId <String[]>] [-Top <Int32>]
- [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### List2
+### GetViaIdentity
 ```
-Get-AzDnsForwardingRuleset -ResourceGroupName <String> -VirtualNetworkName <String>
- [-SubscriptionId <String[]>] [-Top <Int32>] [-DefaultProfile <PSObject>] [-Confirm] [-WhatIf]
- [<CommonParameters>]
+Get-AzDnsForwardingRuleset -InputObject <IDnsResolverIdentity> [-DefaultProfile <PSObject>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -109,7 +109,8 @@ This command gets all DNS forwarding ruleset under the virtual network.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -160,7 +161,7 @@ The name is case insensitive.
 
 ```yaml
 Type: System.String
-Parameter Sets: Get, List, List2
+Parameter Sets: Get, List2, List
 Aliases:
 
 Required: True
@@ -172,10 +173,11 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
-Parameter Sets: Get, List, List1, List2
+Parameter Sets: List1, Get, List2, List
 Aliases:
 
 Required: False
@@ -191,7 +193,7 @@ If not specified, returns up to 100 results.
 
 ```yaml
 Type: System.Int32
-Parameter Sets: List, List1, List2
+Parameter Sets: List1, List2, List
 Aliases:
 
 Required: False
@@ -256,30 +258,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20220701.IDnsForwardingRuleset
+### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20230701Preview.IDnsForwardingRuleset
 
-### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20220701.IVirtualNetworkDnsForwardingRuleset
+### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20230701Preview.IVirtualNetworkDnsForwardingRuleset
 
 ## NOTES
 
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`INPUTOBJECT <IDnsResolverIdentity>`: Identity Parameter
-  - `[DnsForwardingRulesetName <String>]`: The name of the DNS forwarding ruleset.
-  - `[DnsResolverName <String>]`: The name of the DNS resolver.
-  - `[ForwardingRuleName <String>]`: The name of the forwarding rule.
-  - `[Id <String>]`: Resource identity path
-  - `[InboundEndpointName <String>]`: The name of the inbound endpoint for the DNS resolver.
-  - `[OutboundEndpointName <String>]`: The name of the outbound endpoint for the DNS resolver.
-  - `[ResourceGroupName <String>]`: The name of the resource group. The name is case insensitive.
-  - `[SubscriptionId <String>]`: The ID of the target subscription.
-  - `[VirtualNetworkLinkName <String>]`: The name of the virtual network link.
-  - `[VirtualNetworkName <String>]`: The name of the virtual network.
-
 ## RELATED LINKS
-

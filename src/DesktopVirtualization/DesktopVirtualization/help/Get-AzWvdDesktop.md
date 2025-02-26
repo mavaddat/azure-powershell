@@ -15,13 +15,21 @@ Get a desktop.
 ### List (Default)
 ```
 Get-AzWvdDesktop -ApplicationGroupName <String> -ResourceGroupName <String> [-SubscriptionId <String[]>]
- [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-InitialSkip <Int32>] [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### Get
 ```
 Get-AzWvdDesktop -ApplicationGroupName <String> -Name <String> -ResourceGroupName <String>
- [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
+```
+
+### GetViaIdentityApplicationGroup
+```
+Get-AzWvdDesktop -Name <String> -ApplicationGroupInputObject <IDesktopVirtualizationIdentity>
+ [-DefaultProfile <PSObject>] [<CommonParameters>]
 ```
 
 ### GetViaIdentity
@@ -62,6 +70,21 @@ ApplicationGroupName/DesktopName Microsoft.DesktopVirtualization/applicationgrou
 This command lists Windows Virtual Desktop Desktops in an application Group.
 
 ## PARAMETERS
+
+### -ApplicationGroupInputObject
+Identity Parameter
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
+Parameter Sets: GetViaIdentityApplicationGroup
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
 
 ### -ApplicationGroupName
 The name of the application group
@@ -111,7 +134,6 @@ Accept wildcard characters: False
 
 ### -InputObject
 Identity Parameter
-To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
@@ -145,7 +167,7 @@ The name of the desktop within the specified desktop group
 
 ```yaml
 Type: System.String
-Parameter Sets: Get
+Parameter Sets: Get, GetViaIdentityApplicationGroup
 Aliases: DesktopName
 
 Required: True
@@ -188,6 +210,7 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
@@ -210,7 +233,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20231004Preview.IDesktop
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktop
 
 ## NOTES
 

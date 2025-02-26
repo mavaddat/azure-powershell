@@ -3,7 +3,6 @@
 This directory contains the PowerShell module for the DataProtection service.
 
 ---
-
 ## Info
 - Modifiable: yes
 - Generated: all
@@ -32,11 +31,11 @@ This file contains the configuration for generating My API from the OpenAPI spec
 
 ``` yaml
 # it's the same options as command line options, just drop the double-dash!
-commit: c0e7b1360c19187fde2497251f784aa82641aa95
+commit: 4aad50a36767f7c36673f2c7982bb4055dbf5ed4
 require:
   - $(this-folder)/../../readme.azure.noprofile.md
 input-file:
-  - $(repo)/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/dataprotection.json
+  - $(repo)/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/dataprotection.json
 title: DataProtection
 # For new modules, please avoid setting 3.x using the use-extension method and instead, use 4.x as the default option
 use-extension:
@@ -46,15 +45,11 @@ directive:
   - from: swagger-document
     where: $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}"].delete
     transform: $["description"] = "Delete a backupInstances"
-  - from: swagger-document
-    where: $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}/unlockDelete"]["post"]["parameters"]
-    transform: >
-        $.push({"name": "x-ms-authorization-auxiliary","in": "header","type": "string"})
   - where:
       parameter-name: XmsAuthorizationAuxiliary
     set:
       parameter-name: Token
-      parameter-description: Parameter to authorize operations protected by cross tenant resource guard. Use command (Get-AzAccessToken -TenantId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx").Token to fetch authorization token for different tenant.
+      parameter-description: Parameter deprecate. Please use SecureToken instead.
   - where:
       parameter-name: AzureMonitorAlertSettingAlertsForAllJobFailure
     set:
@@ -105,6 +100,10 @@ directive:
     set:
       parameter-name: SoftDeleteSetting
     clear-alias: true
+  - where:      
+      parameter-name: SecuritySettingEncryptionSetting
+    set:
+      parameter-name: EncryptionSetting
   - where:
       verb: Get
       subject: BackupVaultResource.*
@@ -160,7 +159,7 @@ directive:
       subject: ResourceGuardMapping
   - where:
       parameter-name: ResourceGuardProxyName
-    hide: true
+    hide: true 
     set:
       default:
         script: '"DppResourceGuardProxy"'
@@ -168,7 +167,7 @@ directive:
       verb: New
       subject: ResourceGuardMapping
       parameter-name: LastUpdatedTime|Description|ResourceGuardOperationDetail
-    hide: true 
+    hide: true
   - where:
       verb: Get
       subject: DeletedBackupInstance
@@ -239,6 +238,26 @@ directive:
       subject: .*Restore$
     hide: true
   - where:
+      verb: Stop
+      subject: ^BackupInstanceProtection$
+      variant: Stop$|StopViaIdentityExpanded$
+    remove: true
+  - where:
+      verb: Stop
+      subject: ^BackupInstanceProtection$
+      variant: StopExpanded$|StopViaIdentity$
+    hide: true  
+  - where:
+      verb: Suspend
+      subject: ^BackupInstanceBackup$
+      variant: Suspend$|SuspendViaIdentityExpanded$
+    remove: true
+  - where:
+      verb: Suspend
+      subject: ^BackupInstanceBackup$
+      variant: SuspendExpanded$|SuspendViaIdentity$
+    hide: true
+  - where:
       verb: Get
       subject: OperationResultPatch
     remove: true
@@ -249,6 +268,11 @@ directive:
   - where:
       verb: New
       subject: BackupVault
+    hide: true
+  - where:
+      verb: Update
+      subject: BackupVault
+      variant: ^UpdateExpanded$
     hide: true
   - where:
       verb: Invoke
@@ -362,6 +386,22 @@ directive:
     set:
       property-name: SoftDeleteState
   - where:
+      property-name: SecuritySettingEncryptionSetting
+    set:
+      property-name: EncryptionSetting
+  - where:
+      property-name: InfrastructureEncryption
+    set:
+      property-name: CmkInfrastructureEncryption
+  - where:
+      property-name: KekIdentity
+    set:
+      property-name: CmkIdentity
+  - where:
+      property-name: KeyVaultProperty
+    set:
+      property-name: CmkKeyVaultProperty
+  - where:
       subject: OperationStatus
       parameter-name: Location
     set:      
@@ -397,18 +437,22 @@ directive:
     - UserFacingError    
     - ValidateRestoreRequestObject
     - ValidateCrossRegionRestoreRequestObject
+    - EncryptionSettings
   - from: source-file-csharp
     where: $
-    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IBaseBackupPolicy Property', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IBaseBackupPolicy Property');
+    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IBaseBackupPolicy Property', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IBaseBackupPolicy Property');
   - from: source-file-csharp
     where: $
-    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.ITriggerContext Trigger', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.ITriggerContext Trigger');
+    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.ITriggerContext Trigger', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.ITriggerContext Trigger');
   - from: source-file-csharp
     where: $
-    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IBackupParameters BackupParameter', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IBackupParameters BackupParameter');
+    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IBackupParameters BackupParameter', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IBackupParameters BackupParameter');
   - from: source-file-csharp
     where: $
-    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IAzureBackupRecoveryPoint Property', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IAzureBackupRecoveryPoint Property');
+    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IAzureBackupRecoveryPoint Property', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IAzureBackupRecoveryPoint Property');
+  - from: source-file-csharp
+    where: $
+    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.INamespacedNameResource ResourceModifierReference', 'public Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.INamespacedNameResource ResourceModifierReference');
 ```
 
 ## Alternate settings

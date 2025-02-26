@@ -14,7 +14,8 @@ Get a workspace.
 
 ### List1 (Default)
 ```
-Get-AzWvdWorkspace [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+Get-AzWvdWorkspace [-SubscriptionId <String[]>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### Get
@@ -26,7 +27,8 @@ Get-AzWvdWorkspace -Name <String> -ResourceGroupName <String> [-SubscriptionId <
 ### List
 ```
 Get-AzWvdWorkspace -ResourceGroupName <String> [-SubscriptionId <String[]>] [-InitialSkip <Int32>]
- [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-IsDescending] [-PageSize <Int32>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### GetViaIdentity
@@ -102,7 +104,6 @@ Accept wildcard characters: False
 
 ### -InputObject
 Identity Parameter
-To construct, see NOTES section for INPUTOBJECT properties and create a hash table.
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IDesktopVirtualizationIdentity
@@ -179,6 +180,7 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
@@ -201,7 +203,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20231004Preview.IWorkspace
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.IWorkspace
 
 ## NOTES
 

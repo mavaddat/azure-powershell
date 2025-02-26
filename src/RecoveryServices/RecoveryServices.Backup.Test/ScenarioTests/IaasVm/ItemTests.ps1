@@ -12,6 +12,83 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
+function Test-AzurePERestore
+{
+	$subId = "f2edfd5d-5496-4683-b94f-b3588c579009"
+	$subName = "sriramsa-IaaSVmBackup Canary Subscription"
+	$location = "eastus2euap"
+	$resourceGroupName = "arpja"
+	$vaultName = "arpja-pe-e2e-validation-vault"
+	$vmName = "peval-ecy-win44"		
+	$saName = "arpjapevalrestoresa"
+	$targetVMName = "ps-diskaccess"
+	$targetVNetName = "arpjavnet238"
+	$targetVNetRG = "arpja"
+	$targetSubnetName = "default"
+	$recoveryPointId = "252905611419763" # latest recovery point
+	$targetDiskAccessId = "/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/arpja/providers/Microsoft.Compute/diskAccesses/arpja-peval-restore-da"
+
+	try
+	{	
+		# Setup
+		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName
+		$item = Get-AzRecoveryServicesBackupItem -BackupManagementType AzureVM -WorkloadType AzureVM `
+			-VaultId $vault.ID | Where-Object { $_.Name -match $vmName }
+
+		$rp = Get-AzRecoveryServicesBackupRecoveryPoint -Item $item[0] -VaultId $vault.ID -RecoveryPointId $recoveryPointId
+		
+		$diskAccessRestoreJob = Restore-AzRecoveryServicesBackupItem -VaultLocation $vault.Location -RecoveryPoint $rp[0] -StorageAccountName $saName -StorageAccountResourceGroupName $vault.ResourceGroupName -TargetResourceGroupName $vault.ResourceGroupName -TargetVMName $targetVMName -TargetVNetName $targetVNetName -TargetVNetResourceGroup $targetVNetRG -TargetSubnetName $targetSubnetName -VaultId $vault.Id -DiskAccessOption EnablePrivateAccessForAllDisks -TargetDiskAccessId $targetDiskAccessId | Wait-AzRecoveryServicesBackupJob -VaultId $vault.ID
+		
+		Assert-True { $diskAccessRestoreJob.Status -eq "Completed" }
+	}
+	finally
+	{
+		Delete-VM $resourceGroupName $targetVMName
+	}
+}
+
+function Test-AzureVaultSoftDelete
+{	
+	$resourceGroupName = "hiagarg"
+	$vaultName = "hiagaSecurityVault"
+	$location = "eastus2euap"
+	$tag= @{"MABUsed"="Yes";"Owner"="hiaga";"Purpose"="Testing";"DeleteBy"="01-2099"}
+	
+	try
+	{			
+		# new vault
+		$vault = New-AzRecoveryServicesVault -Name $vaultName -ResourceGroupName $resourceGroupName -Location $location -Tag $tag
+		$vault = Get-AzRecoveryServicesVault -Name $vaultName -ResourceGroupName $resourceGroupName
+		Assert-True {  $vault -ne $null }
+		
+		# Disable soft delete 
+		Set-AzRecoveryServicesVaultProperty -VaultId $vault.ID -SoftDeleteFeatureState Disable
+		$vaultProperty = Get-AzRecoveryServicesVaultProperty -VaultId $vault.ID
+		Assert-True { $vaultProperty.SoftDeleteFeatureState -eq "Disabled" }
+
+		# Enable soft delete 
+		Set-AzRecoveryServicesVaultProperty -VaultId $vault.ID -SoftDeleteFeatureState Enable
+		$vaultProperty = Get-AzRecoveryServicesVaultProperty -VaultId $vault.ID
+		Assert-True { $vaultProperty.SoftDeleteFeatureState -eq "Enabled" }
+
+		# Enable disable hybrid security setting 
+		Set-AzRecoveryServicesVaultProperty   -VaultId  $vault.ID -DisableHybridBackupSecurityFeature $false
+		$vaultProperty = Get-AzRecoveryServicesVaultProperty -VaultId $vault.ID
+		Assert-True { $vaultProperty.EnhancedSecurityState -eq "Enabled" }
+
+		# Disable hybrid security setting
+		Set-AzRecoveryServicesVaultProperty   -VaultId  $vault.ID -DisableHybridBackupSecurityFeature $true
+		$vaultProperty = Get-AzRecoveryServicesVaultProperty -VaultId $vault.ID
+		Assert-True { $vaultProperty.EnhancedSecurityState -eq "Disabled" }		
+	}
+	finally
+	{
+		# remove vault
+		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName		
+		Remove-AzRecoveryServicesVault -Vault $vault
+	}
+}
+
 function Test-AzureVaultPublicNetworkAccess
 {	
 	$resourceGroupName = "hiagaCZR-rg"
@@ -42,7 +119,7 @@ function Test-AzureVaultPublicNetworkAccess
 function Test-AzureVaultImmutability
 {	
 	$resourceGroupName = "hiagaCZR-rg"
-	$vaultName = "hiagaImmutableVault"
+	$vaultName = "hiagaImmutableVault3"
 	$location = "eastus2euap"
 	$tag= @{"MABUsed"="Yes";"Owner"="hiaga";"Purpose"="Testing";"DeleteBy"="01-2099"}
 
@@ -138,8 +215,8 @@ function Test-AzureCrossZonalRestore
 	$targetVNetName = "hiagaNZPVNet"
 	$targetVNetRG = "hiagarg"
 	$targetSubnetName = "custom"
-	$recoveryPointId = "172325782667650" # latest vaultStandard recovery point
-	$snapshotRecoveryPointId = "169019845618646" # latest Snapshot (older than 4 hrs) recovery point
+	$recoveryPointId = "168844254575899" # latest vaultStandard recovery point
+	$snapshotRecoveryPointId = "171735978591866" # latest Snapshot (older than 4 hrs) recovery point
 	try
 	{	
 		# Setup
@@ -152,7 +229,7 @@ function Test-AzureCrossZonalRestore
 		$restoreJobCZR = Restore-AzRecoveryServicesBackupItem -VaultId $vault.ID -VaultLocation $vault.Location `
 			-RecoveryPoint $rp[0] -StorageAccountName $saName -StorageAccountResourceGroupName $vault.ResourceGroupName -TargetResourceGroupName $vault.ResourceGroupName -TargetVMName $targetVMName -TargetVNetName $targetVNetName -TargetVNetResourceGroup $targetVNetRG -TargetSubnetName $targetSubnetName -TargetZoneNumber 2 | Wait-AzRecoveryServicesBackupJob -VaultId $vault.ID
 		
-		Assert-True { $restoreJobCZR.Status -eq "Completed" }
+		Assert-True { $restoreJobCZR.Status -match "Completed" } # later change to -eq
 
 		# Snapshot CZR
 		# $rp = Get-AzRecoveryServicesBackupRecoveryPoint -Item $item[0] -VaultId $vault.ID  -RecoveryPointId $recoveryPointId
@@ -167,12 +244,44 @@ function Test-AzureCrossZonalRestore
 	}
 }
 
+function Test-AzureCrossZonalRestoreToNoZone
+{
+	$location = "eastus2euap"
+	$resourceGroupName = "sgholapCZRTesting"
+	$vaultName = "sgholapZRSTestingVault"
+	$vmName = "CZRTtestingVM"
+	$saName = "sgholapecysa"
+	$targetVMName = "CZRTtestingNoZoneVM"
+	$targetVNetName = "CZRTtestingVM-vnet"
+	$targetVNetRG = "sgholapCZRTesting"
+	$targetSubnetName = "default"
+	$owner = "sgholap"
+	$subscriptionId = "f2edfd5d-5496-4683-b94f-b3588c579009"
+	$recoveryPointId = "656339447820742" # latest vaultStandard recovery point	
+	try
+	{	
+		# Setup
+		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName
+		$namedContainer = Get-AzRecoveryServicesBackupContainer  -ContainerType "AzureVM" -FriendlyName $vmName -VaultId $vault.ID
+		$backupitem = Get-AzRecoveryServicesBackupItem -Container $namedContainer  -WorkloadType "AzureVM" -VaultId $vault.ID
+		$rp = Get-AzRecoveryServicesBackupRecoveryPoint -Item $backupitem -VaultId $vault.ID -RecoveryPointId $recoveryPointId
+		$restoreJobCZR = Restore-AzRecoveryServicesBackupItem -VaultId $vault.ID -VaultLocation $vault.Location `
+			-RecoveryPoint $rp[0] -StorageAccountName $saName -StorageAccountResourceGroupName $vault.ResourceGroupName -TargetResourceGroupName $vault.ResourceGroupName -TargetVMName $targetVMName -TargetVNetName $targetVNetName -TargetVNetResourceGroup $targetVNetRG -TargetSubnetName $targetSubnetName -TargetZoneNumber 0 | Wait-AzRecoveryServicesBackupJob -VaultId $vault.ID
+
+		Assert-True { $restoreJobCZR.Status -eq "Completed" }
+	}
+	finally
+	{
+		Delete-VM $resourceGroupName $targetVMName
+	}
+}
+
 function Test-AzureMonitorAlerts
 {
 	$location = "centraluseuap"
-	$resourceGroupName = "hiagarg"
-	$vaultName1 = "alerts-pstest-vault1"
-	$vaultName2 = "alerts-pstest-vault2"
+	$resourceGroupName = "hiagarg" # "vijami-alertrg"  
+	$vaultName1 = "Backupalerts-pstest-vault1"
+	$vaultName2 = "Backupalerts-pstest-vault2"
 
 	try
 	{	
@@ -184,14 +293,17 @@ function Test-AzureMonitorAlerts
 
 		# create a vault with Alert settings 
 		$vault2 = New-AzRecoveryServicesVault -Name $vaultName2 -ResourceGroupName $resourceGroupName -Location "centraluseuap" `
-			-Tag $tag -DisableAzureMonitorAlertsForJobFailure $false `
-			-DisableClassicAlerts $true			
+			-DisableAzureMonitorAlertsForJobFailure $false `
+            -DisableAzureMonitorAlertsForAllReplicationIssue $false `
+            -DisableAzureMonitorAlertsForAllFailoverIssue $true `
+            -DisableEmailNotificationsForSiteRecovery $false `
+			-DisableClassicAlerts $true
 		
 		Assert-True { $vault2.Properties.AlertSettings -ne $null }
 		Assert-True { $vault2.Properties.AlertSettings.AzureMonitorAlertsForAllJobFailure -eq "Enabled" }
 		Assert-True { $vault2.Properties.AlertSettings.ClassicAlertsForCriticalOperations -eq "Disabled" }
 
-		$vault = Update-AzRecoveryServicesVault -ResourceGroupName "hiagarg"  -Name "hiagaVault" -DisableClassicAlerts $false
+		$vault = Update-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName  -Name $vaultName1 -DisableClassicAlerts $false
 
 		# update alert settings 
 		$vault1 = Update-AzRecoveryServicesVault -Name $vaultName1 -ResourceGroupName $resourceGroupName `
@@ -288,8 +400,8 @@ function Test-AzureManagedVMRestore
 {
 	$location = "centraluseuap"
 	$resourceGroupName = "hiagarg"
-	$vaultName = "hiagaVault"
-	$vmName = "VM;iaasvmcontainerv2;hiagarg;hiaganewVM2" # hiagavm"
+	$vaultName = "hiaga-adhoc-vault" #"hiagaVault"
+	$vmName = "VM;iaasvmcontainerv2;hiagarg;pstest-ccy-vm2" # hiagavm"
 	$saName = "hiagasa"
 	$targetVMName = "alr-pstest-vm"
 	$targetVNetName = "hiagarg-vnet"
@@ -303,7 +415,7 @@ function Test-AzureManagedVMRestore
 		$item = Get-AzRecoveryServicesBackupItem -BackupManagementType AzureVM -WorkloadType AzureVM `
 			-VaultId $vault.ID -Name $vmName
 
-		$backupJob = Backup-Item $vault $item
+		$backupJob = Backup-Item $vault $item[0]
 		$backupStartTime = $backupJob.StartTime.AddMinutes(-1);
 		$backupEndTime = $backupJob.EndTime.AddMinutes(1);
 		
@@ -311,7 +423,7 @@ function Test-AzureManagedVMRestore
 			-VaultId $vault.ID `
 			-StartDate $backupStartTime `
 			-EndDate $backupEndTime `
-			-Item $item; 		
+			-Item $item[0]; 		
 
 		$restoreJobALR = Restore-AzRecoveryServicesBackupItem -VaultId $vault.ID -VaultLocation $vault.Location `
 			-RecoveryPoint $rp[0] -StorageAccountName $saName -StorageAccountResourceGroupName $vault.ResourceGroupName -TargetResourceGroupName $vault.ResourceGroupName -TargetVMName $targetVMName -TargetVNetName $targetVNetName -TargetVNetResourceGroup $targetVNetRG -TargetSubnetName $targetSubnetName | Wait-AzRecoveryServicesBackupJob -VaultId $vault.ID
@@ -336,6 +448,7 @@ function Test-AzureRSVaultCMK
 	$vaultName = "cmk-pstest-vault"
 	$keyVault = "cmk-pstest-keyvault"
 	$encryptionKeyId = "https://cmk-pstest-keyvault.vault.azure.net/keys/cmk-pstest-key/5569d5a163ee474cad2da4ac334af9d7"
+	$encryptionKeyId2 = "https://oss-pstest-keyvault.vault.azure.net/keys/cmk-pstest-key2"
 
 	try
 	{	
@@ -343,13 +456,17 @@ function Test-AzureRSVaultCMK
 		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName
 
 		# error scenario
-		Assert-ThrowsContains { Set-AzRecoveryServicesVaultProperty -EncryptionKeyId $encryptionKeyId -VaultId $vault.ID -InfrastructureEncryption -UseSystemAssignedIdentity $false } `
+		Assert-ThrowsContains { Set-AzRecoveryServicesVaultProperty -EncryptionKeyId $encryptionKeyId2 -VaultId $vault.ID -InfrastructureEncryption -UseSystemAssignedIdentity $false } `
 		"Please input a valid UserAssignedIdentity";	
 
 		# set and verify - CMK encryption property to UAI 
-		Set-AzRecoveryServicesVaultProperty -EncryptionKeyId $encryptionKeyId -VaultId $vault.ID -InfrastructureEncryption -UseSystemAssignedIdentity $false  -UserAssignedIdentity $vault.Identity.UserAssignedIdentities.Keys[0]
+		Set-AzRecoveryServicesVaultProperty -EncryptionKeyId $encryptionKeyId2 -VaultId $vault.ID -InfrastructureEncryption -UseSystemAssignedIdentity $false  -UserAssignedIdentity $vault.Identity.UserAssignedIdentities.Keys[0]
 		$prop = Get-AzRecoveryServicesVaultProperty -VaultId $vault.ID
 		Assert-True { $prop.encryptionProperties.UserAssignedIdentity -eq $vault.Identity.UserAssignedIdentities.Keys[0] }
+
+		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName
+		Assert-True { $vault.Properties.EncryptionProperty.KekIdentity.UserAssignedIdentity -eq $vault.Identity.UserAssignedIdentities.Keys[0] }
+		Assert-True { $vault.Properties.EncryptionProperty.KeyVaultProperties.KeyUri -eq $encryptionKeyId2 }
 
 		Start-TestSleep -Seconds 10
 
@@ -369,7 +486,7 @@ function Test-AzureVMRestoreWithMSI
 	$location = "centraluseuap"
 	$resourceGroupName = "hiagarg"
 	$vaultName = "hiagaVault"
-	$vmName = "VM;iaasvmcontainerv2;hiagarg;hiagavm"
+	$vmName = "VM;iaasvmcontainerv2;hiagarg;hiaga-adhoc-vm"
 	$saName = "hiagasa"
 
 	try
@@ -525,10 +642,8 @@ function Test-AzureVMGetItems
 	$location = "centraluseuap"
 	$resourceGroupName = "hiagarg"
 	$vaultName = "hiaga-adhoc-vault"
-	$vmName1 = "VM;iaasvmcontainerv2;hiagarg;hiaga-adhoc-vm"
-	$vmName2 = "VM;iaasvmcontainerv2;hiagarg;hiaganewvm3"	
-	$vmFriendlyName1 = "hiaga-adhoc-vm"
-	$vmFriendlyName2 = "hiaganewvm3"
+	$vmName1 = "VM;iaasvmcontainerv2;hiagarg;pstest-ccy-vm"
+	$vmFriendlyName1 = "pstest-ccy-vm"	
 	$protectionState = "IRPending"
 	#$location = "southeastasia"
 	#$resourceGroupName = Create-ResourceGroup $location
@@ -537,14 +652,12 @@ function Test-AzureVMGetItems
 	{
 		# Setup
 		$vm = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmFriendlyName1
-		$vm2 = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmFriendlyName2
 		$vault = Get-AzRecoveryServicesVault -ResourceGroupName $resourceGroupName -Name $vaultName 
 
 		# disable soft delete for successful cleanup
 		Set-AzRecoveryServicesVaultProperty -VaultId $vault.ID -SoftDeleteFeatureState "Disable"
 
-		# Enable-Protection $vault $vm
-		# Enable-Protection $vault $vm2
+		# Enable-Protection $vault $vm		
 		$policy = Get-AzRecoveryServicesBackupProtectionPolicy `
 			-VaultId $vault.ID `
 			-Name "DefaultPolicy"
@@ -929,10 +1042,10 @@ function Test-AzureVMBackup
 	$location = "centraluseuap"
 	$resourceGroupName = "hiagarg"
 	$vaultName = "hiaga-adhoc-vault"
-	$vmName1 = "VM;iaasvmcontainerv2;hiagarg;hiaga-adhoc-vm"
-	$vmName2 = "VM;iaasvmcontainerv2;hiagarg;hiaganewvm3"	
-	$vmFriendlyName1 = "hiaga-adhoc-vm"
-	$vmFriendlyName2 = "hiaganewvm3"
+	$vmName1 = "VM;iaasvmcontainerv2;hiagarg;pstest-ccy-vm"
+	$vmName2 = "VM;iaasvmcontainerv2;hiagarg;pstest-ccy-vm2"
+	$vmFriendlyName1 = "pstest-ccy-vm"
+	$vmFriendlyName2 = "pstest-ccy-vm2"
 	
 	try
 	{

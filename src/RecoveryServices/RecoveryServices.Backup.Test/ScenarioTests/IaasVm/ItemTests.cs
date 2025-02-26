@@ -184,7 +184,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
-        [Fact]
+        [Fact(Skip = "to be recorded in next release")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
         public void TestAzureVMCrossRegionRestore()
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
-        [Fact]
+        [Fact(Skip = "Todo hiaga: to be recorded in next release")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
         public void TestAzureVMRestoreWithMSI()
@@ -208,7 +208,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
-        [Fact(Skip = "to be re-recorded in next release")]
+        [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
         public void TestAzureRSVaultCMK()
@@ -220,7 +220,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
-        [Fact]
+        [Fact(Skip = "Todo hiaga: to be recorded in next release")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
         public void TestAzureManagedVMRestore()
@@ -268,6 +268,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(TestConstants.Workload, TestConstants.AzureVM)]
+        public void TestAzureCrossZonalRestoreToNoZone()
+        {
+            TestRunner.RunTestScript(
+                $"Import-Module {_IaasVmcommonModule.AsAbsoluteLocation()}",
+                $"Import-Module {_IaasVmtestModule.AsAbsoluteLocation()}",
+                "Test-AzureCrossZonalRestoreToNoZone"
+            );
+        }
+
         [Fact(Skip = "to be recorded in next release")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
@@ -292,7 +304,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
             );
         }
 
-        [Fact]
+        [Fact(Skip = "to be recorded in next release")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(TestConstants.Workload, TestConstants.AzureVM)]
         public void TestAzureVaultImmutability()
@@ -301,6 +313,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Test.ScenarioTests
                 $"Import-Module {_IaasVmcommonModule.AsAbsoluteLocation()}",
                 $"Import-Module {_IaasVmtestModule.AsAbsoluteLocation()}",
                 "Test-AzureVaultImmutability"
+            );
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(TestConstants.Workload, TestConstants.AzureVM)]
+        public void TestAzureVaultSoftDelete()
+        {
+            TestRunner.RunTestScript(
+                $"Import-Module {_IaasVmcommonModule.AsAbsoluteLocation()}",
+                $"Import-Module {_IaasVmtestModule.AsAbsoluteLocation()}",
+                "Test-AzureVaultSoftDelete"
+            );
+        }
+
+        [Fact(Skip = "setup issue, need new setup to re-record")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(TestConstants.Workload, TestConstants.AzureVM)]
+        public void TestAzurePERestore()
+        {
+            TestRunner.RunTestScript(
+                $"Import-Module {_IaasVmcommonModule.AsAbsoluteLocation()}",
+                $"Import-Module {_IaasVmtestModule.AsAbsoluteLocation()}",
+                "Test-AzurePERestore"
             );
         }
     }

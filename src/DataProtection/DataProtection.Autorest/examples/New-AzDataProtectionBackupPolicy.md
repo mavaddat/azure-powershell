@@ -12,7 +12,7 @@ MyPolicy       Microsoft.DataProtection/backupVaults/backupPolicies
 
 This command creates a default policy for Azure disk datasource type.
 
-### Example 2: Create a policy for AzureDatabaseForPostgreSQL, this example covers a sophisticated policy using powerShell
+### Example 2: Create a policy for AzureDatabaseForPostgreSQL, this example covers a complex policy using powerShell
 ```powershell
 $defaultPol = Get-AzDataProtectionPolicyTemplate -DatasourceType AzureDatabaseForPostgreSQL
 $lifeCycleVault = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore VaultStore -SourceRetentionDurationType Months -SourceRetentionDurationCount 3 -TargetDataStore ArchiveStore -CopyOption CopyOnExpiryOption
@@ -39,7 +39,7 @@ New-AzDataProtectionBackupPolicy -SubscriptionId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxx
 ```output
 Name              Type
 ----              ----
-MyPolicy       Microsoft.DataProtection/backupVaults/backupPolicies
+newOSSPolicy       Microsoft.DataProtection/backupVaults/backupPolicies
 ```
 
 The first command gets the default policy template for AzureDatabaseForPostgreSQL.
@@ -164,3 +164,73 @@ The first command gets the default vaulted policy template for AzureBlob.
 The second to fifteenth command defines and updates the Operational, vaulted weekly, monthly, yearly lifecycle and tagcriteria.
 Next we define a trigger object with schedule time and timzone, set it to 2:30 AM West Europe standard time.
 The last command creates the hybrid AzureBlob policy.
+
+### Example 6: Create policy for AzureDatabaseForPGFlexServer/AzureDatabaseForMySQL
+```powershell
+$defaultPol = Get-AzDataProtectionPolicyTemplate -DatasourceType AzureDatabaseForPGFlexServer
+$lifeCycleVault = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore VaultStore -SourceRetentionDurationType Days -SourceRetentionDurationCount 10
+Edit-AzDataProtectionPolicyRetentionRuleClientObject -Policy $defaultPol -Name Default -LifeCycles $lifeCycleVault -IsDefault $true
+$lifeCycleVault = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore VaultStore -SourceRetentionDurationType Months -SourceRetentionDurationCount 6 
+Edit-AzDataProtectionPolicyRetentionRuleClientObject -Policy $defaultPol -Name Monthly -LifeCycles $lifeCycleVault -IsDefault $false
+$schDates = @(
+(
+    (Get-Date -Year 2024 -Month 03 -Day 04 -Hour 09 -Minute 0 -Second 0)
+),
+(
+    (Get-Date -Year 2024 -Month 03 -Day 05 -Hour 09 -Minute 0 -Second 0)
+))
+$trigger =  New-AzDataProtectionPolicyTriggerScheduleClientObject -ScheduleDays $schDates -IntervalType Weekly -IntervalCount 1
+Edit-AzDataProtectionPolicyTriggerClientObject -Schedule $trigger -Policy $defaultPol
+$tagCriteria = New-AzDataProtectionPolicyTagCriteriaClientObject -MonthsOfYear January -DaysOfMonth 1,5,Last
+Edit-AzDataProtectionPolicyTagClientObject -Policy $defaultPol -Name Monthly -Criteria $tagCriteria
+$pgflexPolicy = New-AzDataProtectionBackupPolicy -SubscriptionId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -ResourceGroupName "resourceGroupName" -VaultName "vaultName" -Name "pgflex-policy" -Policy $defaultPol 
+```
+
+```output
+Name                               Type
+----                               ----
+pgflex-policy       Microsoft.DataProtection/backupVaults/backupPolicies
+```
+
+The first command gets the default policy template for AzureDatabaseForPGFlexServer. These steps can also be used for AzureDatabaseForMySQL as is.
+The second to tenth command defines and updates the vaulted daily, monthly lifecycle and tagcriteria.
+Next we define a trigger object with schedule, set it to every Weekly Monday, Tuesday schedule.
+The last command creates the AzureDatabaseForPGFlexServer policy.
+
+### Example 7: Create a vaulted policy for AzureKubernetesService
+```powershell
+$defaultPol = Get-AzDataProtectionPolicyTemplate -DatasourceType AzureKubernetesService
+
+$schDate = @(
+(
+    (Get-Date -Year 2024 -Month 10 -Day 02 -Hour 15 -Minute 30 -Second 0)
+))
+$trigger =  New-AzDataProtectionPolicyTriggerScheduleClientObject -ScheduleDays $schDate -IntervalType Daily -IntervalCount 1
+Edit-AzDataProtectionPolicyTriggerClientObject -Schedule $trigger -Policy $defaultPol   
+
+# Adding default retention rule below
+$lifeCycleDefault = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore OperationalStore -SourceRetentionDurationType Days -SourceRetentionDurationCount 9
+Edit-AzDataProtectionPolicyRetentionRuleClientObject -Policy $defaultPol -Name Default -LifeCycles $lifeCycleDefault -IsDefault $true
+
+# Adding daily retention rule below
+$lifeCycleDailyOperational = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore OperationalStore -SourceRetentionDurationType Days -SourceRetentionDurationCount 9 -TargetDataStore VaultStore -CopyOption ImmediateCopyOption
+$lifeCycleDailyVaulted = New-AzDataProtectionRetentionLifeCycleClientObject -SourceDataStore VaultStore -SourceRetentionDurationType Days -SourceRetentionDurationCount 86
+Edit-AzDataProtectionPolicyRetentionRuleClientObject -Policy $defaultPol -Name Daily -LifeCycles $lifeCycleDailyOperational, $lifeCycleDailyVaulted -IsDefault $false
+
+$tagCriteriaDaily = New-AzDataProtectionPolicyTagCriteriaClientObject -AbsoluteCriteria FirstOfDay
+Edit-AzDataProtectionPolicyTagClientObject -Policy $defaultPol -Name Daily -Criteria $tagCriteriaDaily
+New-AzDataProtectionBackupPolicy -SubscriptionId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" -ResourceGroupName "resourceGroupName" -VaultName "vaultName" -Name "newAKSPolicy" -Policy $defaultPol
+```
+
+```output
+Name              Type
+----              ----
+newAKSPolicy       Microsoft.DataProtection/backupVaults/backupPolicies
+```
+
+The first command gets the default policy template for AzureKubernetesService.
+Next we create a custom schedule object for the backup policy, once daily starting from $schDate.
+Next we create a default retention rule with operational lifecycle with 9 days retention.
+Next we create a daily retention rule with operational lifecycle with 9 days retention and moved to vaulted lifecycle with ImmediateCopyOption and 86 days retention.
+Next we create a tag criteria for Daily policy. Tag criteria needs to be added for each custom retention rule (automatically added for default retention rule).
+The last command creates the policy.

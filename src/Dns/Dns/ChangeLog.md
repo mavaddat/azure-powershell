@@ -19,6 +19,15 @@
 -->
 ## Upcoming Release
 
+## Version 1.3.1
+* Upgraded nuget package to signed package.
+
+## Version 1.3.0
+* Added `NAPTR` record type support in cmdlets.
+
+## Version 1.2.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 1.2.0
 * Added cmdlets:
     - `Get-AzDnsDnssecConfig`

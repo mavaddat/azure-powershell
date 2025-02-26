@@ -37,13 +37,23 @@ function setupEnv() {
     $env.SubscriptionId = (Get-AzContext).Subscription.Id
     $env.Tenant = (Get-AzContext).Tenant.Id
     # For any resources you created for test, you should add it to $env here.
-    $env.ResourceGroupName = 'az-sdk-test'
-    $env.Location = 'eastus2euap'
+    $env.ResourceGroupName = 'ytongtest'
+    $env.ResourceGroupNameProfile = 'PayGo_cmdlet'
+    $env.Location = 'eastus'
     $env.MachineName = 'testmachine'
-    $env.PrivateLinkScopeName = 'scope-test'
-    $env.RunCommandName = 'myRunCommand'
+    $env.MachineNameSA = 'WIN-A3C7NS0B144'
+    $env.MachineNamePaygo = 'WIN-IAH3TLSP7A8'
+    $env.PrivateLinkScopeName = 'myScope3'
+    $env.RunCommandName = 'myRunCommand3'
     $env.Script = 'Write-Host Hello World!'
-    New-AzResourceGroup -Name $env.ResourceGroupName -Location $env.Location | Out-Null
+    $env.EsuLicenseName = 'myEsuLicense2'
+    $env.PrivateLinkScopeUri = '/subscriptions/b24cc8ee-df4f-48ac-94cf-46edf36b0fae/resourceGroups/ytongtest/providers/Microsoft.HybridCompute/privateLinkScopes/myScope3'
+    $env.ExtensionName = 'networkWatcher'
+    $env.PerimeterName = 'a12ebbfe-c600-4964-b1aa-1b302b91d074.testAssociation'
+    $env.LicenseResourceId = '/subscriptions/b24cc8ee-df4f-48ac-94cf-46edf36b0fae/resourceGroups/ytongtest/providers/Microsoft.HybridCompute/licenses/myLicense'
+    $env.LicenseResourceIdProfile = '/subscriptions/b24cc8ee-df4f-48ac-94cf-46edf36b0fae/resourceGroups/edyoung/providers/Microsoft.HybridCompute/licenses/myLicense' 
+
+    #New-AzResourceGroup -Name $env.ResourceGroupName -Location $env.Location | Out-Null
 
     if ($IsMacOS) {
         throw "Tests can't run on macOS because they require the azcmagent."
@@ -81,5 +91,5 @@ function setupEnv() {
 }
 function cleanupEnv() {
     # Clean resources you create for testing
-    Remove-AzResourceGroup -Name $env.ResourceGroupName
+    #Remove-AzResourceGroup -Name $env.ResourceGroupName
 }

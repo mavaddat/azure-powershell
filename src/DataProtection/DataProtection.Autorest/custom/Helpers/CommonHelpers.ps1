@@ -5,7 +5,7 @@ function GetDatasourceSetInfo
 	param(
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.IDatasource]
+		[Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.IDatasource]
 		$DatasourceInfo,
 
 		[Parameter(Mandatory=$true)]
@@ -16,7 +16,7 @@ function GetDatasourceSetInfo
 
 	process 
 	{
-		$DataSourceSetInfo = [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.DatasourceSet]::new()
+		$DataSourceSetInfo = [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.DatasourceSet]::new()
 		$DataSourceSetInfo.DatasourceType = $DatasourceInfo.Type
 		$DataSourceSetInfo.ObjectType = "DatasourceSet"        
 		$DataSourceSetInfo.ResourceLocation = $DatasourceInfo.ResourceLocation
@@ -64,7 +64,7 @@ function GetDatasourceInfo
 	process
 	{
 		$manifest = LoadManifest -DatasourceType $DatasourceType.ToString()
-		$DataSourceInfo = [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20231101.Datasource]::new()
+		$DataSourceInfo = [Microsoft.Azure.PowerShell.Cmdlets.DataProtection.Models.Api20240401.Datasource]::new()
 		$DataSourceInfo.ObjectType = "Datasource"
         $DataSourceInfo.ResourceId = $ResourceId
         $DataSourceInfo.ResourceLocation = $ResourceLocation
@@ -104,5 +104,27 @@ function GetClientDatasourceType
 			}
 		}
 		return ""
+	}
+}
+
+function UnprotectSecureString
+{
+	[Microsoft.Azure.PowerShell.Cmdlets.DataProtection.DoNotExportAttribute()]
+	param(
+		[Parameter(Mandatory, ValueFromPipeline)]
+		[System.Security.SecureString]
+		${SecureString}
+	)
+
+	process
+	{
+		$ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString)
+		try {
+			$plaintext = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ssPtr)
+		} finally {
+			[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ssPtr)
+		}
+
+		return $plaintext
 	}
 }

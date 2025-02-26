@@ -98,7 +98,7 @@ function Test-RaDeleteByPSRoleAssignment
     $subscription = $(Get-AzContext).Subscription
     $scope = '/subscriptions/'+ $subscription[0].Id +'/resourceGroups/PowershellTest'
 
-    $expectedMessage = "Succesfully removed role assignment for AD object 'e9da4467-12ff-4334-8179-c99abf0ffd5a' on scope '/subscriptions/" + $subscription[0].Id + "/resourceGroups/PowershellTest' with role definition 'Reader'"
+    $expectedMessage = "Successfully removed role assignment for AD object 'e9da4467-12ff-4334-8179-c99abf0ffd5a' on scope '/subscriptions/" + $subscription[0].Id + "/resourceGroups/PowershellTest' with role definition 'Reader'"
 
     # Test
     $newAssignment = New-AzRoleAssignmentWithId -ObjectId $principalId -RoleDefinitionName $definitionName -Scope $scope -RoleAssignmentId 50fd727d-d1af-44ef-9a32-2431b835605e
@@ -549,6 +549,31 @@ function Test-RaGetByScope
     # Assert-AreEqual $users[0].DisplayName $newAssignment1.DisplayName
 
     VerifyRoleAssignmentDeleted $newAssignment1
+}
+
+<#
+.SYNOPSIS
+Tests verifies get of RoleAssignment With AtScope
+#>
+function Test-RaGetWithAtScope
+{
+    # Setup
+    $subscription = $(Get-AzContext).Subscription
+    $resourceGroups = Get-AzResourceGroup | Select-Object -Last 9 -Wait
+    $scope1 = '/subscriptions/'+ $subscription[0].Id
+    $scope2 = '/subscriptions/'+ $subscription[0].Id +'/resourceGroups/' + $resourceGroups[0].ResourceGroupName
+    
+    $ras_scope_list = @()
+    $ras_atscope_list = @()
+    
+    $ras_scope = Get-AzRoleAssignment -Scope $scope1
+    $ras_scope | Select-Object -ExpandProperty Scope -Unique | ForEach-Object { $ras_scope_list += $_ }
+
+    $ras_atscope = Get-AzRoleAssignment -Scope $scope1 -AtScope
+    $ras_atscope | Select-Object -ExpandProperty Scope -Unique | ForEach-Object { $ras_atscope_list += $_ }
+
+    Assert-True { $ras_scope_list -contains $scope2 }
+    Assert-False { $ras_Atscope_list -contains $scope2 }
 }
 
 <#

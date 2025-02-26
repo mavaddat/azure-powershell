@@ -23,9 +23,18 @@ payload-flattening-threshold: 2
 
 ###
 ``` yaml
-commit: 82fd84ea97b9d1143572116af3c7ae88fba85411
+commit: 58740206b853320974ef5e4864f7be8120b15a27
 input-file:
-  - https://github.com/Azure/azure-rest-api-specs/blob/$(commit)/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/bms.json
+  - https://github.com/Azure/azure-rest-api-specs/blob/$(commit)/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-10-01/bms.json
+
+directive:
+  - from: swagger-document
+    where: 
+      - $..description
+    transform: $ = $.replace(/\r\n/g, ' ')
+  - from: source-file-csharp
+    where: $
+    transform: $ = $.replace(/xcludedRpList/g, 'xcludedRPList')
 
 output-folder: Generated
 

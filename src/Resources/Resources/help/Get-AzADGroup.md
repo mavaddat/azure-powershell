@@ -16,13 +16,15 @@ Lists entities from groups or get entity from groups by key
 ```
 Get-AzADGroup [-Count] [-Expand <String[]>] [-Select <String[]>] [-Filter <String>] [-Orderby <String[]>]
  [-Search <String>] [-ConsistencyLevel <String>] [-First <UInt64>] [-Skip <UInt64>] [-AppendSelected]
- [-DefaultProfile <PSObject>] [-CountVariable <String>] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-CountVariable <String>]
+ [<CommonParameters>]
 ```
 
 ### DisplayNameParameterSet
 ```
 Get-AzADGroup [-Expand <String[]>] [-Select <String[]>] [-ConsistencyLevel <String>] [-First <UInt64>]
- [-Skip <UInt64>] [-AppendSelected] -DisplayName <String> [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-Skip <UInt64>] [-AppendSelected] -DisplayName <String> [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### SearchStringParameterSet
@@ -318,7 +320,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.IMicrosoftGraphGroup
 
 ## NOTES
-
-ALIASES
 
 ## RELATED LINKS

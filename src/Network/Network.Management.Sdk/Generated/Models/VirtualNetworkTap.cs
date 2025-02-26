@@ -44,7 +44,8 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </param>
 
         /// <param name="provisioningState">The provisioning state of the virtual network tap resource.
-        /// Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;</param>
+        /// Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;,
+        /// &#39;Updating&#39;, &#39;Deleting&#39;</param>
 
         /// <param name="networkInterfaceTapConfigurations">Specifies the list of resource IDs for the network interface IP
         /// configuration that needs to be tapped.
@@ -91,7 +92,7 @@ namespace Microsoft.Azure.Management.Network.Models
         public string Etag {get; private set; }
 
         /// <summary>
-        /// Gets the provisioning state of the virtual network tap resource. Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;
+        /// Gets the provisioning state of the virtual network tap resource. Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;, &#39;Updating&#39;, &#39;Deleting&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "properties.provisioningState")]
         public string ProvisioningState {get; private set; }
@@ -129,5 +130,32 @@ namespace Microsoft.Azure.Management.Network.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "properties.destinationPort")]
         public int? DestinationPort {get; set; }
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+
+
+            if (this.NetworkInterfaceTapConfigurations != null)
+            {
+                foreach (var element in this.NetworkInterfaceTapConfigurations)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
+            }
+
+            if (this.DestinationNetworkInterfaceIPConfiguration != null)
+            {
+                this.DestinationNetworkInterfaceIPConfiguration.Validate();
+            }
+
+        }
     }
 }

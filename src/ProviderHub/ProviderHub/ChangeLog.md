@@ -19,6 +19,12 @@
 -->
 ## Upcoming Release
 
+## Version 0.3.1
+* Upgraded nuget package to signed package.
+
+## Version 0.3.0
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 0.2.0
 * Supported nested resource types for Resource Type Registration and Sku Resource via customization.
 

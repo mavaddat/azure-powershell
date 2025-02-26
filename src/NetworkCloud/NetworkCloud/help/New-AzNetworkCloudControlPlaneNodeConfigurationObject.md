@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/Az.NetworkCloud/new-AzNetworkCloudControlPlaneNodeConfigurationObject
 schema: 2.0.0
@@ -26,7 +26,6 @@ Create an in-memory object for ControlPlaneNodeConfiguration.
 
 ### Example 1: Create an in-memory object for ControlPlaneNodeConfiguration.
 ```powershell
-
 $sshPublicKey=@{
     keyData= "ssh-rsa"
 }
@@ -65,7 +64,7 @@ In some cases, specification of public keys may be required to produce a working
 To construct, see NOTES section for ADMINISTRATORCONFIGURATIONSSHPUBLICKEY properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.ISshPublicKey[]
+Type: Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.ISshPublicKey[]
 Parameter Sets: (All)
 Aliases:
 
@@ -129,19 +128,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.ControlPlaneNodeConfiguration
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.ControlPlaneNodeConfiguration
 
 ## NOTES
 
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`ADMINISTRATORCONFIGURATIONSSHPUBLICKEY <ISshPublicKey[]>`: The SSH configuration for the operating systems that run the nodes in the Kubernetes cluster. In some cases, specification of public keys may be required to produce a working environment.
-  - `KeyData <String>`: The SSH public key data.
-
 ## RELATED LINKS
-

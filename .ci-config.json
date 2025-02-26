@@ -128,7 +128,8 @@
     },
     {
       "patterns": [
-        "src/{ModuleName}/*"
+        "src/{ModuleName}/*",
+        "src/{ModuleName}"
       ],
       "phases": [
         "build:related-module",
@@ -323,7 +324,7 @@
     "Compute",
     "Functions",
     "KeyVault",
-    "KubernetersConfiguration",
+    "KubernetesConfiguration",
     "Network",
     "PostgreSql",
     "Purview",

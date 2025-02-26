@@ -22,7 +22,8 @@ Get-AzADServicePrincipalAppRoleAssignment -ServicePrincipalId <String> [-Expand 
 ### Get
 ```
 Get-AzADServicePrincipalAppRoleAssignment -ServicePrincipalId <String> -AppRoleAssignmentId <String>
- [-Expand <String[]>] [-Select <String[]>] [-DefaultProfile <PSObject>] [<CommonParameters>]
+ [-Expand <String[]>] [-Select <String[]>] [-DefaultProfile <PSObject>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,15 +31,32 @@ Get appRoleAssignments from servicePrincipals
 
 ## EXAMPLES
 
-### EXAMPLE 1
-```
+### Example 1: List assigned app roles
+```powershell
 Get-AzADServicePrincipalAppRoleAssignment -ServicePrincipalId 71beb965-8347-495d-a589-c21cdde7a722
 ```
 
-### EXAMPLE 2
+```output
+Id                                          AppRoleId                            PrincipalDisplayName PrincipalId                          CreatedDateTime
+--                                          ---------                            -------------------- -----------                          ---------------
+Zbm-cUeDXUmlicIc3eenIkgIm8kv9kJPj4MFhepACNE 649ae968-bdf9-4f22-bb2c-2aa1b4af0a83 funapp1214           71beb965-8347-495d-a589-c21cdde7a722 12/14/2023 7:04:28 AM
+Zbm-cUeDXUmlicIc3eenIhHyPMkzw2VEh76fTc0bGtM e799a9e2-acac-4960-9ba0-6a17661fa16a funapp1214           71beb965-8347-495d-a589-c21cdde7a722 12/14/2023 6:56:52 AM
 ```
+
+List assigned app roles.
+
+### Example 2: Get by AppRoleAssignmentId
+```powershell
 Get-AzADServicePrincipalAppRoleAssignment -ServicePrincipalId 71beb965-8347-495d-a589-c21cdde7a722 -AppRoleAssignmentId Zbm-cUeDXUmlicIc3eenIkgIm8kv9kJPj4MFhepACNE
 ```
+
+```output
+Id                                          AppRoleId                            PrincipalDisplayName PrincipalId                          CreatedDateTime
+--                                          ---------                            -------------------- -----------                          ---------------
+Zbm-cUeDXUmlicIc3eenIkgIm8kv9kJPj4MFhepACNE 649ae968-bdf9-4f22-bb2c-2aa1b4af0a83 funapp1214           71beb965-8347-495d-a589-c21cdde7a722 12/14/2023 7:04:28 AM
+```
+
+Get an assigned app role by Id.
 
 ## PARAMETERS
 
@@ -46,7 +64,7 @@ Get-AzADServicePrincipalAppRoleAssignment -ServicePrincipalId 71beb965-8347-495d
 key: id of appRoleAssignment
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: Get
 Aliases:
 
@@ -61,22 +79,23 @@ Accept wildcard characters: False
 Include count of items
 
 ```yaml
-Type: SwitchParameter
+Type: System.Management.Automation.SwitchParameter
 Parameter Sets: List
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
-Type: PSObject
+Type: System.Management.Automation.PSObject
 Parameter Sets: (All)
 Aliases: AzureRMContext, AzureCredential
 
@@ -91,7 +110,7 @@ Accept wildcard characters: False
 Expand related entities
 
 ```yaml
-Type: String[]
+Type: System.String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -106,7 +125,7 @@ Accept wildcard characters: False
 Filter items by property values
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: List
 Aliases:
 
@@ -121,7 +140,7 @@ Accept wildcard characters: False
 Order items by property values
 
 ```yaml
-Type: String[]
+Type: System.String[]
 Parameter Sets: List
 Aliases:
 
@@ -136,7 +155,7 @@ Accept wildcard characters: False
 Search items by search phrases
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: List
 Aliases:
 
@@ -151,7 +170,7 @@ Accept wildcard characters: False
 Select properties to be returned
 
 ```yaml
-Type: String[]
+Type: System.String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -166,7 +185,7 @@ Accept wildcard characters: False
 key: id of servicePrincipal
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -181,13 +200,13 @@ Accept wildcard characters: False
 Ignores the first 'n' objects and then gets the remaining objects.
 
 ```yaml
-Type: UInt64
+Type: System.UInt64
 Parameter Sets: List
 Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -196,13 +215,13 @@ Accept wildcard characters: False
 Gets only the first 'n' objects.
 
 ```yaml
-Type: UInt64
+Type: System.UInt64
 Parameter Sets: List
 Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -215,9 +234,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.IMicrosoftGraphAppRoleAssignment
+
 ## NOTES
 
 ## RELATED LINKS
-
-[https://learn.microsoft.com/powershell/module/az.resources/get-azadserviceprincipalapproleassignment](https://learn.microsoft.com/powershell/module/az.resources/get-azadserviceprincipalapproleassignment)
-

@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.DnsResolver-help.xml
 Module Name: Az.DnsResolver
 online version: https://learn.microsoft.com/powershell/module/az.dnsresolver/new-azdnsforwardingrulesetvirtualnetworklink
 schema: 2.0.0
@@ -14,9 +14,9 @@ Creates or updates a virtual network link to a DNS forwarding ruleset.
 
 ```
 New-AzDnsForwardingRulesetVirtualNetworkLink -DnsForwardingRulesetName <String> -Name <String>
- -ResourceGroupName <String> -VirtualNetworkId <String> [-SubscriptionId <String>] [-IfMatch <String>]
- [-IfNoneMatch <String>] [-Metadata <Hashtable>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm]
- [-WhatIf] [<CommonParameters>]
+ -ResourceGroupName <String> [-SubscriptionId <String>] [-IfMatch <String>] [-IfNoneMatch <String>]
+ -VirtualNetworkId <String> [-Metadata <Hashtable>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -68,7 +68,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -193,6 +194,7 @@ Accept wildcard characters: False
 
 ### -SubscriptionId
 The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String
@@ -259,11 +261,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20220701.IVirtualNetworkLink
+### Microsoft.Azure.PowerShell.Cmdlets.DnsResolver.Models.Api20230701Preview.IVirtualNetworkLink
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

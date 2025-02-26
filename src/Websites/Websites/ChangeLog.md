@@ -18,6 +18,17 @@
         - Additional information about change #1
 -->
 ## Upcoming Release
+* Migrated Websites.Helper generation from autorest csharp to autorest powershell.
+
+## Version 3.3.0
+* Fixd the source app retrival from Microsoft.Web RP instead of ARM cache for `RestoreAzureWebAppSnapshot`
+* Upgraded nuget package to signed package.
+
+## Version 3.2.2
+* Fix bug where parameters could not be set to false for `Publish-AzWebApp`
+
+## Version 3.2.1
+* Introduced secrets detection feature to safeguard sensitive data.
 
 ## Version 3.2.0
 * Fixed Ambiguous Positional Argument for `New-AzWebAppSlot`

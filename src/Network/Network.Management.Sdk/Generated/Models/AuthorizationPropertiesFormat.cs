@@ -30,13 +30,19 @@ namespace Microsoft.Azure.Management.Network.Models
         /// <param name="authorizationUseStatus">The authorization use status.
         /// Possible values include: &#39;Available&#39;, &#39;InUse&#39;</param>
 
+        /// <param name="connectionResourceUri">The reference to the ExpressRoute connection resource using the
+        /// authorization.
+        /// </param>
+
         /// <param name="provisioningState">The provisioning state of the authorization resource.
-        /// Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;</param>
-        public AuthorizationPropertiesFormat(string authorizationKey = default(string), string authorizationUseStatus = default(string), string provisioningState = default(string))
+        /// Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;,
+        /// &#39;Updating&#39;, &#39;Deleting&#39;</param>
+        public AuthorizationPropertiesFormat(string authorizationKey = default(string), string authorizationUseStatus = default(string), string connectionResourceUri = default(string), string provisioningState = default(string))
 
         {
             this.AuthorizationKey = authorizationKey;
             this.AuthorizationUseStatus = authorizationUseStatus;
+            this.ConnectionResourceUri = connectionResourceUri;
             this.ProvisioningState = provisioningState;
             CustomInit();
         }
@@ -60,7 +66,14 @@ namespace Microsoft.Azure.Management.Network.Models
         public string AuthorizationUseStatus {get; set; }
 
         /// <summary>
-        /// Gets the provisioning state of the authorization resource. Possible values include: &#39;Succeeded&#39;, &#39;Updating&#39;, &#39;Deleting&#39;, &#39;Failed&#39;
+        /// Gets the reference to the ExpressRoute connection resource using the
+        /// authorization.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "connectionResourceUri")]
+        public string ConnectionResourceUri {get; private set; }
+
+        /// <summary>
+        /// Gets the provisioning state of the authorization resource. Possible values include: &#39;Failed&#39;, &#39;Succeeded&#39;, &#39;Canceled&#39;, &#39;Creating&#39;, &#39;Updating&#39;, &#39;Deleting&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "provisioningState")]
         public string ProvisioningState {get; private set; }

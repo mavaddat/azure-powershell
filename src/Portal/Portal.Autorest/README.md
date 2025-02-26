@@ -3,7 +3,6 @@
 This directory contains the PowerShell module for the Portal service.
 
 ---
-
 ## Info
 - Modifiable: yes
 - Generated: all
@@ -15,7 +14,7 @@ This directory contains the PowerShell module for the Portal service.
 This module was primarily generated via [AutoRest](https://github.com/Azure/autorest) using the [PowerShell](https://github.com/Azure/autorest.powershell) extension.
 
 ## Module Requirements
-- [Az.Accounts module](https://www.powershellgallery.com/packages/Az.Accounts/), version 1.7.4 or greater
+- [Az.Accounts module](https://www.powershellgallery.com/packages/Az.Accounts/), version 2.7.5 or greater
 
 ## Authentication
 AutoRest does not generate authentication code for the module. Authentication is handled via Az.Accounts by altering the HTTP payload before it is sent.
@@ -33,10 +32,11 @@ In this directory, run AutoRest:
 > see https://aka.ms/autorest
 
 ``` yaml
+commit: 570ea717eb84ecf725399353d2b52a590353e589
 require:
-  - $(this-folder)/../readme.azure.noprofile.md
+  - $(this-folder)/../../readme.azure.noprofile.md
 input-file:
-  - $(repo)/specification/portal/resource-manager/Microsoft.Portal/preview/2019-01-01-preview/portal.json
+  - $(repo)/specification/portal/resource-manager/Microsoft.Portal/preview/2022-12-01-preview/portal.json
 
 metadata:
   authors: Microsoft Corporation
@@ -54,6 +54,10 @@ module-version: 0.1.0
 title: Portal
 subject-prefix: $(service-name)
 
+# For new modules, please avoid setting 3.x using the use-extension method and instead, use 4.x as the default option
+use-extension:
+  "@autorest/powershell": "3.x"
+
 directive:
   - where: 
       verb: Set
@@ -69,6 +73,21 @@ directive:
       subject: Dashboard
       variant: ^Update$|^UpdateViaIdentity$
     remove: true
-      
+  - from: swagger-document 
+    where: $.definitions.DashboardPropertiesWithProvisioningState.properties.metadata
+    transform: >-
+      return {
+          "type": "object",
+          "additionalProperties": {"type": "object"},
+          "description": "The dashboard metadata."
+      }
+  - from: swagger-document 
+    where: $.definitions.DashboardProperties.properties.metadata
+    transform: >-
+      return {
+          "type": "object",
+          "additionalProperties": {"type": "object"},
+          "description": "The dashboard metadata."
+      }
 
 ```

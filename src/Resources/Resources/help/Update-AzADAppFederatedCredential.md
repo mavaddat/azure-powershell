@@ -8,18 +8,34 @@ schema: 2.0.0
 # Update-AzADAppFederatedCredential
 
 ## SYNOPSIS
-Update the navigation property federatedIdentityCredentials in applications
+update the navigation property federatedIdentityCredentials in applications
 
 ## SYNTAX
 
+### UpdateExpanded (Default)
 ```
 Update-AzADAppFederatedCredential -ApplicationObjectId <String> -FederatedCredentialId <String>
  [-AdditionalProperties <Hashtable>] [-Audience <String[]>] [-Description <String>] [-Issuer <String>]
- [-Subject <String>] [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Subject <String>] [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### UpdateViaJsonFilePath
+```
+Update-AzADAppFederatedCredential -ApplicationObjectId <String> -FederatedCredentialId <String>
+ -JsonFilePath <String> [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### UpdateViaJsonString
+```
+Update-AzADAppFederatedCredential -ApplicationObjectId <String> -FederatedCredentialId <String>
+ -JsonString <String> [-DefaultProfile <PSObject>] [-PassThru] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Update the navigation property federatedIdentityCredentials in applications
+update the navigation property federatedIdentityCredentials in applications
 
 ## EXAMPLES
 
@@ -37,7 +53,7 @@ Additional Parameters
 
 ```yaml
 Type: System.Collections.Hashtable
-Parameter Sets: (All)
+Parameter Sets: UpdateExpanded
 Aliases:
 
 Required: False
@@ -66,12 +82,12 @@ Accept wildcard characters: False
 Lists the audiences that can appear in the external token.
 This field is mandatory, and defaults to 'api://AzureADTokenExchange'.
 It says what Microsoft identity platform should accept in the aud claim in the incoming token.
-This value represents Microsoft Entra ID in your external identity provider and has no fixed value across identity providers - you may need to create a new application registration in your identity provider to serve as the audience of this token.
+This value represents Azure AD in your external identity provider and has no fixed value across identity providers - you may need to create a new application registration in your identity provider to serve as the audience of this token.
 Required.
 
 ```yaml
 Type: System.String[]
-Parameter Sets: (All)
+Parameter Sets: UpdateExpanded
 Aliases:
 
 Required: False
@@ -82,7 +98,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -102,7 +119,7 @@ Optional.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: UpdateExpanded
 Aliases:
 
 Required: False
@@ -134,10 +151,40 @@ Required.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: UpdateExpanded
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -JsonFilePath
+Path of Json file supplied to the Update operation
+
+```yaml
+Type: System.String
+Parameter Sets: UpdateViaJsonFilePath
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -JsonString
+Json string supplied to the Update operation
+
+```yaml
+Type: System.String
+Parameter Sets: UpdateViaJsonString
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -163,13 +210,13 @@ Accept wildcard characters: False
 Required.
 The identifier of the external software workload within the external identity provider.
 Like the audience value, it has no fixed format, as each identity provider uses their own - sometimes a GUID, sometimes a colon delimited identifier, sometimes arbitrary strings.
-The value here must match the sub claim within the token presented to Microsoft Entra ID.
+The value here must match the sub claim within the token presented to Azure AD.
 The combination of issuer and subject must be unique on the app.
 Supports $filter (eq).
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: UpdateExpanded
 Aliases:
 
 Required: False
@@ -220,7 +267,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Boolean
 
 ## NOTES
-
-ALIASES
 
 ## RELATED LINKS

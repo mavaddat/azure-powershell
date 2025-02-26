@@ -20,6 +20,15 @@
 
 ## Upcoming Release
 
+## Version 0.3.3
+* Upgraded nuget package to signed package.
+
+## Version 0.3.2
+* Fixed secrets exposure in example documentation.
+
+## Version 0.3.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 0.3.0
 * Generated powershell cmdlets from latest swagger
 * Added support for customer disk job creation

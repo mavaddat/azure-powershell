@@ -15,22 +15,25 @@ Updates an EventHub Entity
 ### SetExpanded (Default)
 ```
 Set-AzEventHub -Name <String> -NamespaceName <String> -ResourceGroupName <String> [-SubscriptionId <String>]
- [-CaptureEnabled] [-Encoding <EncodingCaptureDescription>] [-IntervalInSeconds <Int32>]
- [-SizeLimitInBytes <Int32>] [-SkipEmptyArchive] [-RetentionTimeInHour <Int64>]
- [-TombstoneRetentionTimeInHour <Int32>] [-Status <EntityStatus>] [-DestinationName <String>]
- [-IdentityType <ManagedServiceIdentityType>] [-UserAssignedIdentityId <String>] [-PartitionCount <Int64>]
- [-StorageAccountResourceId <String>] [-ArchiveNameFormat <String>] [-BlobContainer <String>]
- [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-CaptureEnabled] [-Encoding <String>] [-IntervalInSeconds <Int32>] [-SizeLimitInBytes <Int32>]
+ [-SkipEmptyArchive] [-RetentionTimeInHour <Int64>] [-TombstoneRetentionTimeInHour <Int32>] [-Status <String>]
+ [-UserMetadata <String>] [-MinCompactionLagInMin <Int64>] [-TimestampType <String>]
+ [-DestinationName <String>] [-IdentityType <String>] [-UserAssignedIdentityId <String>]
+ [-PartitionCount <Int64>] [-StorageAccountResourceId <String>] [-ArchiveNameFormat <String>]
+ [-BlobContainer <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### SetViaIdentityExpanded
 ```
-Set-AzEventHub -InputObject <IEventHubIdentity> [-CaptureEnabled] [-Encoding <EncodingCaptureDescription>]
+Set-AzEventHub -InputObject <IEventHubIdentity> [-CaptureEnabled] [-Encoding <String>]
  [-IntervalInSeconds <Int32>] [-SizeLimitInBytes <Int32>] [-SkipEmptyArchive] [-RetentionTimeInHour <Int64>]
- [-TombstoneRetentionTimeInHour <Int32>] [-Status <EntityStatus>] [-DestinationName <String>]
- [-IdentityType <ManagedServiceIdentityType>] [-UserAssignedIdentityId <String>] [-PartitionCount <Int64>]
+ [-TombstoneRetentionTimeInHour <Int32>] [-Status <String>] [-UserMetadata <String>]
+ [-MinCompactionLagInMin <Int64>] [-TimestampType <String>] [-DestinationName <String>]
+ [-IdentityType <String>] [-UserAssignedIdentityId <String>] [-PartitionCount <Int64>]
  [-StorageAccountResourceId <String>] [-ArchiveNameFormat <String>] [-BlobContainer <String>]
- [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -224,7 +227,7 @@ Enumerates the possible values for the encoding format of capture description.
 Note: 'AvroDeflate' will be deprecated in New API Version
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.EncodingCaptureDescription
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -239,7 +242,7 @@ Accept wildcard characters: False
 Type of managed service identity.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.ManagedServiceIdentityType
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -271,6 +274,21 @@ The time window allows you to set the frequency with which the capture to Azure 
 
 ```yaml
 Type: System.Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MinCompactionLagInMin
+The minimum time a message will remain ineligible for compaction in the log.
+
+```yaml
+Type: System.Int64
 Parameter Sets: (All)
 Aliases:
 
@@ -409,7 +427,7 @@ Accept wildcard characters: False
 Enumerates the possible values for the status of the Event Hub.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.EventHub.Support.EntityStatus
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -450,6 +468,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -TimestampType
+Denotes the type of timestamp the message will hold.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TombstoneRetentionTimeInHour
 Number of hours to retain the tombstone markers of a compacted Event Hub.
 This value is only used when cleanupPolicy is Compaction.
@@ -469,6 +502,21 @@ Accept wildcard characters: False
 
 ### -UserAssignedIdentityId
 Properties for User Assigned Identities
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserMetadata
+Gets and Sets Metadata of User.
 
 ```yaml
 Type: System.String
@@ -522,7 +570,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.EventHub.Models.Api202301Preview.IEventhub
+### Microsoft.Azure.PowerShell.Cmdlets.EventHub.Models.IEventhub
 
 ## NOTES
 

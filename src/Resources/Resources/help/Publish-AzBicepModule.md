@@ -14,7 +14,8 @@ Publishes a Bicep file to a registry.
 
 ```
 Publish-AzBicepModule -FilePath <String> -Target <String> [-DocumentationUri <String>] [-WithSource] [-Force]
- [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -129,7 +130,7 @@ Accept wildcard characters: False
 ```
 
 ### -WithSource
-[Experimental] Publish source code with the module.
+Publish source code with the module.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter

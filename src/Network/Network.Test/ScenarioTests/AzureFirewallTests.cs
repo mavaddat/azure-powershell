@@ -209,5 +209,29 @@ namespace Commands.Network.Test.ScenarioTests
         {
             TestRunner.RunTestScript("Test-InvokeAzureFirewallPacketCapture");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestByopipAzureHubFirewall()
+        {
+            TestRunner.RunTestScript("Test-InvokeAzureByopipHubFirewall");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAllocateByopipAzureHubFirewall()
+        {
+            TestRunner.RunTestScript("Test-InvokeAzureAllocateByopipHubFirewall");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallAutoscaleConfiguration()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallAutoscaleConfiguration");
+        }
     }
 }

@@ -56,11 +56,20 @@ Retrieve a list of organization objects.
 ### [Get-AzADServicePrincipal](Get-AzADServicePrincipal.md)
 Lists entities from service principals or get entity from service principals by key
 
+### [Get-AzADServicePrincipalAppRoleAssignment](Get-AzADServicePrincipalAppRoleAssignment.md)
+Get appRoleAssignments from servicePrincipals
+
 ### [Get-AzADSpCredential](Get-AzADSpCredential.md)
 Lists key credentials and password credentials for an service principal.
 
 ### [Get-AzADUser](Get-AzADUser.md)
 Lists entities from users or get entity from users by key
+
+### [Get-AzDataBoundaryScope](Get-AzDataBoundaryScope.md)
+Get data boundary at specified scope
+
+### [Get-AzDataBoundaryTenant](Get-AzDataBoundaryTenant.md)
+Get data boundary of tenant.
 
 ### [Get-AzDenyAssignment](Get-AzDenyAssignment.md)
 Lists Azure RBAC deny assignments at the specified scope.
@@ -132,7 +141,7 @@ The -ListAvailable switch modifies this behavior by listing all matching resourc
 Gets policy assignments.
 
 ### [Get-AzPolicyDefinition](Get-AzPolicyDefinition.md)
-Gets policy definitions.
+Gets policy set definitions.
 
 ### [Get-AzPolicyExemption](Get-AzPolicyExemption.md)
 Gets policy exemptions.
@@ -269,6 +278,9 @@ Create new navigation property ref to owners for groups
 ### [New-AzADServicePrincipal](New-AzADServicePrincipal.md)
 Adds new entity to servicePrincipals
 
+### [New-AzADServicePrincipalAppRoleAssignment](New-AzADServicePrincipalAppRoleAssignment.md)
+Create new navigation property to appRoleAssignments for servicePrincipals
+
 ### [New-AzADSpCredential](New-AzADSpCredential.md)
 Creates key credentials or password credentials for an service principal.
 
@@ -300,16 +312,16 @@ Creates Hierarchy Settings under the current tenant
 Adds a Subscription to a Management Group.
 
 ### [New-AzPolicyAssignment](New-AzPolicyAssignment.md)
-Creates a policy assignment.
+Creates or updates a policy assignment.
 
 ### [New-AzPolicyDefinition](New-AzPolicyDefinition.md)
-Creates a policy definition.
+Creates or updates a policy definition.
 
 ### [New-AzPolicyExemption](New-AzPolicyExemption.md)
-Creates a policy exemption.
+Creates or updates a policy exemption.
 
 ### [New-AzPolicySetDefinition](New-AzPolicySetDefinition.md)
-Creates a policy set definition.
+Creates or updates a policy set definition.
 
 ### [New-AzPrivateLinkAssociation](New-AzPrivateLinkAssociation.md)
 Creates the Azure Resource Management Private Link Association.
@@ -412,6 +424,9 @@ Delete ref of navigation property owners for groups
 ### [Remove-AzADServicePrincipal](Remove-AzADServicePrincipal.md)
 Deletes entity from service principal.
 
+### [Remove-AzADServicePrincipalAppRoleAssignment](Remove-AzADServicePrincipalAppRoleAssignment.md)
+Delete navigation property appRoleAssignments for servicePrincipals
+
 ### [Remove-AzADSpCredential](Remove-AzADSpCredential.md)
 Removes key credentials or password credentials for an service principal.
 
@@ -446,16 +461,18 @@ Deletes all Hierarchy Settings under the current tenant
 Removes a Subscription from a Management Group.
 
 ### [Remove-AzPolicyAssignment](Remove-AzPolicyAssignment.md)
-Removes a policy assignment.
+This operation deletes a policy assignment, given its name and the scope it was created in.
+The scope of a policy assignment is the part of its ID preceding '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 
 ### [Remove-AzPolicyDefinition](Remove-AzPolicyDefinition.md)
-Removes a policy definition.
+This operation deletes the policy definition in the given subscription with the given name.
 
 ### [Remove-AzPolicyExemption](Remove-AzPolicyExemption.md)
-Removes a policy exemption.
+This operation deletes a policy exemption, given its name and the scope it was created in.
+The scope of a policy exemption is the part of its ID preceding '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
 
 ### [Remove-AzPolicySetDefinition](Remove-AzPolicySetDefinition.md)
-Removes a policy set definition.
+This operation deletes the policy definition in the given subscription with the given name.
 
 ### [Remove-AzPrivateLinkAssociation](Remove-AzPrivateLinkAssociation.md)
 Delete a specific azure private link association.
@@ -538,6 +555,9 @@ Saves a Subscription scoped Deployment Stack Template.
 ### [Save-AzTenantDeploymentTemplate](Save-AzTenantDeploymentTemplate.md)
 Saves a deployment template to a file.
 
+### [Set-AzDataBoundary](Set-AzDataBoundary.md)
+Opt-in tenant to data boundary.
+
 ### [Set-AzManagedApplication](Set-AzManagedApplication.md)
 Updates managed application
 
@@ -546,18 +566,6 @@ Updates managed application definition
 
 ### [Set-AzManagementGroupDeploymentStack](Set-AzManagementGroupDeploymentStack.md)
 Sets a new Management Group scoped Deployment Stack.
-
-### [Set-AzPolicyAssignment](Set-AzPolicyAssignment.md)
-Modifies a policy assignment.
-
-### [Set-AzPolicyDefinition](Set-AzPolicyDefinition.md)
-Modifies a policy definition.
-
-### [Set-AzPolicyExemption](Set-AzPolicyExemption.md)
-Modifies a policy exemption.
-
-### [Set-AzPolicySetDefinition](Set-AzPolicySetDefinition.md)
-Modifies a policy set definition
 
 ### [Set-AzResource](Set-AzResource.md)
 Modifies a resource.
@@ -624,8 +632,17 @@ Validates a deployment.
 ### [Test-AzManagementGroupDeployment](Test-AzManagementGroupDeployment.md)
 Validates a deployment at a management group.
 
+### [Test-AzManagementGroupDeploymentStack](Test-AzManagementGroupDeploymentStack.md)
+Validates a management group scoped deployment stack.
+
 ### [Test-AzResourceGroupDeployment](Test-AzResourceGroupDeployment.md)
 Validates a resource group deployment.
+
+### [Test-AzResourceGroupDeploymentStack](Test-AzResourceGroupDeploymentStack.md)
+Validates a resource group scoped deployment stack.
+
+### [Test-AzSubscriptionDeploymentStack](Test-AzSubscriptionDeploymentStack.md)
+Validates a subscription scoped deployment stack.
 
 ### [Test-AzTenantDeployment](Test-AzTenantDeployment.md)
 Validates a deployment at tenant scope.
@@ -640,16 +657,19 @@ Removes a feature registration from your account.
 Unregisters a resource provider.
 
 ### [Update-AzADAppFederatedCredential](Update-AzADAppFederatedCredential.md)
-Update the navigation property federatedIdentityCredentials in applications
+update the navigation property federatedIdentityCredentials in applications
 
 ### [Update-AzADApplication](Update-AzADApplication.md)
 Updates entity in applications
 
 ### [Update-AzADGroup](Update-AzADGroup.md)
-Update entity in groups
+update entity in groups
 
 ### [Update-AzADServicePrincipal](Update-AzADServicePrincipal.md)
 Updates entity in service principal
+
+### [Update-AzADServicePrincipalAppRoleAssignment](Update-AzADServicePrincipalAppRoleAssignment.md)
+update the navigation property appRoleAssignments in servicePrincipals
 
 ### [Update-AzADUser](Update-AzADUser.md)
 Updates entity in users
@@ -659,6 +679,20 @@ Updates a Management Group
 
 ### [Update-AzManagementGroupHierarchySetting](Update-AzManagementGroupHierarchySetting.md)
 Updates Hierarchy Settings under the current tenant
+
+### [Update-AzPolicyAssignment](Update-AzPolicyAssignment.md)
+This operation updates a policy assignment with the given scope and name.
+Policy assignments apply to all resources contained within their scope.
+For example, when you assign a policy at resource group scope, that policy applies to all resources in the group.
+
+### [Update-AzPolicyDefinition](Update-AzPolicyDefinition.md)
+This operation updates an existing policy definition in the given subscription or management group with the given name.
+
+### [Update-AzPolicyExemption](Update-AzPolicyExemption.md)
+This operation updates a policy exemption with the given scope and name.
+
+### [Update-AzPolicySetDefinition](Update-AzPolicySetDefinition.md)
+This operation updates an existing policy set definition in the given subscription or management group with the given name.
 
 ### [Update-AzRoleManagementPolicy](Update-AzRoleManagementPolicy.md)
 Update a role management policy

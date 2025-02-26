@@ -15,15 +15,15 @@ Create a new Backup Restore Files request
 ### ByFieldsParameterSet (Default)
 ```
 Restore-AzNetAppFilesBackupFile -ResourceGroupName <String> -AccountName <String> -Name <String>
- -PoolName <String> -VolumeName <String> -FileList <String[]> [-RestoreFilePath <String>]
- -DestinationVolumeId <String> [-PassThru] [-DefaultProfile <IAzureContextContainer>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ -BackupVaultName <String> -FileList <String[]> [-RestoreFilePath <String>] -DestinationVolumeId <String>
+ [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### ByParentObjectParameterSet
 ```
 Restore-AzNetAppFilesBackupFile -Name <String> -FileList <String[]> [-RestoreFilePath <String>]
- -DestinationVolumeId <String> -VolumeObject <PSNetAppFilesVolume> [-PassThru]
+ -DestinationVolumeId <String> -BackupVaultObject <PSNetAppFilesBackupVault> [-PassThru]
  [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
@@ -51,7 +51,7 @@ Restore the specified files from the specified backup to the active filesystem
 ```powershell
 $fileList = New-Object string[] 1
 $fileList[0] = "/dir1/customer1.db"
-Restore-AzNetAppFilesBackupFile -ResourceGroupName "MyRG" -AccountName "MyAnfAccount" -PoolName "MyAnfPool" -VolumeName "MyVolume" -BackupName "MyBackup" -FileList $fileList -DestinationVolumeId "destinationVolumeResourceId"
+Restore-AzNetAppFilesBackupFile -ResourceGroupName "MyRG" -AccountName "MyAccount" -BackupVaultName "MyVault" -BackupName "MyBackup" -FileList $fileList -DestinationVolumeId "destinationVolumeResourceId"
 ```
 
 This command Restores the file customer1.db from "MyBackup" to the specified destingation volume
@@ -70,6 +70,36 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackupVaultName
+The name of the ANF BackupVault
+
+```yaml
+Type: System.String
+Parameter Sets: ByFieldsParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BackupVaultObject
+The BackupVault object containing the backup to return
+
+```yaml
+Type: Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesBackupVault
+Parameter Sets: ByParentObjectParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -163,21 +193,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PoolName
-The name of the ANF pool
-
-```yaml
-Type: System.String
-Parameter Sets: ByFieldsParameterSet
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ResourceGroupName
 The resource group of the ANF account
 
@@ -225,36 +240,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -VolumeName
-The name of the ANF volume
-
-```yaml
-Type: System.String
-Parameter Sets: ByFieldsParameterSet
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -VolumeObject
-The volume object containing the backup to restore files from
-
-```yaml
-Type: Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesVolume
-Parameter Sets: ByParentObjectParameterSet
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
 
@@ -293,7 +278,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String
 
-### Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesVolume
+### Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesBackupVault
 
 ### Microsoft.Azure.Commands.NetAppFiles.Models.PSNetAppFilesBackup
 

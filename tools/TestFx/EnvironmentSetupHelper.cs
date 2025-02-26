@@ -16,10 +16,8 @@ using Microsoft.Azure.Commands.Common.Authentication;
 using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
 using Microsoft.Azure.Commands.Common.Authentication.Models;
 using Microsoft.Azure.Commands.Common.Authentication.Properties;
-using Microsoft.Azure.Commands.ScenarioTest;
 using Microsoft.Azure.Commands.TestFx.Mocks;
 using Microsoft.Azure.ServiceManagement.Common.Models;
-using Microsoft.Azure.Test.HttpRecorder;
 using Microsoft.Rest.ClientRuntime.Azure.TestFramework;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -40,9 +38,9 @@ namespace Microsoft.Azure.Commands.TestFx
 {
     public class EnvironmentSetupHelper
     {
-        private const string TestEnvironmentName = "__test-environment";
+        private const string TestFxEnvironmentName = "testfx-environment";
 
-        private const string TestSubscriptionName = "__test-subscriptions";
+        private const string TestFxSubscriptionName = "testfx-subscription";
 
         private static string PackageDirectoryFromCommon { get; } = GetConfigDirectory();
 
@@ -79,17 +77,17 @@ namespace Microsoft.Azure.Commands.TestFx
             LogIfNotNull($"Insights Module path: {module}");
             RMInsightsModule = module;
             module = GetModuleManifest(RmDirectory, "Az.Storage");
-            LogIfNotNull($"Storage Management Module path: {module}");
+            LogIfNotNull($"Storage Module path: {module}");
             RMStorageModule = module;
-            module = GetModuleManifest(StorageDirectory, "Azure.Storage");
-            LogIfNotNull($"Storage Data Plane Module path: {module}");
-            RMStorageDataPlaneModule = module;
             module = GetModuleManifest(RmDirectory, "Az.OperationalInsights");
-            LogIfNotNull($"Storage Data Plane Module path: {module}");
+            LogIfNotNull($"OperationalInsights Module path: {module}");
             RMOperationalInsightsModule = module;
             module = GetModuleManifest(RmDirectory, "Az.Network");
             LogIfNotNull($"Network Module path: {module}");
             RMNetworkModule = module;
+            module = GetModuleManifest(RmDirectory, "Az.KeyVault");
+            LogIfNotNull($"KeyVault Module path: {module}");
+            RMKeyVaultModule = module;
             module = GetModuleManifest(RmDirectory, "Az.EventHub");
             LogIfNotNull($"EventHub Module path: {module}");
             RMEventHubModule = module;
@@ -103,39 +101,8 @@ namespace Microsoft.Azure.Commands.TestFx
             LogIfNotNull($"Stack Resources Module path: {module}");
             StackRMResourceModule = module;
             module = GetModuleManifest(StackRmDirectory, "Az.Storage");
-            LogIfNotNull($"Stack Storage Management Plane Module path: {module}");
+            LogIfNotNull($"Stack Storage Module path: {module}");
             StackRMStorageModule = module;
-            module = GetModuleManifest(StackStorageDirectory, "Azure.Storage");
-            LogIfNotNull($"Stack Storage Data Plane Module path: {module}");
-            StackRMStorageDataPlaneModule = module;
-            module = GetModuleManifest(RmDirectory, "Az.KeyVault");
-            LogIfNotNull($"KeyVault Module path: {module}");
-            RMKeyVaultModule = module;
-
-            TestExecutionHelpers.SetUpSessionAndProfile();
-            IDataStore datastore = new MemoryDataStore();
-            if (AzureSession.Instance.DataStore != null && (AzureSession.Instance.DataStore is MemoryDataStore))
-            {
-                datastore = AzureSession.Instance.DataStore;
-            }
-
-            AzureSession.Instance.DataStore = datastore;
-            var rmprofile = new AzureRmProfile(Path.Combine(AzureSession.Instance.ProfileDirectory, AzureSession.Instance.ProfileFile));
-            rmprofile.EnvironmentTable.Add("foo", new AzureEnvironment(AzureEnvironment.PublicEnvironments.Values.FirstOrDefault()));
-            rmprofile.DefaultContext = new AzureContext(new AzureSubscription(), new AzureAccount(), rmprofile.EnvironmentTable["foo"], new AzureTenant());
-            rmprofile.DefaultContext.Subscription.SetEnvironment("foo");
-            if (AzureRmProfileProvider.Instance.Profile == null)
-            {
-                AzureRmProfileProvider.Instance.Profile = rmprofile;
-            }
-
-            AzureSession.Instance.DataStore = datastore;
-
-            // Ignore SSL errors
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) => true;
-
-            // Set RunningMocked
-            TestMockSupport.RunningMocked = HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback;
 
             if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Resources.AzureDirectoryName, "testcredentials.json")))
             {
@@ -157,8 +124,6 @@ namespace Microsoft.Azure.Commands.TestFx
 
         public string RMMonitorModule { get; private set; }
 
-        public string RMStorageDataPlaneModule { get; private set; }
-
         public string RMNetworkModule { get; private set; }
 
         public string StackRMProfileModule { get; private set; }
@@ -166,8 +131,6 @@ namespace Microsoft.Azure.Commands.TestFx
         public string StackRMResourceModule { get; private set; }
 
         public string StackRMStorageModule { get; private set; }
-
-        public string StackRMStorageDataPlaneModule { get; private set; }
 
         public string RMKeyVaultModule { get; private set; }
 
@@ -388,67 +351,77 @@ namespace Microsoft.Azure.Commands.TestFx
                 throw new NotSupportedException("RDFE environment is not supported in .Net Core");
             }
 
-            if (currentEnvironment.UserName == null)
-            {
-                currentEnvironment.UserName = "fakeuser@microsoft.com";
-            }
-
             SetAuthenticationFactory(currentEnvironment);
-            AzureEnvironment environment = new AzureEnvironment { Name = TestEnvironmentName };
-            Debug.Assert(currentEnvironment != null);
-            environment.ActiveDirectoryAuthority = currentEnvironment.Endpoints.AADAuthUri.AbsoluteUri;
-            environment.GalleryUrl = currentEnvironment.Endpoints.GalleryUri?.AbsoluteUri;
-            environment.ServiceManagementUrl = currentEnvironment.BaseUri.AbsoluteUri;
-            environment.ResourceManagerUrl = currentEnvironment.Endpoints.ResourceManagementUri.AbsoluteUri;
-            environment.GraphUrl = currentEnvironment.Endpoints.GraphUri.AbsoluteUri;
-            environment.AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix = currentEnvironment.Endpoints.DataLakeAnalyticsJobAndCatalogServiceUri.OriginalString.Replace("https://", ""); // because it is just a sufix
-            environment.AzureDataLakeStoreFileSystemEndpointSuffix = currentEnvironment.Endpoints.DataLakeStoreServiceUri.OriginalString.Replace("https://", ""); // because it is just a sufix
-            environment.StorageEndpointSuffix = AzureEnvironmentConstants.AzureStorageEndpointSuffix;
-            environment.AzureKeyVaultDnsSuffix = AzureEnvironmentConstants.AzureKeyVaultDnsSuffix;
-            environment.AzureKeyVaultServiceEndpointResourceId = AzureEnvironmentConstants.AzureKeyVaultServiceEndpointResourceId;
-            environment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.MicrosoftGraphUrl, currentEnvironment.Endpoints.GraphUri.AbsoluteUri);
-            environment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpoint, "https://api.loganalytics.io/v1");
-            environment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpointResourceId, "https://api.loganalytics.io");
-            if (!AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>().EnvironmentTable.ContainsKey(TestEnvironmentName))
+
+            AzureEnvironment testEnvironment = new AzureEnvironment
             {
-                AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>().EnvironmentTable[TestEnvironmentName] = environment;
+                Name = TestFxEnvironmentName,
+                ActiveDirectoryAuthority = currentEnvironment.Endpoints.AADAuthUri.AbsoluteUri,
+                ActiveDirectoryServiceEndpointResourceId = currentEnvironment.Endpoints.AADTokenAudienceUri.AbsoluteUri,
+                GraphUrl = currentEnvironment.Endpoints.GraphUri.AbsoluteUri,
+                GraphEndpointResourceId = currentEnvironment.Endpoints.GraphTokenAudienceUri.AbsoluteUri,
+                ResourceManagerUrl = currentEnvironment.Endpoints.ResourceManagementUri.AbsoluteUri,
+                ServiceManagementUrl = currentEnvironment.Endpoints.ServiceManagementUri.AbsoluteUri,
+                GalleryUrl = currentEnvironment.Endpoints.GalleryUri?.AbsoluteUri,
+                AzureDataLakeAnalyticsCatalogAndJobEndpointSuffix = currentEnvironment.Endpoints.DataLakeAnalyticsJobAndCatalogServiceUri.OriginalString.Replace("https://", ""),
+                AzureDataLakeStoreFileSystemEndpointSuffix = currentEnvironment.Endpoints.DataLakeStoreServiceUri.OriginalString.Replace("https://", ""),
+                StorageEndpointSuffix = AzureEnvironmentConstants.AzureStorageEndpointSuffix,
+                AzureKeyVaultDnsSuffix = AzureEnvironmentConstants.AzureKeyVaultDnsSuffix,
+                AzureKeyVaultServiceEndpointResourceId = AzureEnvironmentConstants.AzureKeyVaultServiceEndpointResourceId
+            };
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.MicrosoftGraphUrl, currentEnvironment.Endpoints.GraphUri.AbsoluteUri);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.AzureAttestationServiceEndpointSuffix, AzureEnvironmentConstants.AzureAttestationServiceEndpointSuffix);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.AzureAttestationServiceEndpointResourceId, AzureEnvironmentConstants.AzureAttestationServiceEndpointResourceId);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.AzureSynapseAnalyticsEndpointSuffix, AzureEnvironmentConstants.AzureSynapseAnalyticsEndpointSuffix);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.AzureSynapseAnalyticsEndpointResourceId, AzureEnvironmentConstants.AzureSynapseAnalyticsEndpointResourceId);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpoint, AzureEnvironmentConstants.AzureOperationalInsightsEndpoint);
+            testEnvironment.ExtendedProperties.SetProperty(AzureEnvironment.ExtendedEndpoint.OperationalInsightsEndpointResourceId, AzureEnvironmentConstants.AzureOperationalInsightsEndpointResourceId);
+            if (!AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>().EnvironmentTable.ContainsKey(TestFxEnvironmentName))
+            {
+                AzureRmProfileProvider.Instance.GetProfile<AzureRmProfile>().EnvironmentTable[TestFxEnvironmentName] = testEnvironment;
             }
 
-            if (currentEnvironment.SubscriptionId != null)
+            AzureSubscription testSubscription = new AzureSubscription();
+            if (!string.IsNullOrEmpty(currentEnvironment.SubscriptionId))
             {
-                var testSubscription = new AzureSubscription
-                {
-                    Id = currentEnvironment.SubscriptionId,
-                    Name = TestSubscriptionName,
-                };
-
-                testSubscription.SetEnvironment(TestEnvironmentName);
-                testSubscription.SetAccount(currentEnvironment.UserName);
+                testSubscription.Id = currentEnvironment.SubscriptionId;
+                testSubscription.Name = TestFxSubscriptionName;
+                testSubscription.SetEnvironment(TestFxEnvironmentName);
+                testSubscription.SetTenant(currentEnvironment.TenantId);
+                testSubscription.SetAccount(currentEnvironment.UserId);
                 testSubscription.SetDefault();
                 testSubscription.SetStorageAccount(Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT"));
-
-                var testAccount = new AzureAccount()
-                {
-                    Id = currentEnvironment.UserName,
-                    Type = AzureAccount.AccountType.User,
-                };
-
-                testAccount.SetSubscriptions(currentEnvironment.SubscriptionId);
-                var testTenant = new AzureTenant() { Id = Guid.NewGuid().ToString() };
-                if (!string.IsNullOrEmpty(currentEnvironment.TenantId))
-                {
-                    if (Guid.TryParse(currentEnvironment.TenantId, out _))
-                    {
-                        testTenant.Id = currentEnvironment.TenantId;
-                    }
-                }
-                AzureRmProfileProvider.Instance.Profile.DefaultContext = new AzureContext(testSubscription, testAccount, environment, testTenant);
             }
+
+            AzureTenant testTenant = new AzureTenant();
+            if (!string.IsNullOrEmpty(currentEnvironment.TenantId))
+            {
+                testTenant.Id = currentEnvironment.TenantId;
+            }
+
+            AzureAccount testAccount = new AzureAccount();
+            if (!string.IsNullOrEmpty(currentEnvironment.UserId))
+            {
+                testAccount.Id = currentEnvironment.UserId;
+                testAccount.Type = AzureAccount.AccountType.User;
+            }
+            else if (!string.IsNullOrEmpty(currentEnvironment.ServicePrincipalClientId) && !string.IsNullOrEmpty(currentEnvironment.ServicePrincipalSecret))
+            {
+                testAccount.Id = currentEnvironment.ServicePrincipalClientId;
+                testAccount.Type = AzureAccount.AccountType.ServicePrincipal;
+            }
+
+            testAccount.SetAccessToken(string.Empty);
+            testAccount.SetSubscriptions(currentEnvironment.SubscriptionId);
+            testAccount.SetTenants(currentEnvironment.TenantId);
+
+            AzureRmProfileProvider.Instance.Profile = new AzureRmProfile(Path.Combine(AzureSession.Instance.ProfileDirectory, AzureSession.Instance.ProfileFile));
+            AzureRmProfileProvider.Instance.Profile.DefaultContext = new AzureContext(testSubscription, testAccount, testEnvironment, testTenant);
         }
 
         private void SetAuthenticationFactory(TestEnvironment environment)
         {
-            if (environment.TokenInfo.ContainsKey(TokenAudience.Management))
+            if (environment.IsRunningMocked)
             {
                 var httpMessage = new HttpRequestMessage();
                 environment.TokenInfo[TokenAudience.Management]
@@ -457,7 +430,7 @@ namespace Microsoft.Azure.Commands.TestFx
                     .GetAwaiter()
                     .GetResult();
 
-                AzureSession.Instance.AuthenticationFactory = new MockTokenAuthenticationFactory(environment.UserName, httpMessage.Headers.Authorization.Parameter);
+                AzureSession.Instance.AuthenticationFactory = new MockTokenAuthenticationFactory(environment.UserId, httpMessage.Headers.Authorization.Parameter);
             }
         }
 
@@ -527,9 +500,25 @@ namespace Microsoft.Azure.Commands.TestFx
                 TracingInterceptor?.Information(script);
                 powershell.AddScript(script);
             }
+            
             try
             {
+                string testName = string.Join("+", scripts);
+                Console.WriteLine($"Executing test {testName}");
+
+                var watch = Stopwatch.StartNew();
                 output = powershell.Invoke();
+                watch.Stop();
+
+                if (watch.ElapsedMilliseconds < 5000)
+                {
+                    Console.WriteLine($"INFO : Test {testName} completed in {watch.ElapsedMilliseconds}ms");
+                }
+                else
+                {
+                    Console.WriteLine($"##[warning]WARNING : Test {testName} completed in {watch.ElapsedMilliseconds}ms");
+                }
+
                 if (powershell.Streams.Error.Count > 0)
                 {
                     throw new RuntimeException($"Test failed due to a non-empty error stream. First error: {PowerShellExtensions.FormatErrorRecord(powershell.Streams.Error[0])}{(powershell.Streams.Error.Count > 0 ? "Check the error stream in the test log for additional errors." : "")}");

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-AzDevCenterUserCatalog
 
 ## SYNOPSIS
-Gets the specified catalog within the project
+Gets the specified catalog within the project.
 
 ## SYNTAX
 
@@ -49,7 +49,7 @@ Get-AzDevCenterUserCatalog -DevCenterName <String> -ProjectName <String> -Catalo
 ```
 
 ## DESCRIPTION
-Gets the specified catalog within the project
+Gets the specified catalog within the project.
 
 ## EXAMPLES
 
@@ -62,7 +62,7 @@ This command lists catalogs in the project "DevProject".
 
 ### Example 2: List catalogs by dev center
 ```powershell
-Get-AzDevCenterUserCatalog -DevCenter Contoso -ProjectName DevProject
+Get-AzDevCenterUserCatalog -DevCenterName Contoso -ProjectName DevProject
 ```
 
 This command lists catalogs in the project "DevProject".
@@ -76,7 +76,7 @@ This command gets a catalog named "CentralCatalog" in the project "DevProject".
 
 ### Example 4: Get a catalog by dev center
 ```powershell
-Get-AzDevCenterUserCatalog -DevCenter Contoso -ProjectName DevProject -CatalogName CentralCatalog
+Get-AzDevCenterUserCatalog -DevCenterName Contoso -ProjectName DevProject -CatalogName CentralCatalog
 ```
 
 This command gets a catalog named "CentralCatalog" in the project "DevProject".
@@ -92,7 +92,7 @@ This command gets a catalog named "CentralCatalog" in the project "DevProject".
 ### Example 6: Get a catalog by dev center and InputObject
 ```powershell
 $catalogInput = @{"CatalogName" = "CentralCatalog"; "ProjectName" = "DevProject" }
-Get-AzDevCenterUserCatalog -DevCenter Contoso -InputObject $catalogInput
+Get-AzDevCenterUserCatalog -DevCenterName Contoso -InputObject $catalogInput
 ```
 
 This command gets a catalog named "CentralCatalog" in the project "DevProject".
@@ -100,7 +100,7 @@ This command gets a catalog named "CentralCatalog" in the project "DevProject".
 ## PARAMETERS
 
 ### -CatalogName
-The name of the catalog
+Name of the catalog.
 
 ```yaml
 Type: System.String
@@ -177,7 +177,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProjectName
-The DevCenter Project upon which to execute operations.
+Name of the project.
 
 ```yaml
 Type: System.String
@@ -200,29 +200,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DevCenterdata.Models.Api20230401.ICatalog
-
-### System.String
+### Microsoft.Azure.PowerShell.Cmdlets.DevCenterdata.Models.Api20240501Preview.ICatalog
 
 ## NOTES
-
-ALIASES
-
-COMPLEX PARAMETER PROPERTIES
-
-To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
-
-
-`INPUTOBJECT <IDevCenterdataIdentity>`: Identity Parameter
-  - `[ActionName <String>]`: The name of an action that will take place on a Dev Box.
-  - `[CatalogName <String>]`: The name of the catalog
-  - `[DefinitionName <String>]`: The name of the environment definition
-  - `[DevBoxName <String>]`: The name of a Dev Box.
-  - `[EnvironmentName <String>]`: The name of the environment.
-  - `[Id <String>]`: Resource identity path
-  - `[PoolName <String>]`: The name of a pool of Dev Boxes.
-  - `[ProjectName <String>]`: The DevCenter Project upon which to execute operations.
-  - `[ScheduleName <String>]`: The name of a schedule.
-  - `[UserId <String>]`: The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
 
 ## RELATED LINKS

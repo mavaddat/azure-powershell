@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/new-azkustomanagedprivateendpoint
 schema: 2.0.0
@@ -17,14 +17,14 @@ Creates a managed private endpoint.
 New-AzKustoManagedPrivateEndpoint -ClusterName <String> -Name <String> -ResourceGroupName <String>
  [-SubscriptionId <String>] [-GroupId <String>] [-PrivateLinkResourceId <String>]
  [-PrivateLinkResourceRegion <String>] [-RequestMessage <String>] [-DefaultProfile <PSObject>] [-AsJob]
- [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Create
 ```
 New-AzKustoManagedPrivateEndpoint -ClusterName <String> -Name <String> -ResourceGroupName <String>
- -Parameter <IManagedPrivateEndpoint> [-SubscriptionId <String>] [-DefaultProfile <PSObject>] [-AsJob]
- [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] -Parameter <IManagedPrivateEndpoint> [-DefaultProfile <PSObject>] [-AsJob]
+ [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -143,7 +143,7 @@ Class representing a managed private endpoint.
 To construct, see NOTES section for PARAMETER properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IManagedPrivateEndpoint
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IManagedPrivateEndpoint
 Parameter Sets: Create
 Aliases:
 
@@ -266,13 +266,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IManagedPrivateEndpoint
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IManagedPrivateEndpoint
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.IManagedPrivateEndpoint
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.IManagedPrivateEndpoint
 
 ## NOTES
 
 ## RELATED LINKS
-

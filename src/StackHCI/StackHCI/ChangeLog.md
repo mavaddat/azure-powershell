@@ -18,6 +18,21 @@
         - Additional information about change #1
 -->
 ## Upcoming Release
+
+## Version 2.5.0
+* Upgraded nuget package to signed package.
+
+## Version 2.4.1
+* added support for new environment
+
+## Version 2.4.0
+* Upgraded API version to 2024-04-01
+* Allowed registration for 23H2 and above versions of the device
+
+## Version 2.3.2
+* Introduced secrets detection feature to safeguard sensitive data.
+
+## Version 2.3.1
 * Updated `Set-AzStackHCI` to use HTTP PATCH for updating cluster resource instead of HTTP PUT and to only send updated properties.
 
 ## Version 2.3.0

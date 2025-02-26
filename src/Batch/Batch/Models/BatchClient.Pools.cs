@@ -103,6 +103,11 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 pool.TargetLowPriorityComputeNodes = parameters.TargetLowPriorityComputeNodes;
             }
 
+            if (parameters.UpgradePolicy != null)
+            {
+                pool.UpgradePolicy = parameters.UpgradePolicy.omObject;
+            }
+
             if (parameters.TaskSchedulingPolicy != null)
             {
                 pool.TaskSchedulingPolicy = parameters.TaskSchedulingPolicy.omObject;
@@ -119,7 +124,17 @@ namespace Microsoft.Azure.Commands.Batch.Models
                 pool.Metadata = new List<MetadataItem>();
                 foreach (DictionaryEntry m in parameters.Metadata)
                 {
-                    pool.Metadata.Add(new MetadataItem(m.Key.ToString(), m.Value.ToString()));
+                    pool.Metadata.Add(new MetadataItem(m.Key.ToString(), m.Value?.ToString()));
+                }
+            }
+
+            if (parameters.ResourceTags != null)
+            {
+                pool.ResourceTags = new Dictionary<string, string>();
+
+                foreach (DictionaryEntry m in parameters.ResourceTags)
+                {
+                    pool.ResourceTags.Add(m.Key.ToString(), m.Value?.ToString());
                 }
             }
 

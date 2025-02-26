@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.Kusto-help.xml
 Module Name: Az.Kusto
 online version: https://learn.microsoft.com/powershell/module/az.kusto/update-azkustosandboxcustomimage
 schema: 2.0.0
@@ -15,27 +15,29 @@ Updates a sandbox custom image.
 ### UpdateExpanded (Default)
 ```
 Update-AzKustoSandboxCustomImage -ClusterName <String> -Name <String> -ResourceGroupName <String>
- [-SubscriptionId <String>] [-LanguageVersion <String>] [-RequirementsFileContent <String>]
- [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] [-BaseImageName <String>] [-LanguageVersion <String>]
+ [-RequirementsFileContent <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Update
 ```
 Update-AzKustoSandboxCustomImage -ClusterName <String> -Name <String> -ResourceGroupName <String>
- -Parameter <ISandboxCustomImage> [-SubscriptionId <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
- [-Confirm] [-WhatIf] [<CommonParameters>]
+ [-SubscriptionId <String>] -Parameter <ISandboxCustomImage> [-DefaultProfile <PSObject>] [-AsJob] [-NoWait]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### UpdateViaIdentityExpanded
+```
+Update-AzKustoSandboxCustomImage -InputObject <IKustoIdentity> [-BaseImageName <String>]
+ [-LanguageVersion <String>] [-RequirementsFileContent <String>] [-DefaultProfile <PSObject>] [-AsJob]
+ [-NoWait] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### UpdateViaIdentity
 ```
 Update-AzKustoSandboxCustomImage -InputObject <IKustoIdentity> -Parameter <ISandboxCustomImage>
- [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
-```
-
-### UpdateViaIdentityExpanded
-```
-Update-AzKustoSandboxCustomImage -InputObject <IKustoIdentity> [-LanguageVersion <String>]
- [-RequirementsFileContent <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
+ [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -74,12 +76,29 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -BaseImageName
+The base image name on which the custom image is built on top of.
+It can be one of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom image.
+Either this property or languageVersion should be specified.
+
+```yaml
+Type: System.String
+Parameter Sets: UpdateExpanded, UpdateViaIdentityExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ClusterName
 The name of the Kusto cluster.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: True
@@ -111,7 +130,7 @@ To construct, see NOTES section for INPUTOBJECT properties and create a hash tab
 
 ```yaml
 Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.IKustoIdentity
-Parameter Sets: UpdateViaIdentity, UpdateViaIdentityExpanded
+Parameter Sets: UpdateViaIdentityExpanded, UpdateViaIdentity
 Aliases:
 
 Required: True
@@ -123,6 +142,7 @@ Accept wildcard characters: False
 
 ### -LanguageVersion
 The version of the language.
+Either this property or baseImageName should be specified.
 
 ```yaml
 Type: System.String
@@ -141,7 +161,7 @@ The name of the sandbox custom image.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases: SandboxCustomImageName
 
 Required: True
@@ -171,7 +191,7 @@ Class representing a Kusto sandbox custom image.
 To construct, see NOTES section for PARAMETER properties and create a hash table.
 
 ```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.ISandboxCustomImage
+Type: Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.ISandboxCustomImage
 Parameter Sets: Update, UpdateViaIdentity
 Aliases:
 
@@ -203,7 +223,7 @@ The name is case insensitive.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: True
@@ -218,7 +238,7 @@ The ID of the target subscription.
 
 ```yaml
 Type: System.String
-Parameter Sets: Update, UpdateExpanded
+Parameter Sets: UpdateExpanded, Update
 Aliases:
 
 Required: False
@@ -264,15 +284,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.ISandboxCustomImage
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.ISandboxCustomImage
 
 ### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.IKustoIdentity
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20230815.ISandboxCustomImage
+### Microsoft.Azure.PowerShell.Cmdlets.Kusto.Models.Api20240413.ISandboxCustomImage
 
 ## NOTES
 
 ## RELATED LINKS
-

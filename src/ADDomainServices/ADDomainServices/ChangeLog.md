@@ -19,6 +19,15 @@
 -->
 ## Upcoming Release
 
+## Version 0.2.3
+* Upgraded nuget package to signed package.
+
+## Version 0.2.2
+* Fixed secrets exposure in example documentation.
+
+## Version 0.2.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 0.2.0
 * Changed the input method of certificate from base64 string to file path
 * Renamed `New-AzADDomainServiceForestTrust` to `New-AzADDomainServiceForestTrustObject`, and `New-AzADDomainServiceReplicaSet` to `New-AzADDomainServiceReplicaSetObject` to align with naming convention

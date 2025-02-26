@@ -19,6 +19,12 @@
 -->
 ## Upcoming Release
 
+## Version 3.1.0
+* Upgraded nuget package to signed package.
+
+## Version 3.0.1
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 3.0.0
 * [Breaking Change] Updated API version to 2020-02-01-preview
 

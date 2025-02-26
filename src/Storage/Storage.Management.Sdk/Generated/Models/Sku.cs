@@ -26,12 +26,13 @@ namespace Microsoft.Azure.Management.Storage.Models
 
         /// <param name="name">The SKU name. Required for account creation; optional for update. Note that
         /// in older versions, SKU name was called accountType.
-        /// Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS',
-        /// 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS', 'Standard_GZRS',
-        /// 'Standard_RAGZRS'</param>
+        /// Possible values include: &#39;Standard_LRS&#39;, &#39;Standard_GRS&#39;, &#39;Standard_RAGRS&#39;,
+        /// &#39;Standard_ZRS&#39;, &#39;Premium_LRS&#39;, &#39;Premium_ZRS&#39;, &#39;Standard_GZRS&#39;,
+        /// &#39;Standard_RAGZRS&#39;, &#39;StandardV2_LRS&#39;, &#39;StandardV2_GRS&#39;, &#39;StandardV2_ZRS&#39;,
+        /// &#39;StandardV2_GZRS&#39;, &#39;PremiumV2_LRS&#39;, &#39;PremiumV2_ZRS&#39;</param>
 
         /// <param name="tier">The SKU tier. This is based on the SKU name.
-        /// Possible values include: 'Standard', 'Premium'</param>
+        /// Possible values include: &#39;Standard&#39;, &#39;Premium&#39;</param>
         public Sku(string name, SkuTier? tier = default(SkuTier?))
 
         {
@@ -48,7 +49,7 @@ namespace Microsoft.Azure.Management.Storage.Models
 
         /// <summary>
         /// Gets or sets the SKU name. Required for account creation; optional for
-        /// update. Note that in older versions, SKU name was called accountType. Possible values include: &#39;Standard_LRS&#39;, &#39;Standard_GRS&#39;, &#39;Standard_RAGRS&#39;, &#39;Standard_ZRS&#39;, &#39;Premium_LRS&#39;, &#39;Premium_ZRS&#39;, &#39;Standard_GZRS&#39;, &#39;Standard_RAGZRS&#39;
+        /// update. Note that in older versions, SKU name was called accountType. Possible values include: &#39;Standard_LRS&#39;, &#39;Standard_GRS&#39;, &#39;Standard_RAGRS&#39;, &#39;Standard_ZRS&#39;, &#39;Premium_LRS&#39;, &#39;Premium_ZRS&#39;, &#39;Standard_GZRS&#39;, &#39;Standard_RAGZRS&#39;, &#39;StandardV2_LRS&#39;, &#39;StandardV2_GRS&#39;, &#39;StandardV2_ZRS&#39;, &#39;StandardV2_GZRS&#39;, &#39;PremiumV2_LRS&#39;, &#39;PremiumV2_ZRS&#39;
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name {get; set; }

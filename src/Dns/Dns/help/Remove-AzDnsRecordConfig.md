@@ -52,7 +52,8 @@ Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -Value <String> [-DefaultProf
 ### SRV
 ```
 Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -Priority <UInt16> -Target <String> -Port <UInt16>
- -Weight <UInt16> [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+ -Weight <UInt16> [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
 ```
 
 ### CNAME
@@ -70,13 +71,22 @@ Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -CaaFlags <Byte> -CaaTag <Str
 ### DS
 ```
 Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -KeyTag <Int32> -Algorithm <Int32> -DigestType <Int32>
- -Digest <String> [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+ -Digest <String> [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
 ```
 
 ### TLSA
 ```
 Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -Usage <Int32> -Selector <Int32> -MatchingType <Int32>
- -CertificateAssociationData <String> [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+ -CertificateAssociationData <String> [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
+```
+
+### NAPTR
+```
+Remove-AzDnsRecordConfig -RecordSet <DnsRecordSet> -Order <UInt16> -Preference <UInt16> -Flags <String>
+ -Services <String> -Regexp <String> -Replacement <String> [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -238,6 +248,17 @@ Get-AzDnsRecordSet -Name "_443._tcp.www" -RecordType TLSA -ResourceGroupName "My
 This example removes a TLSA record from an existing record set.
 If this is the only record in the record set, the result is an empty record set.
 To remove a record set entirely, see Remove-AzDnsRecordSet.
+
+### Example 11: Remove an NAPTR record from a record set
+```powershell
+$RecordSet = Get-AzDnsRecordSet -Name "www" -RecordType NAPTR -ResourceGroupName "MyResourceGroup" -ZoneName "myzone.com"
+Remove-AzDnsRecordConfig -Order 100 -Preference 100 -Flags "s" -Services "http" -Regexp "" -Replacement "www.contoso.com"
+Set-AzDnsRecordSet -RecordSet $RecordSet
+
+# The above sequence can also be piped:
+
+Get-AzDnsRecordSet -Name "www" -RecordType NAPTR -ResourceGroupName "MyResourceGroup" -ZoneName "myzone.com" | Remove-AzDnsRecordConfig -Order 100 -Preference 100 -Flags "s" -Services "http" -Regexp "" -Replacement "www.contoso.com"  | Set-AzDnsRecordSet
+```
 
 ## PARAMETERS
 
@@ -466,6 +487,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -Order
+Specifies the order for a named authority pointer (NAPTR) record.
+
+```yaml
+Type: System.UInt16
+Parameter Sets: NAPTR
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -Port
 Specifies the port for a service (SRV) record.
 
@@ -482,11 +518,11 @@ Accept wildcard characters: False
 ```
 
 ### -Preference
-Specifies the preference for an MX record.
+Specifies the preference for an MX/NAPTR record.
 
 ```yaml
 Type: System.UInt16
-Parameter Sets: MX
+Parameter Sets: MX, NAPTR
 Aliases:
 
 Required: True
@@ -538,6 +574,51 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Regexp
+Specifies the regexp of the named authority pointer (NAPTR) record.
+
+```yaml
+Type: System.String
+Parameter Sets: NAPTR
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Replacement
+Specifies the replacement for a named authority pointer (NAPTR) record.
+
+```yaml
+Type: System.String
+Parameter Sets: NAPTR
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Services
+Specifies the services of the named authority pointer (NAPTR) record.
+
+```yaml
+Type: System.String
+Parameter Sets: NAPTR
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

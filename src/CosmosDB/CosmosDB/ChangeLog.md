@@ -19,6 +19,36 @@
 -->
 
 ## Upcoming Release
+* Added support for Cosmos DB Table role definition and role assignment related cmdlets.
+
+## Version 1.16.0
+* Upgraded nuget package to signed package.
+* Upgraded Azure.Core to 1.44.1.
+
+## Version 1.15.0
+* Added new parameter `DisableTtl` to `Restore-AzCosmosDBAccount`.
+
+## Version 1.14.5
+* Fixed secrets exposure in example documentation.
+
+## Version 1.14.4
+* Fixed the issue that Azure.Core.AccessToken is used before assigned.
+
+## Version 1.14.3
+* Removed the out-of-date breaking change message for `Get-AzCosmosDBAccountKey`.
+
+## Version 1.14.2
+* Upgraded Azure.Core to 1.37.0.
+
+## Version 1.14.1
+* Fixed validation issues in same-account collection/container/graph and database/table/Gremlin restores, affecting the following cmdlets:
+- Restore-AzCosmosDBSqlDatabase
+- Restore-AzCosmosDBSqlContainer
+- Restore-AzCosmosDBMongoDBDatabase
+- Restore-AzCosmosDBMongoDBCollection
+- Restore-AzCosmosDBGremlinDatabase
+- Restore-AzCosmosDBGremlinGraph
+- Restore-AzCosmosDBTable
 * Upgraded SDK `Azure.Security.KeyVault.Keys` TO 4.6.0-beta.1.
 * Added breaking change message for ListConnectionStrings changes
 

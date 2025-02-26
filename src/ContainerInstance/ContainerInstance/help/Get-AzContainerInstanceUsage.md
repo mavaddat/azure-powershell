@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.ContainerInstance-help.xml
 Module Name: Az.ContainerInstance
 online version: https://learn.microsoft.com/powershell/module/az.containerinstance/get-azcontainerinstanceusage
 schema: 2.0.0
@@ -60,7 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### -Location
-The identifier for the physical azure location.
+The name of the Azure region.
 
 ```yaml
 Type: System.String
@@ -75,8 +75,8 @@ Accept wildcard characters: False
 ```
 
 ### -SubscriptionId
-Subscription credentials which uniquely identify Microsoft Azure subscription.
-The subscription ID forms part of the URI for every service call.
+The ID of the target subscription.
+The value must be an UUID.
 
 ```yaml
 Type: System.String[]
@@ -97,11 +97,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.ContainerInstance.Models.Api20221001Preview.IUsage
+### Microsoft.Azure.PowerShell.Cmdlets.ContainerInstance.Models.Api20240501Preview.IUsage
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

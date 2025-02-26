@@ -8,20 +8,25 @@ schema: 2.0.0
 # Get-AzAccessToken
 
 ## SYNOPSIS
-Get raw access token. When using -ResourceUrl, please make sure the value does match current Azure environment. You may refer to the value of `(Get-AzContext).Environment`.
+Get secure raw access token. When using -ResourceUrl, please make sure the value does match current Azure environment. You may refer to the value of `(Get-AzContext).Environment`.
+
+> [!NOTE]
+> For security purposes, the default output type will change from a plain text `String` to
+> `SecureString`. To prepare for this change and ensure secure handling, use the **AsSecureString**
+> parameter before the update takes effect.
 
 ## SYNTAX
 
 ### KnownResourceTypeName (Default)
 ```
-Get-AzAccessToken [-ResourceTypeName <String>] [-TenantId <String>] [-DefaultProfile <IAzureContextContainer>]
- [<CommonParameters>]
+Get-AzAccessToken [-ResourceTypeName <String>] [-TenantId <String>] [-AsSecureString]
+ [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
 ```
 
 ### ResourceUrl
 ```
-Get-AzAccessToken -ResourceUrl <String> [-TenantId <String>] [-DefaultProfile <IAzureContextContainer>]
- [<CommonParameters>]
+Get-AzAccessToken -ResourceUrl <String> [-TenantId <String>] [-AsSecureString]
+ [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,32 +36,48 @@ Get access token
 
 ### Example 1 Get the access token for ARM endpoint
 ```powershell
-Get-AzAccessToken
+Get-AzAccessToken -AsSecureString
 ```
 
 Get access token of current account for ResourceManager endpoint
 
 ### Example 2 Get the access token for Microsoft Graph endpoint
 ```powershell
-Get-AzAccessToken -ResourceTypeName MSGraph
+Get-AzAccessToken -AsSecureString -ResourceTypeName MSGraph
 ```
 
 Get access token of Microsoft Graph endpoint for current account
 
 ### Example 3 Get the access token for Microsoft Graph endpoint
 ```powershell
-Get-AzAccessToken -ResourceUrl "https://graph.microsoft.com/"
+Get-AzAccessToken -AsSecureString -ResourceUrl "https://graph.microsoft.com/"
 ```
 
 Get access token of Microsoft Graph endpoint for current account
 
 ## PARAMETERS
 
+### -AsSecureString
+Specifiy to convert output token as a secure string.
+Please always use the parameter for security purpose and to avoid the upcoming breaking chang and refer to [Frequently asked questions about Azure PowerShell](https://learn.microsoft.com/en-us/powershell/azure/faq) for how to convert from `SecureString` to plain text.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -DefaultProfile
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -68,10 +89,10 @@ Accept wildcard characters: False
 ```
 
 ### -ResourceTypeName
-Optional resource type name, supported values: AadGraph, AnalysisServices, AppConfiguration, Arm, Attestation, Batch, DataLake, KeyVault, MSGraph, OperationalInsights, ResourceManager, Storage, Synapse. Default value is Arm if not specified.
+Optional resource type name, supported values: AadGraph, AnalysisServices, AppConfiguration, Arm, Attestation, Batch, CommunicationEmail, DataLake, KeyVault, MSGraph, OperationalInsights, ResourceManager, Storage, Synapse. Default value is Arm if not specified.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: KnownResourceTypeName
 Aliases:
 
@@ -86,7 +107,7 @@ Accept wildcard characters: False
 Resource url for that you're requesting token, e.g. 'https://graph.microsoft.com/'.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ResourceUrl
 Aliases: Resource, ResourceUri
 
@@ -101,7 +122,7 @@ Accept wildcard characters: False
 Optional Tenant Id. Use tenant id of default context if not specified.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -122,6 +143,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### Microsoft.Azure.Commands.Profile.Models.PSAccessToken
+The output type is going to be deprecate.
+
+### Microsoft.Azure.Commands.Profile.Models.PSSecureAccessToken
+Use `-AsSecureString` to get the token as `SecureString`.
 
 ## NOTES
 

@@ -3,7 +3,6 @@
 This directory contains the PowerShell module for the Storage service.
 
 ---
-
 ## Info
 - Modifiable: yes
 - Generated: all
@@ -29,12 +28,13 @@ For information on how to develop for `Az.Storage`, see [how-to.md](how-to.md).
 
 ``` yaml
 # Please specify the commit id that includes your features to make sure generated codes stable.
-branch: 3e6b4ddca225530c27273d0f816466a905c0151b
+commit: ae38b76a7e681922a05b0b1e4d44cc725eb94802
 require:
 # readme.azure.noprofile.md is the common configuration file
   - $(this-folder)/../../readme.azure.noprofile.md
 input-file:
-  - $(repo)/specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/storage.json
+  - $(repo)/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/storage.json
+  - $(repo)/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/file.json
 
 # For new RP, the version is 0.1.0
 module-version: 5.9.1
@@ -42,21 +42,22 @@ module-version: 5.9.1
 title: Storage
 subject-prefix: $(service-name)
 nested-object-to-string: true
-identity-correction-for-post: true 
-use-extension: 
-  "@autorest/powershell": "4.x"
+identity-correction-for-post: true
 
 directive:
-  - where:  
+  - from: swagger-document
+    where: $.paths.["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/startAccountMigration"].post.operationId    
+    transform: return "StartAccountMigration"
+  - remove-operation: StorageAccounts_Update
+  - remove-operation: FileShares_Lease
+  - where:
       subject: ^StorageAccountCustomerInitiatedMigration$
     set:
       subject: StorageAccountMigration
   - where:
-      verb: Invoke 
-      subject: ^CustomerStorageAccountInitiatedMigration$
-    set:
       verb: Start
       subject: AccountMigration
+    hide: true
   - where:
       variant: ^Customer$|^CustomerViaIdentity$
     remove: true
@@ -64,7 +65,40 @@ directive:
       parameter-name: StorageAccountMigrationDetailTargetSkuName
     set:
       parameter-name: TargetSku
-  - where: 
-      subject: ^StorageAccount$|^StorageAccountKey$|^StorageAccountProperty$|^StorageAccountSas$|^StorageAccountServiceSas$|BlobInventoryPolicy$|^DeletedAccount$|^EncryptionScope$|^LocalUser$|^LocalUserKey$|^ManagementPolicy$|^ObjectReplicationPolicy$|^Sku$|^Usage$|^LocalUserPassword$|^AccountUserDelegationKey$|^AbortStorageAccountHierarchicalNamespaceMigration$|^HierarchicalStorageAccountNamespaceMigration$|^StorageAccountBlobRange$|^StorageAccountUserDelegationKey$|^StorageAccountNameAvailability$
+  - where:
+      subject: ^FileServiceUsage$
+      parameter-name: AccountName
+    set:
+      parameter-name: StorageAccountName  
+  - where:
+      property-name: BurstingConstantBurstFloorIop
+    set:
+      property-name: BurstingConstantBurstFloorIops
+  - where:
+      property-name: FileShareLimitMaxProvisionedIop 
+    set:
+      property-name: FileShareLimitMaxProvisionedIops
+  - where:
+      property-name: FileShareLimitMinProvisionedIop
+    set:
+      property-name: FileShareLimitMinProvisionedIops
+  - where:
+      property-name: FileShareRecommendationBaseIop
+    set:
+      property-name: FileShareRecommendationBaseIops
+  - where:
+      property-name: LiveShareProvisionedIop
+    set:
+      property-name: LiveShareProvisionedIops
+  - where:
+      property-name: SoftDeletedShareProvisionedIop
+    set:
+      property-name: SoftDeletedShareProvisionedIops
+  - where:
+      property-name: StorageAccountLimitMaxProvisionedIop
+    set:
+      property-name: StorageAccountLimitMaxProvisionedIops
+  - where:
+      subject: ^StorageAccount$|^StorageAccountKey$|^StorageAccountProperty$|^StorageAccountSas$|^StorageAccountServiceSas$|BlobInventoryPolicy$|^DeletedAccount$|^EncryptionScope$|^LocalUser$|^LocalUserKey$|^ManagementPolicy$|^ObjectReplicationPolicy$|^Sku$|^Usage$|^LocalUserPassword$|^AccountUserDelegationKey$|^AbortStorageAccountHierarchicalNamespaceMigration$|^HierarchicalStorageAccountNamespaceMigration$|^StorageAccountBlobRange$|^StorageAccountUserDelegationKey$|^StorageAccountNameAvailability$|^FileShare$|^FileServiceProperty$|^FileService$
     remove: true
 ```

@@ -20,6 +20,12 @@
 
 ## Upcoming Release
 
+## Version 3.2.0
+* Upgraded nuget package to signed package.
+
+## Version 3.1.2
+* Introduced secrets detection feature to safeguard sensitive data.
+
 ## Version 3.1.1
 * Removed unnecessary breaking change messages.
 

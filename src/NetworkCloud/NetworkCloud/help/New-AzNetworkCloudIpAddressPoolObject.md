@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/Az.NetworkCloud/new-AzNetworkCloudIpAddressPoolObject
 schema: 2.0.0
@@ -24,7 +24,7 @@ Create an in-memory object for IpAddressPool.
 
 ### Example 1: Create an in-memory object for IpAddressPool.
 ```powershell
-New-AzNetworkCloudIpAddressPoolObject -Address @("198.51.102.0/24") -Name "pool1" -AutoAssign True -OnlyUseHostIP True 
+New-AzNetworkCloudIpAddressPoolObject -Address @("198.51.102.0/24") -Name "pool1" -AutoAssign True -OnlyUseHostIP True
 ```
 
 ```output
@@ -40,6 +40,7 @@ Create an in-memory object for IpAddressPool.
 ### -Address
 The list of IP address ranges.
 Each range can be a either a subnet in CIDR format or an explicit start-end range of IP addresses.
+For a BGP service load balancer configuration, only CIDR format is supported and excludes /32 (IPv4) and /128 (IPv6) prefixes.
 
 ```yaml
 Type: System.String[]
@@ -106,11 +107,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.IPAddressPool
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.IPAddressPool
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-

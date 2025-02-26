@@ -83,7 +83,6 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            ParameterSetName = "IpConfigurationParameterValues",
             HelpMessage = "One or more Public IP Addresses. The Public IP addresses must use Standard SKU and must belong to the same resource group as the Firewall.")]
         [ValidateNotNullOrEmpty]
         public PSPublicIpAddress[] PublicIpAddress { get; set; }
@@ -231,6 +230,16 @@ namespace Microsoft.Azure.Commands.Network
         HelpMessage = "The Route Server Id for the firewall")]
         public string RouteServerId { get; set; }
 
+        [Parameter(
+        Mandatory = false,
+        HelpMessage = "The minimum number of capacity units for this azure firewall")]
+        public int? MinCapacity { get; set; }
+
+        [Parameter(
+        Mandatory = false,
+        HelpMessage = "The maximum number of capacity units for this azure firewall")]
+        public int? MaxCapacity { get; set; }
+
         public override void Execute()
         {
             // Old params provided - Get the virtual network, get the public IP address
@@ -302,6 +311,16 @@ namespace Microsoft.Azure.Commands.Network
                     throw new ArgumentException("The Route Server is not supported on AZFW_Hub SKU Firewalls");
                 }
 
+                if (this.VirtualNetwork != null)
+                {
+                    throw new ArgumentException("Virtual Network is not supported on AZFW_Hub sku Firewalls");
+                }
+
+                if (this.PublicIpAddress != null && this.HubIPAddress != null)
+                {
+                    throw new ArgumentException("Public IP address can only be provided as part of PublicIps or HubIPAddresses. Not both at the same time.");
+                }
+
                 firewall = new PSAzureFirewall()
                 {
                     Name = this.Name,
@@ -315,6 +334,11 @@ namespace Microsoft.Azure.Commands.Network
                     EnableFatFlowLogging = (this.EnableFatFlowLogging.IsPresent ? "True" : null),
                     EnableUDPLogOptimization = (this.EnableUDPLogOptimization.IsPresent ? "True" : null)
                 };
+
+                if (this.PublicIpAddress != null) 
+                {
+                    firewall.AddIpAddressesForByopipHubFirewall(this.PublicIpAddress);
+                }
             }
             else
             {
@@ -357,6 +381,19 @@ namespace Microsoft.Azure.Commands.Network
                 }
                 firewall.ValidateDNSProxyRequirements();
             }
+
+            PSAzureFirewallAutoscaleConfiguration autoscaleConfiguration = new PSAzureFirewallAutoscaleConfiguration();
+
+            if (this.MinCapacity.HasValue)
+            {
+                autoscaleConfiguration.MinCapacity = this.MinCapacity.Value;
+            }
+            if (this.MaxCapacity.HasValue)
+            {
+                autoscaleConfiguration.MaxCapacity = this.MaxCapacity.Value;
+            }
+
+            firewall.AutoscaleConfiguration = autoscaleConfiguration;
 
             // Map to the sdk object
             var azureFirewallModel = NetworkResourceManagerProfile.Mapper.Map<MNM.AzureFirewall>(firewall);

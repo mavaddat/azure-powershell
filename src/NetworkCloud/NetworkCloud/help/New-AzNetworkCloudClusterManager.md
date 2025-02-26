@@ -1,5 +1,5 @@
 ---
-external help file:
+external help file: Az.NetworkCloud-help.xml
 Module Name: Az.NetworkCloud
 online version: https://learn.microsoft.com/powershell/module/az.networkcloud/new-aznetworkcloudclustermanager
 schema: 2.0.0
@@ -13,10 +13,12 @@ Create a new cluster manager or update properties of the cluster manager if it e
 ## SYNTAX
 
 ```
-New-AzNetworkCloudClusterManager -Name <String> -ResourceGroupName <String> -FabricControllerId <String>
- -Location <String> [-SubscriptionId <String>] [-AnalyticsWorkspaceId <String>] [-AvailabilityZone <String[]>]
- [-ManagedResourceGroupConfigurationLocation <String>] [-ManagedResourceGroupConfigurationName <String>]
- [-Tag <Hashtable>] [-VMSize <String>] [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
+New-AzNetworkCloudClusterManager -Name <String> -ResourceGroupName <String> [-SubscriptionId <String>]
+ -FabricControllerId <String> -Location <String> [-AnalyticsWorkspaceId <String>]
+ [-AvailabilityZone <String[]>] [-IdentityType <ManagedServiceIdentityType>]
+ [-IdentityUserAssignedIdentity <Hashtable>] [-ManagedResourceGroupConfigurationLocation <String>]
+ [-ManagedResourceGroupConfigurationName <String>] [-Tag <Hashtable>] [-VMSize <String>]
+ [-DefaultProfile <PSObject>] [-AsJob] [-NoWait] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -39,7 +41,6 @@ New-AzNetworkCloudClusterManager -Name cnName -Location location -ResourceGroupN
 Location Name   SystemDataCreatedAt SystemDataCreatedBy    SystemDataCreatedByType SystemDataLastModifiedAt SystemDataLastModifiedBy SystemDataLastModifiedByType ResourceGroupName
 -------- ----   ------------------- -------------------    ----------------------- ------------------------ ------------------------ ---------------------------- -----------------
 eastus   cmName 07/31/2023 17:38:44 <identity>             User                    07/31/2023 17:38:44      <identity>               User                         resourceGroupName
-
 ```
 
 This command creates a cluster manager.
@@ -117,6 +118,38 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IdentityType
+Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Support.ManagedServiceIdentityType
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IdentityUserAssignedIdentity
+The set of user assigned identities associated with the resource.
+The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+The dictionary values can be empty objects ({}) in requests.
+
+```yaml
+Type: System.Collections.Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -301,11 +334,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20230701.IClusterManager
+### Microsoft.Azure.PowerShell.Cmdlets.NetworkCloud.Models.Api20240701.IClusterManager
 
 ## NOTES
 
-ALIASES
-
 ## RELATED LINKS
-
